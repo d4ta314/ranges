@@ -102,7 +102,49 @@
     ]
    },
    "openSrc": "UTG/UTG1 8Max (p.2)",
-   "threebet": {}
+   "threebet": {
+    "UTG (approx. = HJ vs LJ)": {
+     "value": [
+      "AA",
+      "AKo",
+      "AKs",
+      "JJ",
+      "KK",
+      "QQ"
+     ],
+     "bluff": [
+      "A4s",
+      "A5s",
+      "A6s",
+      "AJo",
+      "ATo",
+      "JTs",
+      "K9s",
+      "KQo"
+     ],
+     "call": [
+      "44",
+      "55",
+      "66",
+      "77",
+      "88",
+      "99",
+      "A7s",
+      "A8s",
+      "A9s",
+      "AJs",
+      "AQo",
+      "AQs",
+      "ATs",
+      "KJs",
+      "KQs",
+      "KTs",
+      "QJs",
+      "QTs",
+      "TT"
+     ]
+    }
+   }
   },
   "LJ": {
    "open": {
@@ -173,7 +215,49 @@
     ]
    },
    "openSrc": "LJ (p.3)",
-   "threebet": {}
+   "threebet": {
+    "UTG / UTG+1 (approx. = HJ vs LJ)": {
+     "value": [
+      "AA",
+      "AKo",
+      "AKs",
+      "JJ",
+      "KK",
+      "QQ"
+     ],
+     "bluff": [
+      "A4s",
+      "A5s",
+      "A6s",
+      "AJo",
+      "ATo",
+      "JTs",
+      "K9s",
+      "KQo"
+     ],
+     "call": [
+      "44",
+      "55",
+      "66",
+      "77",
+      "88",
+      "99",
+      "A7s",
+      "A8s",
+      "A9s",
+      "AJs",
+      "AQo",
+      "AQs",
+      "ATs",
+      "KJs",
+      "KQs",
+      "KTs",
+      "QJs",
+      "QTs",
+      "TT"
+     ]
+    }
+   }
   },
   "HJ": {
    "open": {
