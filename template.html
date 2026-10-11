@@ -22,11 +22,11 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-w
 header{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.02em}
 header small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
-.pos{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.pos{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
 .pos button{font:600 15px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
 .pos button[aria-pressed="true"]{background:var(--accent);color:#1b1f24;border-color:var(--accent)}
 .pos button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.grid{display:grid;grid-template-columns:repeat(13,1fr);gap:2px;width:min(100%,calc(100dvh - 300px));aspect-ratio:1;user-select:none;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(13,1fr);gap:2px;width:min(100%,calc(100dvh - 290px));aspect-ratio:1;user-select:none;margin:0 auto}
 .c{display:flex;align-items:center;justify-content:center;border-radius:3px;background:var(--cell);color:var(--cell-fg);font:500 clamp(8px,2.6vw,13px)/1 var(--mono);position:relative;overflow:hidden}
 .c.o{background:var(--open);color:#fff;font-weight:700}
 .c.oo{background:var(--open-opt);color:#fff}
@@ -59,7 +59,7 @@ header small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-s
 <script>
 const DATA=__DATA__;
 const RANKS='AKQJT98765432';
-const ORDER=['UTG','UTG+1','LJ','HJ','CO','BTN','SB','BB'];
+const ORDER=['UTG','UTG+1','LJ','HJ','CO','BTN'];
 let pos='HJ', filter='all', vsPick={};
 try{ const s=JSON.parse(localStorage.getItem('r8')||'{}'); if(ORDER.includes(s.pos)) pos=s.pos; if(s.vs) vsPick=s.vs; }catch(e){}
 function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick})) }catch(e){} }
@@ -85,7 +85,7 @@ function render(){
     if(!d.classList.contains('o')&&!d.classList.contains('oo')&&!d.classList.contains('b')) d.classList.add('dim'); });
   const oV=document.getElementById('openV'), oS=document.getElementById('openS');
   if(core.size){ oV.textContent=pct(core); oS.textContent=core.size+' mains'+(opt.size?' + '+opt.size+' entre 30-50bb ('+pct(new Set([...core,...opt]))+')':''); }
-  else { oV.textContent='–'; oS.textContent='Pas de range d’open en BB.'; }
+  else { oV.textContent='–'; oS.textContent=''; }
   const bV=document.getElementById('betV'), bS=document.getElementById('betS'), vsEl=document.getElementById('vs'); vsEl.innerHTML='';
   if(tb){ bV.textContent=pct(bet); bS.textContent=tb.value.length+' value + '+tb.bluff.length+' bluff · face à une relance de '+vs;
     if(vsKeys.length>1) vsKeys.forEach(k=>{ const b=document.createElement('button'); b.textContent='vs '+k; b.setAttribute('aria-pressed',k===vs); b.onclick=()=>{vsPick[pos]=k; save(); render()}; vsEl.appendChild(b) }); }
