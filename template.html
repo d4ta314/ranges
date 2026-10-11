@@ -1,0 +1,113 @@
+<title>Ranges 8-max</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one-screen phone tool. Position pills on top, a 13x13 grid that fills the width, details underneath. Dark-first (table light). */
+:root{
+  --bg:#15181c; --panel:#1f2329; --fg:#eef0f2; --muted:#9aa3ad; --line:#2d333b;
+  --open:#2e9e4f; --open-opt:#1f6a38; --bet:#d93a3a; --cell:#262b32; --cell-fg:#8b949e;
+  --accent:#e8b84a;
+  --display:'Barlow Semi Condensed',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f3f1ec; --panel:#ffffff; --fg:#1b1f24; --muted:#5f6771; --line:#dcd8cf;
+  --open:#2a9d4b; --open-opt:#9fd6b0; --bet:#d93a3a; --cell:#e9e6df; --cell-fg:#6b727b; --accent:#b8860b; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f3f1ec; --panel:#ffffff; --fg:#1b1f24; --muted:#5f6771; --line:#dcd8cf;
+  --open:#2a9d4b; --open-opt:#9fd6b0; --bet:#d93a3a; --cell:#e9e6df; --cell-fg:#6b727b; --accent:#b8860b; color-scheme:light }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding-block:10px 24px;padding-inline:12px;display:flex;flex-direction:column;gap:10px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.02em}
+header small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.pos{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.pos button{font:600 14px/1 var(--display);padding:11px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
+.pos button[aria-pressed="true"]{background:var(--accent);color:#1b1f24;border-color:var(--accent)}
+.pos button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(13,1fr);gap:2px;width:100%;aspect-ratio:1;user-select:none}
+.c{display:flex;align-items:center;justify-content:center;border-radius:3px;background:var(--cell);color:var(--cell-fg);font:500 clamp(8px,2.6vw,13px)/1 var(--mono);position:relative;overflow:hidden}
+.c.o{background:var(--open);color:#fff;font-weight:700}
+.c.oo{background:var(--open-opt);color:#fff}
+.c.b{background:var(--bet);color:#fff;font-weight:700}
+.c.o.b,.c.oo.b{background:linear-gradient(135deg,var(--open) 50%,var(--bet) 50%)}
+.c.oo.b{background:linear-gradient(135deg,var(--open-opt) 50%,var(--bet) 50%)}
+.c.dim{opacity:.18}
+.c.pair{box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.card .k{display:flex;align-items:center;gap:6px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.card .k i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.card .v{font:700 22px/1.1 var(--display);margin-top:4px;font-variant-numeric:tabular-nums}
+.card .s{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+.vs{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.vs button{font:600 12px/1 var(--display);padding:6px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.vs button[aria-pressed="true"]{background:var(--bet);border-color:var(--bet);color:#fff}
+.filters{display:flex;gap:6px}
+.filters button{flex:1;font:600 13px/1 var(--display);padding:9px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.filters button[aria-pressed="true"]{border-color:var(--fg)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.note{font-size:12px;color:var(--muted);line-height:1.4}
+@media (prefers-reduced-motion:no-preference){.c{transition:opacity .15s}}
+</style>
+<div class="wrap">
+  <header><h1>Ranges 8-max</h1><small>Open &amp; 3bet par position</small></header>
+  <nav class="pos" id="pos" aria-label="Position"></nav>
+  <div class="grid" id="grid" role="img" aria-label="Grille des mains"></div>
+  <div class="filters" id="filters">
+    <button data-f="all" aria-pressed="true">Open + 3bet</button>
+    <button data-f="open" aria-pressed="false">Open seul</button>
+    <button data-f="bet" aria-pressed="false">3bet seul</button>
+  </div>
+  <div class="info">
+    <div class="card"><div class="k"><i style="background:var(--open)"></i>Open</div><div class="v" id="openV">–</div><div class="s" id="openS"></div></div>
+    <div class="card"><div class="k"><i style="background:var(--bet)"></i>3bet</div><div class="v" id="betV">–</div><div class="s" id="betS"></div><div class="vs" id="vs"></div></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--open)"></i>Open</span>
+    <span><i style="background:var(--open-opt)"></i>Open seulement entre 30 et 50bb</span>
+    <span><i style="background:var(--bet)"></i>3bet (value + bluff)</span>
+    <span><i style="background:linear-gradient(135deg,var(--open) 50%,var(--bet) 50%)"></i>Open et 3bet</span>
+  </div>
+  <p class="note" id="note"></p>
+</div>
+<script>
+const DATA=__DATA__;
+const RANKS='AKQJT98765432';
+const ORDER=['UTG','UTG+1','LJ','HJ','CO','BTN','SB','BB'];
+let pos='HJ', filter='all', vsPick={};
+try{ const s=JSON.parse(localStorage.getItem('r8')||'{}'); if(ORDER.includes(s.pos)) pos=s.pos; if(s.vs) vsPick=s.vs; }catch(e){}
+function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick})) }catch(e){} }
+function combos(h){ return h.length===2?6:(h[2]==='s'?4:12) }
+function pct(set){ let n=0; set.forEach(h=>n+=combos(h)); return (100*n/1326).toFixed(1).replace('.',',')+' %' }
+function hands(ri,ci){ const a=RANKS[ri],b=RANKS[ci]; return ri===ci?a+b:(ci>ri?a+b+'s':b+a+'o') }
+const grid=document.getElementById('grid'), cells=[];
+for(let r=0;r<13;r++)for(let c=0;c<13;c++){ const d=document.createElement('div'); d.className='c'+(r===c?' pair':''); d.textContent=hands(r,c); grid.appendChild(d); cells.push(d); }
+const posNav=document.getElementById('pos');
+ORDER.forEach(p=>{ const b=document.createElement('button'); b.textContent=p; b.dataset.p=p; b.onclick=()=>{pos=p; save(); render()}; posNav.appendChild(b) });
+document.getElementById('filters').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; filter=b.dataset.f; render() };
+function render(){
+  const P=DATA.positions[pos];
+  posNav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===pos));
+  document.getElementById('filters').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===filter));
+  const core=new Set(P.open.core), opt=new Set(P.open.opt);
+  const vsKeys=Object.keys(P.threebet); let vs=vsPick[pos]; if(!vsKeys.includes(vs)) vs=vsKeys[0];
+  const tb=vs?P.threebet[vs]:null; const bet=new Set(tb?[...tb.value,...tb.bluff]:[]);
+  cells.forEach(d=>{ const h=d.textContent; d.classList.remove('o','oo','b','dim');
+    if(filter!=='bet'){ if(core.has(h)) d.classList.add('o'); else if(opt.has(h)) d.classList.add('oo'); }
+    if(filter!=='open' && bet.has(h)) d.classList.add('b');
+    if(!d.classList.contains('o')&&!d.classList.contains('oo')&&!d.classList.contains('b')) d.classList.add('dim'); });
+  const oV=document.getElementById('openV'), oS=document.getElementById('openS');
+  if(core.size){ oV.textContent=pct(core); oS.textContent=core.size+' mains'+(opt.size?' + '+opt.size+' entre 30 et 50bb ('+pct(new Set([...core,...opt]))+')':'')+' · '+P.openSrc; }
+  else { oV.textContent='–'; oS.textContent='Pas de range d’open en BB.'; }
+  const bV=document.getElementById('betV'), bS=document.getElementById('betS'), vsEl=document.getElementById('vs'); vsEl.innerHTML='';
+  if(tb){ bV.textContent=pct(bet); bS.textContent=tb.value.length+' value + '+tb.bluff.length+' bluff · face à une relance de '+vs;
+    if(vsKeys.length>1) vsKeys.forEach(k=>{ const b=document.createElement('button'); b.textContent='vs '+k; b.setAttribute('aria-pressed',k===vs); b.onclick=()=>{vsPick[pos]=k; save(); render()}; vsEl.appendChild(b) }); }
+  else { bV.textContent='–'; bS.textContent=pos==='UTG'?'Premier à parler : pas de 3bet.':'Pas de range 3bet pour cette position dans le PDF.'; }
+  document.getElementById('note').textContent='Table 8 joueurs. Open = cases orange du tableau RFI de base ; 3bet = cases rouges (bluff) et violettes (value) des tableaux 3bet. Source : '+DATA.source+'.';
+}
+render();
+</script>
