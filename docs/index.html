@@ -34,15 +34,15 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-webkit-text-size-adjust:100%}
-.wrap{max-width:560px;margin:0 auto;padding-block:10px 24px;padding-inline:12px;display:flex;flex-direction:column;gap:10px}
+.wrap{max-width:560px;margin:0 auto;padding-block:8px 12px;padding-inline:12px;display:flex;flex-direction:column;gap:8px;min-height:100%}
 header{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.02em}
+h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.02em}
 header small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
-.pos{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
-.pos button{font:600 14px/1 var(--display);padding:11px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
+.pos{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.pos button{font:600 15px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
 .pos button[aria-pressed="true"]{background:var(--accent);color:#1b1f24;border-color:var(--accent)}
 .pos button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.grid{display:grid;grid-template-columns:repeat(13,1fr);gap:2px;width:100%;aspect-ratio:1;user-select:none}
+.grid{display:grid;grid-template-columns:repeat(13,1fr);gap:2px;width:min(100%,calc(100dvh - 300px));aspect-ratio:1;user-select:none;margin:0 auto}
 .c{display:flex;align-items:center;justify-content:center;border-radius:3px;background:var(--cell);color:var(--cell-fg);font:500 clamp(8px,2.6vw,13px)/1 var(--mono);position:relative;overflow:hidden}
 .c.o{background:var(--open);color:#fff;font-weight:700}
 .c.oo{background:var(--open-opt);color:#fff}
@@ -52,43 +52,25 @@ header small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-s
 .c.dim{opacity:.18}
 .c.pair{box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
 .info{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0;cursor:pointer;text-align:left;font-family:inherit;color:inherit}
+.card[aria-pressed="true"]{border-color:var(--fg)}
 .card .k{display:flex;align-items:center;gap:6px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .card .k i{width:10px;height:10px;border-radius:2px;display:inline-block}
-.card .v{font:700 22px/1.1 var(--display);margin-top:4px;font-variant-numeric:tabular-nums}
-.card .s{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
-.vs{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.vs button{font:600 12px/1 var(--display);padding:6px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.card .v{font:700 20px/1.1 var(--display);margin-top:3px;font-variant-numeric:tabular-nums}
+.card .s{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.3}
+.vs{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.vs button{font:600 11px/1 var(--display);padding:5px 8px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
 .vs button[aria-pressed="true"]{background:var(--bet);border-color:var(--bet);color:#fff}
-.filters{display:flex;gap:6px}
-.filters button{flex:1;font:600 13px/1 var(--display);padding:9px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
-.filters button[aria-pressed="true"]{border-color:var(--fg)}
-.legend{display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12px;color:var(--muted)}
-.legend span{display:inline-flex;align-items:center;gap:5px}
-.legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
-.note{font-size:12px;color:var(--muted);line-height:1.4}
 @media (prefers-reduced-motion:no-preference){.c{transition:opacity .15s}}
 </style>
 <div class="wrap">
-  <header><h1>Ranges 8-max</h1><small>Open &amp; 3bet par position</small></header>
+  <header><h1>Ranges 8-max</h1><small>Toucher une carte pour isoler</small></header>
   <nav class="pos" id="pos" aria-label="Position"></nav>
   <div class="grid" id="grid" role="img" aria-label="Grille des mains"></div>
-  <div class="filters" id="filters">
-    <button data-f="all" aria-pressed="true">Open + 3bet</button>
-    <button data-f="open" aria-pressed="false">Open seul</button>
-    <button data-f="bet" aria-pressed="false">3bet seul</button>
-  </div>
   <div class="info">
-    <div class="card"><div class="k"><i style="background:var(--open)"></i>Open</div><div class="v" id="openV">–</div><div class="s" id="openS"></div></div>
-    <div class="card"><div class="k"><i style="background:var(--bet)"></i>3bet</div><div class="v" id="betV">–</div><div class="s" id="betS"></div><div class="vs" id="vs"></div></div>
+    <button class="card" id="cardOpen" aria-pressed="false"><div class="k"><i style="background:var(--open)"></i>Open <i style="background:var(--open-opt);margin-left:4px"></i><span style="text-transform:none;letter-spacing:0">30-50bb</span></div><div class="v" id="openV">–</div><div class="s" id="openS"></div></button>
+    <button class="card" id="cardBet" aria-pressed="false"><div class="k"><i style="background:var(--bet)"></i>3bet</div><div class="v" id="betV">–</div><div class="s" id="betS"></div><div class="vs" id="vs"></div></button>
   </div>
-  <div class="legend">
-    <span><i style="background:var(--open)"></i>Open</span>
-    <span><i style="background:var(--open-opt)"></i>Open seulement entre 30 et 50bb</span>
-    <span><i style="background:var(--bet)"></i>3bet (value + bluff)</span>
-    <span><i style="background:linear-gradient(135deg,var(--open) 50%,var(--bet) 50%)"></i>Open et 3bet</span>
-  </div>
-  <p class="note" id="note"></p>
 </div>
 <script>
 const DATA={"source":"Ranges_avec_legende.pdf","table":"8 joueurs","positions":{"UTG":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{}},"UTG+1":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{}},"LJ":{"open":{"core":["66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J9s","JJ","JTs","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTs","Q9s","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","55","65s","76s","86s","97s","A8o","A9o","J8s","JTo","K5s","K6s","K7s","KTo","Q8s","QJo","QTo","T7s"]},"openSrc":"LJ (p.3)","threebet":{}},"HJ":{"open":{"core":["55","66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTs","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q8s","Q9s","QJo","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","54s","65s","75s","76s","86s","96s","97s","A7o","A8o","A9o","J7s","JTo","K3s","K4s","K5s","K9o","Q6s","Q7s","QTo","T7s","T9o"]},"openSrc":"HJ (p.6)","threebet":{"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"CO":{"open":{"core":["44","55","65s","66","76s","77","86s","87s","88","97s","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTo","JTs","K5s","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q7s","Q8s","Q9s","QJo","QJs","QQ","QTo","QTs","T7s","T8s","T9s","TT"],"opt":["22","33","53s","54s","64s","75s","85s","87o","95s","96s","98o","A3o","A4o","A5o","A6o","A7o","J4s","J5s","J6s","J7s","J9o","K2s","K3s","K4s","K8o","K9o","Q3s","Q4s","Q5s","Q6s","Q9o","T5s","T6s","T8o","T9o"]},"openSrc":"CO (p.9)","threebet":{"HJ":{"value":["AA","AKo","AKs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","AJo","ATo","K8s","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","AJo","ATo","J9s","K9s","KJo","Q9s"],"call":["22","33","44","55","66","77","88","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]}}},"BTN":{"open":{"core":["33","44","54s","55","65s","66","75s","76s","77","86s","87s","88","96s","97s","98o","98s","99","A2s","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J5s","J6s","J7s","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q3s","Q4s","Q5s","Q6s","Q7s","Q8s","Q9o","Q9s","QJo","QJs","QQ","QTo","QTs","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"],"opt":["22","43s","53s","63s","64s","74s","76o","84s","85s","86o","87o","94s","95s","97o","A2o","A3o","J2s","J3s","J4s","J7o","J8o","K4o","K5o","K6o","K7o","Q2s","Q6o","Q7o","Q8o","T2s","T3s","T4s","T7o"]},"openSrc":"BTN (p.12)","threebet":{"CO":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["87s","A2s","A3s","A8o","A9o","J8s","K6s","K7s","KTo","Q8s","QTo","T8s"],"call":["22","33","44","54s","55","65s","66","76s","77","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATo","ATs","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T9s"]},"HJ":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A9o","ATo","K8s","KJo","KTo","Q9s","QJo","T8s"],"call":["22","33","44","55","66","76s","77","87s","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATs","J9s","JTs","K9s","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["87s","A2s","A3s","A4s","A9o","ATo","J9s","K8s","KJo"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","JTs","K9s","KJs","KQo","KQs","KTs","Q9s","QJs","QTs","T8s","T9s","TT"]}}},"SB":{"open":{"core":["22","33","44","55","66","77","88","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","JJ","K2o","K2s","K3o","K3s","K4o","K4s","K5o","K5s","K6o","K6s","K7o","KJs","KK","KQo","KQs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","QQ","TT"],"opt":[]},"openSrc":"SB BVB Late Tight (p.16)","threebet":{"Late (CO/BTN)":{"value":["99","AA","AKo","AKs","AQo","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","A5s","A8o","A9o","JTo","K7s","KTo","Q8s","QTo"],"call":["22","33","44","55","66","77","87s","88","98s","A6s","A7s","A8s","A9s","AJo","AJs","ATo","ATs","J8s","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T8s","T9s"]},"Early (UTG→HJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","A5s","ATo","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]}}},"BB":{"open":{"core":[],"opt":[]},"openSrc":"","threebet":{"BTN":{"value":["99","AA","AJo","AJs","AKo","AKs","AQo","AQs","JJ","KK","KQo","KQs","QQ","TT"],"bluff":["A2o","A3o","A4o","A6o","J7o","K4o","K5o","K6o","Q5o","T7o"],"call":["22","32s","33","42s","43s","44","52s","53s","54o","54s","55","62s","63s","64s","65o","65s","66","72s","73s","74s","75o","75s","76o","76s","77","82s","83s","84s","85s","86o","86s","87o","87s","88","92s","93s","94s","95s","96s","97o","97s","98o","98s","A2s","A3s","A4s","A5o","A5s","A6s","A7o","A7s","A8o","A8s","A9o","A9s","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7o","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K2o","K2s","K3o","K3s","K4o","K4s","K5o","K5s","K6o","K6s","K7o","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KTo","KTs","Q2s","Q3s","Q4s","Q5o","Q5s","Q6o","Q6s","Q7o","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7o","T7s","T8o","T8s","T9o","T9s"]},"SB":{"value":["AA","AJs","AKo","AKs","AQo","AQs","JJ","KJs","KK","KQs","QQ","TT"],"bluff":["96s","A2o","A3o","J7o","K5o","Q6o","T5s","T7o"],"call":["22","32s","33","42s","43s","44","52s","53s","54o","54s","55","62s","63s","64s","65o","65s","66","72s","73s","74s","75s","76o","76s","77","82s","83s","84s","85s","86s","87o","87s","88","92s","93s","94s","95s","96s","97o","97s","98o","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AJo","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7o","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K2s","K3s","K4s","K5o","K5s","K6o","K6s","K7o","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KQs","KTo","KTs","Q2s","Q3s","Q4s","Q5s","Q6o","Q6s","Q7o","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7o","T7s","T8o","T8s","T9o","T9s"]},"LJ":{"value":["AA","AKo","AKs","AQo","JJ","KK","QQ"],"bluff":["76s","87s","98s","A5o","KTo","T9s"],"call":["22","32s","33","42s","43s","44","52s","53s","54s","55","62s","63s","64s","65s","66","72s","73s","74s","75s","76s","77","82s","83s","84s","85s","86s","87s","88","92s","93s","94s","95s","96s","97s","98o","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AJo","AJs","AQo","AQs","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7s","J8o","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KQs","KTs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"]}}}}};
@@ -104,11 +86,12 @@ const grid=document.getElementById('grid'), cells=[];
 for(let r=0;r<13;r++)for(let c=0;c<13;c++){ const d=document.createElement('div'); d.className='c'+(r===c?' pair':''); d.textContent=hands(r,c); grid.appendChild(d); cells.push(d); }
 const posNav=document.getElementById('pos');
 ORDER.forEach(p=>{ const b=document.createElement('button'); b.textContent=p; b.dataset.p=p; b.onclick=()=>{pos=p; save(); render()}; posNav.appendChild(b) });
-document.getElementById('filters').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; filter=b.dataset.f; render() };
+document.getElementById('cardOpen').onclick=()=>{ filter=filter==='open'?'all':'open'; render() };
+document.getElementById('cardBet').onclick=e=>{ if(e.target.closest('.vs')) return; filter=filter==='bet'?'all':'bet'; render() };
 function render(){
   const P=DATA.positions[pos];
   posNav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===pos));
-  document.getElementById('filters').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===filter));
+  document.getElementById('cardOpen').setAttribute('aria-pressed',filter==='open'); document.getElementById('cardBet').setAttribute('aria-pressed',filter==='bet');
   const core=new Set(P.open.core), opt=new Set(P.open.opt);
   const vsKeys=Object.keys(P.threebet); let vs=vsPick[pos]; if(!vsKeys.includes(vs)) vs=vsKeys[0];
   const tb=vs?P.threebet[vs]:null; const bet=new Set(tb?[...tb.value,...tb.bluff]:[]);
@@ -117,13 +100,12 @@ function render(){
     if(filter!=='open' && bet.has(h)) d.classList.add('b');
     if(!d.classList.contains('o')&&!d.classList.contains('oo')&&!d.classList.contains('b')) d.classList.add('dim'); });
   const oV=document.getElementById('openV'), oS=document.getElementById('openS');
-  if(core.size){ oV.textContent=pct(core); oS.textContent=core.size+' mains'+(opt.size?' + '+opt.size+' entre 30 et 50bb ('+pct(new Set([...core,...opt]))+')':'')+' · '+P.openSrc; }
+  if(core.size){ oV.textContent=pct(core); oS.textContent=core.size+' mains'+(opt.size?' + '+opt.size+' entre 30-50bb ('+pct(new Set([...core,...opt]))+')':''); }
   else { oV.textContent='–'; oS.textContent='Pas de range d’open en BB.'; }
   const bV=document.getElementById('betV'), bS=document.getElementById('betS'), vsEl=document.getElementById('vs'); vsEl.innerHTML='';
   if(tb){ bV.textContent=pct(bet); bS.textContent=tb.value.length+' value + '+tb.bluff.length+' bluff · face à une relance de '+vs;
     if(vsKeys.length>1) vsKeys.forEach(k=>{ const b=document.createElement('button'); b.textContent='vs '+k; b.setAttribute('aria-pressed',k===vs); b.onclick=()=>{vsPick[pos]=k; save(); render()}; vsEl.appendChild(b) }); }
   else { bV.textContent='–'; bS.textContent=pos==='UTG'?'Premier à parler : pas de 3bet.':'Pas de range 3bet pour cette position dans le PDF.'; }
-  document.getElementById('note').textContent='Table 8 joueurs. Open = cases orange du tableau RFI de base ; 3bet = cases rouges (bluff) et violettes (value) des tableaux 3bet. Source : '+DATA.source+'.';
 }
 render();
 </script>
