@@ -17,37 +17,39 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Layout: one-screen phone tool. Position pills on top, a 13x13 grid that fills the width, details underneath. Dark-first (table light). */
+/* Layout: one-screen phone tool. Three tabs (Grille, Mémo, Quiz). Dark-first (table light). */
 :root{
   --bg:#15181c; --panel:#1f2329; --fg:#eef0f2; --muted:#9aa3ad; --line:#2d333b;
-  --open:#2e9e4f; --open-opt:#1f6a38; --bet:#d93a3a; --cell:#262b32; --cell-fg:#8b949e;
-  --accent:#e8b84a;
+  --open:#2e9e4f; --open-opt:#1f6a38; --bet:#d93a3a; --call:#3b7dd8; --cell:#262b32; --cell-fg:#8b949e;
+  --accent:#e8b84a; --ok:#2e9e4f; --ko:#d93a3a;
   --display:'Barlow Semi Condensed',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
   --bg:#f3f1ec; --panel:#ffffff; --fg:#1b1f24; --muted:#5f6771; --line:#dcd8cf;
-  --open:#2a9d4b; --open-opt:#9fd6b0; --bet:#d93a3a; --cell:#e9e6df; --cell-fg:#6b727b; --accent:#b8860b; color-scheme:light } }
+  --open:#2a9d4b; --open-opt:#9fd6b0; --bet:#d93a3a; --call:#2f6fc9; --cell:#e9e6df; --cell-fg:#6b727b; --accent:#b8860b; color-scheme:light } }
 :root[data-theme="light"]{
   --bg:#f3f1ec; --panel:#ffffff; --fg:#1b1f24; --muted:#5f6771; --line:#dcd8cf;
-  --open:#2a9d4b; --open-opt:#9fd6b0; --bet:#d93a3a; --cell:#e9e6df; --cell-fg:#6b727b; --accent:#b8860b; color-scheme:light }
+  --open:#2a9d4b; --open-opt:#9fd6b0; --bet:#d93a3a; --call:#2f6fc9; --cell:#e9e6df; --cell-fg:#6b727b; --accent:#b8860b; color-scheme:light }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-webkit-text-size-adjust:100%}
 .wrap{max-width:560px;margin:0 auto;padding-block:8px 12px;padding-inline:12px;display:flex;flex-direction:column;gap:8px;min-height:100%}
-header{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px}
 h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.02em}
-header small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs button{font:600 13px/1 var(--display);padding:7px 12px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:#1b1f24}
 .pos{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
 .pos button{font:600 15px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
 .pos button[aria-pressed="true"]{background:var(--accent);color:#1b1f24;border-color:var(--accent)}
-.pos button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .grid{display:grid;grid-template-columns:repeat(13,1fr);gap:2px;width:min(100%,calc(100dvh - 290px));aspect-ratio:1;user-select:none;margin:0 auto}
 .c{display:flex;align-items:center;justify-content:center;border-radius:3px;background:var(--cell);color:var(--cell-fg);font:500 clamp(8px,2.6vw,13px)/1 var(--mono);position:relative;overflow:hidden}
 .c.o{background:var(--open);color:#fff;font-weight:700}
 .c.oo{background:var(--open-opt);color:#fff}
 .c.b{background:var(--bet);color:#fff;font-weight:700}
-.c.o.b,.c.oo.b{background:linear-gradient(135deg,var(--open) 50%,var(--bet) 50%)}
+.c.o.b{background:linear-gradient(135deg,var(--open) 50%,var(--bet) 50%)}
 .c.oo.b{background:linear-gradient(135deg,var(--open-opt) 50%,var(--bet) 50%)}
 .c.dim{opacity:.18}
 .c.pair{box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
@@ -61,29 +63,106 @@ header small{color:var(--muted);font-size:12px;text-transform:uppercase;letter-s
 .vs{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
 .vs button{font:600 11px/1 var(--display);padding:5px 8px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
 .vs button[aria-pressed="true"]{background:var(--bet);border-color:var(--bet);color:#fff}
+/* Mémo */
+.memo{display:flex;flex-direction:column;gap:8px}
+.memo .toggle{display:flex;gap:6px}
+.memo .toggle button{flex:1;font:600 13px/1 var(--display);padding:8px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.memo .toggle button[aria-pressed="true"]{border-color:var(--fg)}
+.mp{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.mp h2{margin:0 0 4px;font-size:15px;display:flex;justify-content:space-between;align-items:baseline}
+.mp h2 small{font-weight:500;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.mp .row{display:grid;grid-template-columns:52px 1fr;gap:6px;align-items:baseline;font-size:13px;line-height:1.5}
+.mp .row b{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.mp .row span{font-family:var(--mono);font-size:12px;word-spacing:.35em}
+.mp .row .new{color:var(--accent);font-weight:700}
+.mp .row .bet{color:var(--bet)}
+.rule{background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--muted);line-height:1.45}
+.rule b{color:var(--fg)}
+/* Quiz */
+.quiz{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.q-sit{font-size:14px;color:var(--muted);text-align:center;line-height:1.4}
+.q-sit b{color:var(--fg);font-size:18px}
+.q-hand{display:flex;justify-content:center;gap:10px}
+.q-card{width:78px;height:110px;border-radius:10px;background:#fff;color:#1b1f24;display:flex;flex-direction:column;justify-content:space-between;padding:8px;font:700 30px/1 var(--display);box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.q-card.red{color:#d02626}
+.q-card small{font-size:22px;align-self:flex-end}
+.q-ans{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.q-ans button{font:700 15px/1 var(--display);padding:14px 0;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.q-ans button.good{background:var(--ok);border-color:var(--ok);color:#fff}
+.q-ans button.bad{background:var(--ko);border-color:var(--ko);color:#fff}
+.q-fb{min-height:44px;text-align:center;font-size:14px;line-height:1.4}
+.q-fb b{font-size:16px}
+.q-fb .why{color:var(--muted);font-size:12px;display:block}
+.q-score{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.q-next{font:700 15px/1 var(--display);padding:12px 0;border-radius:10px;border:0;background:var(--accent);color:#1b1f24;cursor:pointer;width:100%}
 @media (prefers-reduced-motion:no-preference){.c{transition:opacity .15s}}
 </style>
 <div class="wrap">
-  <header><h1>Ranges 8-max</h1><small>Toucher une carte pour isoler</small></header>
-  <nav class="pos" id="pos" aria-label="Position"></nav>
-  <div class="grid" id="grid" role="img" aria-label="Grille des mains"></div>
-  <div class="info">
-    <button class="card" id="cardOpen" aria-pressed="false"><div class="k"><i style="background:var(--open)"></i>Open <i style="background:var(--open-opt);margin-left:4px"></i><span style="text-transform:none;letter-spacing:0">30-50bb</span></div><div class="v" id="openV">–</div><div class="s" id="openS"></div></button>
-    <button class="card" id="cardBet" aria-pressed="false"><div class="k"><i style="background:var(--bet)"></i>3bet</div><div class="v" id="betV">–</div><div class="s" id="betS"></div><div class="vs" id="vs"></div></button>
-  </div>
+  <header><h1>Ranges 8-max</h1>
+    <nav class="tabs" id="tabs" aria-label="Onglets">
+      <button data-t="grid" aria-pressed="true">Grille</button>
+      <button data-t="memo" aria-pressed="false">Mémo</button>
+      <button data-t="quiz" aria-pressed="false">Quiz</button>
+    </nav>
+  </header>
+
+  <section id="tab-grid">
+    <nav class="pos" id="pos" aria-label="Position" style="margin-bottom:8px"></nav>
+    <div class="grid" id="grid" role="img" aria-label="Grille des mains"></div>
+    <div class="info" style="margin-top:8px">
+      <button class="card" id="cardOpen" aria-pressed="false"><div class="k"><i style="background:var(--open)"></i>Open <i style="background:var(--open-opt);margin-left:4px"></i><span style="text-transform:none;letter-spacing:0">30-50bb</span></div><div class="v" id="openV">–</div><div class="s" id="openS"></div></button>
+      <button class="card" id="cardBet" aria-pressed="false"><div class="k"><i style="background:var(--bet)"></i>3bet</div><div class="v" id="betV">–</div><div class="s" id="betS"></div><div class="vs" id="vs"></div></button>
+    </div>
+  </section>
+
+  <section id="tab-memo" class="memo" hidden>
+    <div class="toggle" id="memoToggle">
+      <button data-m="core" aria-pressed="true">Open de base</button>
+      <button data-m="full" aria-pressed="false">Élargi 30-50bb</button>
+    </div>
+    <div id="memoList"></div>
+    <div class="rule"><b>Comment lire :</b> « K6+ » = K6s et toutes les mains K7s… KQs. En <span style="color:var(--accent);font-weight:700">doré</span>, ce qui s'ajoute par rapport à la position précédente : les ranges sont emboîtées, il suffit d'apprendre les ajouts.<br><b>3bet :</b> value = mains qui 3bet pour la valeur, bluff = mains qui 3bet en bluff (as ou roi assortis à petit kicker, broadways dépareillés), face à l'ouvreur par défaut.</div>
+  </section>
+
+  <section id="tab-quiz" class="quiz" hidden>
+    <div class="q-sit" id="qSit"></div>
+    <div class="q-hand" id="qHand"></div>
+    <div class="q-ans" id="qAns"></div>
+    <div class="q-fb" id="qFb"></div>
+    <button class="q-next" id="qNext">Main suivante</button>
+    <div class="q-score"><span id="qScore">0 / 0</span><span id="qStreak"></span><span id="qMiss"></span></div>
+  </section>
 </div>
 <script>
 const DATA={"source":"Ranges_avec_legende.pdf","table":"8 joueurs","positions":{"UTG":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{}},"UTG+1":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{"UTG (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"LJ":{"open":{"core":["66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J9s","JJ","JTs","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTs","Q9s","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","55","65s","76s","86s","97s","A8o","A9o","J8s","JTo","K5s","K6s","K7s","KTo","Q8s","QJo","QTo","T7s"]},"openSrc":"LJ (p.3)","threebet":{"UTG / UTG+1 (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"HJ":{"open":{"core":["55","66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTs","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q8s","Q9s","QJo","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","54s","65s","75s","76s","86s","96s","97s","A7o","A8o","A9o","J7s","JTo","K3s","K4s","K5s","K9o","Q6s","Q7s","QTo","T7s","T9o"]},"openSrc":"HJ (p.6)","threebet":{"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"CO":{"open":{"core":["44","55","65s","66","76s","77","86s","87s","88","97s","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTo","JTs","K5s","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q7s","Q8s","Q9s","QJo","QJs","QQ","QTo","QTs","T7s","T8s","T9s","TT"],"opt":["22","33","53s","54s","64s","75s","85s","87o","95s","96s","98o","A3o","A4o","A5o","A6o","A7o","J4s","J5s","J6s","J7s","J9o","K2s","K3s","K4s","K8o","K9o","Q3s","Q4s","Q5s","Q6s","Q9o","T5s","T6s","T8o","T9o"]},"openSrc":"CO (p.9)","threebet":{"HJ":{"value":["AA","AKo","AKs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","AJo","ATo","K8s","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","AJo","ATo","J9s","K9s","KJo","Q9s"],"call":["22","33","44","55","66","77","88","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]}}},"BTN":{"open":{"core":["33","44","54s","55","65s","66","75s","76s","77","86s","87s","88","96s","97s","98o","98s","99","A2s","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J5s","J6s","J7s","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q3s","Q4s","Q5s","Q6s","Q7s","Q8s","Q9o","Q9s","QJo","QJs","QQ","QTo","QTs","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"],"opt":["22","43s","53s","63s","64s","74s","76o","84s","85s","86o","87o","94s","95s","97o","A2o","A3o","J2s","J3s","J4s","J7o","J8o","K4o","K5o","K6o","K7o","Q2s","Q6o","Q7o","Q8o","T2s","T3s","T4s","T7o"]},"openSrc":"BTN (p.12)","threebet":{"CO":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["87s","A2s","A3s","A8o","A9o","J8s","K6s","K7s","KTo","Q8s","QTo","T8s"],"call":["22","33","44","54s","55","65s","66","76s","77","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATo","ATs","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T9s"]},"HJ":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A9o","ATo","K8s","KJo","KTo","Q9s","QJo","T8s"],"call":["22","33","44","55","66","76s","77","87s","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATs","J9s","JTs","K9s","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["87s","A2s","A3s","A4s","A9o","ATo","J9s","K8s","KJo"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","JTs","K9s","KJs","KQo","KQs","KTs","Q9s","QJs","QTs","T8s","T9s","TT"]}}}}};
 const RANKS='AKQJT98765432';
+const RV={}; RANKS.split('').forEach((r,i)=>RV[r]=14-i);
 const ORDER=['UTG','UTG+1','LJ','HJ','CO','BTN'];
-let pos='HJ', filter='all', vsPick={};
-try{ const s=JSON.parse(localStorage.getItem('r8')||'{}'); if(ORDER.includes(s.pos)) pos=s.pos; if(s.vs) vsPick=s.vs; }catch(e){}
-function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick})) }catch(e){} }
+const MEMO_POS=['UTG','LJ','HJ','CO','BTN'];
+let pos='HJ', filter='all', vsPick={}, tab='grid', memoMode='core';
+let store={};
+try{ store=JSON.parse(localStorage.getItem('r8')||'{}'); if(ORDER.includes(store.pos)) pos=store.pos; if(store.vs) vsPick=store.vs; if(store.tab) tab=store.tab; }catch(e){}
+function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick,tab,quiz:store.quiz||{}})) }catch(e){} }
 function combos(h){ return h.length===2?6:(h[2]==='s'?4:12) }
 function pct(set){ let n=0; set.forEach(h=>n+=combos(h)); return (100*n/1326).toFixed(1).replace('.',',')+' %' }
 function hands(ri,ci){ const a=RANKS[ri],b=RANKS[ci]; return ri===ci?a+b:(ci>ri?a+b+'s':b+a+'o') }
+const ALL=[]; for(let r=0;r<13;r++)for(let c=0;c<13;c++) ALL.push(hands(r,c));
+function sortH(a,b){ return RV[b[0]]-RV[a[0]] || RV[b[1]]-RV[a[1]] || (a[2]||'').localeCompare(b[2]||'') }
+function defaultVs(p){ const ks=Object.keys(DATA.positions[p].threebet); let v=vsPick[p]; return ks.includes(v)?v:ks[0] }
+function betSet(p){ const v=defaultVs(p); const tb=v?DATA.positions[p].threebet[v]:null; return {vs:v,tb,set:new Set(tb?[...tb.value,...tb.bluff]:[])} }
+
+/* ---------- Onglets ---------- */
+const tabsEl=document.getElementById('tabs');
+tabsEl.onclick=e=>{ const b=e.target.closest('button'); if(!b) return; tab=b.dataset.t; save(); showTab() };
+function showTab(){
+  tabsEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===tab));
+  ['grid','memo','quiz'].forEach(t=>document.getElementById('tab-'+t).hidden=(t!==tab));
+  if(tab==='memo') renderMemo(); if(tab==='quiz' && !quizState.hand) nextQuestion();
+}
+
+/* ---------- Grille ---------- */
 const grid=document.getElementById('grid'), cells=[];
-for(let r=0;r<13;r++)for(let c=0;c<13;c++){ const d=document.createElement('div'); d.className='c'+(r===c?' pair':''); d.textContent=hands(r,c); grid.appendChild(d); cells.push(d); }
+ALL.forEach((h,i)=>{ const d=document.createElement('div'); d.className='c'+(h.length===2?' pair':''); d.textContent=h; grid.appendChild(d); cells.push(d); });
 const posNav=document.getElementById('pos');
 ORDER.forEach(p=>{ const b=document.createElement('button'); b.textContent=p; b.dataset.p=p; b.onclick=()=>{pos=p; save(); render()}; posNav.appendChild(b) });
 document.getElementById('cardOpen').onclick=()=>{ filter=filter==='open'?'all':'open'; render() };
@@ -93,8 +172,7 @@ function render(){
   posNav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===pos));
   document.getElementById('cardOpen').setAttribute('aria-pressed',filter==='open'); document.getElementById('cardBet').setAttribute('aria-pressed',filter==='bet');
   const core=new Set(P.open.core), opt=new Set(P.open.opt);
-  const vsKeys=Object.keys(P.threebet); let vs=vsPick[pos]; if(!vsKeys.includes(vs)) vs=vsKeys[0];
-  const tb=vs?P.threebet[vs]:null; const bet=new Set(tb?[...tb.value,...tb.bluff]:[]);
+  const {vs,tb,set:bet}=betSet(pos); const vsKeys=Object.keys(P.threebet);
   cells.forEach(d=>{ const h=d.textContent; d.classList.remove('o','oo','b','dim');
     if(filter!=='bet'){ if(core.has(h)) d.classList.add('o'); else if(opt.has(h)) d.classList.add('oo'); }
     if(filter!=='open' && bet.has(h)) d.classList.add('b');
@@ -103,11 +181,109 @@ function render(){
   if(core.size){ oV.textContent=pct(core); oS.textContent=core.size+' mains'+(opt.size?' + '+opt.size+' entre 30-50bb ('+pct(new Set([...core,...opt]))+')':''); }
   else { oV.textContent='–'; oS.textContent=''; }
   const bV=document.getElementById('betV'), bS=document.getElementById('betS'), vsEl=document.getElementById('vs'); vsEl.innerHTML='';
-  if(tb){ bV.textContent=pct(bet); bS.textContent=tb.value.length+' value + '+tb.bluff.length+' bluff · face à une relance de '+vs;
+  if(tb){ bV.textContent=pct(bet); bS.textContent=tb.value.length+' value + '+tb.bluff.length+' bluff · face à '+vs;
     if(vsKeys.length>1) vsKeys.forEach(k=>{ const b=document.createElement('button'); b.textContent='vs '+k; b.setAttribute('aria-pressed',k===vs); b.onclick=()=>{vsPick[pos]=k; save(); render()}; vsEl.appendChild(b) }); }
   else { bV.textContent='–'; bS.textContent=pos==='UTG'?'Premier à parler : pas de 3bet.':'Pas de range 3bet pour cette position dans le PDF.'; }
 }
-render();
+
+/* ---------- Mémo : kicker minimum par carte haute ---------- */
+function kickerTable(set){
+  // returns [{key:'pairs'|'As'|'Ko'..., label:'77+'}] in display order
+  const out=[]; const pairs=[...set].filter(h=>h.length===2);
+  if(pairs.length){ const lo=pairs.reduce((a,b)=>RV[a[0]]<RV[b[0]]?a:b); out.push({key:'PP',label:lo+'+'}); }
+  for(const suit of 'so') for(const hi of RANKS.slice(0,-1)){
+    const ks=[...set].filter(h=>h.length===3&&h[0]===hi&&h[2]===suit).map(h=>h[1]); if(!ks.length) continue;
+    const lo=ks.reduce((a,b)=>RV[a]<RV[b]?a:b); const n=RV[hi]-RV[lo];
+    out.push({key:hi+suit,label:hi+lo+suit+(n>1?'+':'')});
+  }
+  return out;
+}
+function explain(h,p,mode){
+  // rule line that explains why h is / is not in the set, for feedback
+  const set=new Set(mode==='full'?[...DATA.positions[p].open.core,...DATA.positions[p].open.opt]:DATA.positions[p].open.core);
+  const t=kickerTable(set); let row;
+  if(h.length===2) row=t.find(x=>x.key==='PP'); else row=t.find(x=>x.key===h[0]+h[2]);
+  if(!row) return 'Aucune main '+(h.length===2?'en paire':h[0]+'x'+(h[2]==='s'?' assortie':' dépareillée'))+' ne s’ouvre en '+p+'.';
+  return 'En '+p+(mode==='full'?' (30-50bb)':'')+' : '+(h.length===2?'paires ':'')+row.label+'.';
+}
+function renderMemo(){
+  const list=document.getElementById('memoList'); list.innerHTML='';
+  document.querySelectorAll('#memoToggle button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===memoMode));
+  let prev=null;
+  MEMO_POS.forEach(p=>{
+    const P=DATA.positions[p]; const set=new Set(memoMode==='full'?[...P.open.core,...P.open.opt]:P.open.core);
+    const t=kickerTable(set); const prevMap={}; if(prev) prev.forEach(x=>prevMap[x.key]=x.label);
+    const div=document.createElement('div'); div.className='mp';
+    const title=p==='UTG'?'UTG et UTG+1':p;
+    div.innerHTML='<h2>'+title+' <small>'+pct(set)+' · '+set.size+' mains</small></h2>';
+    const groups=[['Paires',t.filter(x=>x.key==='PP')],['Assorties',t.filter(x=>x.key.length===2&&x.key[1]==='s')],['Dépareillées',t.filter(x=>x.key.length===2&&x.key[1]==='o')]];
+    groups.forEach(([lab,items])=>{ if(!items.length) return; const r=document.createElement('div'); r.className='row';
+      r.innerHTML='<b>'+lab+'</b><span>'+items.map(x=>'<em class="'+(prevMap[x.key]===x.label?'':'new')+'" style="font-style:normal">'+x.label+'</em>').join(' ')+'</span>'; div.appendChild(r); });
+    const {vs,tb}=betSet(p);
+    if(tb){ const r=document.createElement('div'); r.className='row'; r.innerHTML='<b>3bet vs '+vs+'</b><span class="bet">'+[...tb.value].sort(sortH).join(' ')+' <em style="font-style:normal;color:var(--muted)">+ bluff</em> '+[...tb.bluff].sort(sortH).join(' ')+'</span>'; div.appendChild(r); }
+    list.appendChild(div); prev=t;
+  });
+}
+document.getElementById('memoToggle').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; memoMode=b.dataset.m; renderMemo() };
+
+/* ---------- Quiz ---------- */
+const quizState={hand:null,answered:false};
+const SUITS=['♠','♥','♦','♣'];
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+function weightedHand(){
+  // favour borderline hands: those within the "frontier" of some range appear more often
+  const r=Math.random(); const miss=(store.quiz&&store.quiz.miss)||[];
+  if(r<0.25 && miss.length){ const m=pick(miss).split(' '); quizState.forcePos=m[0]; return m[1]; }
+  quizState.forcePos=null;
+  if(r<0.65){ const p=pick(MEMO_POS); const P=DATA.positions[p]; const edge=[...P.open.core,...P.open.opt]; return pick(edge); }
+  return pick(ALL);
+}
+function nextQuestion(){
+  const h=weightedHand();
+  const p=quizState.forcePos||pick(ORDER); const P=DATA.positions[p];
+  const canBet=Object.keys(P.threebet).length>0;
+  const scenario=(canBet && Math.random()<0.4)?'bet':'open';
+  // deal concrete cards
+  const s1=pick(SUITS); let s2=h.length===3&&h[2]==='s'?s1:pick(SUITS.filter(s=>s!==s1));
+  if(h.length===2) s2=pick(SUITS.filter(s=>s!==s1));
+  quizState.hand=h; quizState.pos=p; quizState.scenario=scenario; quizState.answered=false;
+  const vs=scenario==='bet'?defaultVs(p):null;
+  document.getElementById('qSit').innerHTML=scenario==='open'?'Tout le monde a passé. Tu es <b>'+p+'</b>.':'<b>'+vs.split(' ')[0]+'</b> relance. Tu es <b>'+p+'</b>.';
+  document.getElementById('qHand').innerHTML=[[h[0],s1],[h[1],s2]].map(([r,s])=>'<div class="q-card'+((s==='♥'||s==='♦')?' red':'')+'"><span>'+r+'</span><small>'+s+'</small></div>').join('');
+  const ans=document.getElementById('qAns'); ans.innerHTML='';
+  const opts=scenario==='open'?['Fold','Open']:['Fold','Call','3bet'];
+  ans.style.gridTemplateColumns='repeat('+opts.length+',1fr)';
+  opts.forEach(o=>{ const b=document.createElement('button'); b.textContent=o; b.onclick=()=>answer(o,b); ans.appendChild(b) });
+  document.getElementById('qFb').innerHTML='';
+  renderScore();
+}
+function correctAnswer(){
+  const {hand:h,pos:p,scenario}=quizState; const P=DATA.positions[p];
+  if(scenario==='open'){ const core=P.open.core.includes(h), opt=P.open.opt.includes(h);
+    return {ans:core?'Open':'Fold', why:core?explain(h,p,'core'):(opt?'Fold de base, mais open entre 30 et 50bb. '+explain(h,p,'core'):explain(h,p,'core'))}; }
+  const {vs,tb}=betSet(p);
+  if(tb.value.includes(h)) return {ans:'3bet',why:'3bet value face à '+vs+'.'};
+  if(tb.bluff.includes(h)) return {ans:'3bet',why:'3bet bluff face à '+vs+'.'};
+  if(tb.call.includes(h)) return {ans:'Call',why:'Call face à '+vs+'.'};
+  return {ans:'Fold',why:'Ni call ni 3bet face à '+vs+'.'};
+}
+function answer(o,btn){
+  if(quizState.answered) return; quizState.answered=true;
+  const c=correctAnswer(); const ok=o===c.ans;
+  document.querySelectorAll('#qAns button').forEach(b=>{ if(b.textContent===c.ans) b.classList.add('good'); else if(b===btn&&!ok) b.classList.add('bad'); });
+  const q=store.quiz||(store.quiz={n:0,ok:0,streak:0,miss:[]});
+  q.n++; if(ok){q.ok++; q.streak++; const key=quizState.pos+' '+quizState.hand; q.miss=(q.miss||[]).filter(k=>k!==key);} else { q.streak=0; const key=quizState.pos+' '+quizState.hand; if(!q.miss.includes(key)) q.miss.push(key); if(q.miss.length>30) q.miss.shift(); }
+  save();
+  document.getElementById('qFb').innerHTML='<b style="color:var(--'+(ok?'ok':'ko')+')">'+(ok?'Juste':'Raté')+'</b> · '+quizState.hand+' en '+quizState.pos+' : '+c.ans+'<span class="why">'+c.why+'</span>';
+  renderScore();
+}
+function renderScore(){ const q=store.quiz||{n:0,ok:0,streak:0,miss:[]};
+  document.getElementById('qScore').textContent=q.ok+' / '+q.n+(q.n?' ('+Math.round(100*q.ok/q.n)+' %)':'');
+  document.getElementById('qStreak').textContent=q.streak>=3?'série de '+q.streak:'';
+  document.getElementById('qMiss').textContent=q.miss&&q.miss.length?q.miss.length+' à revoir':''; }
+document.getElementById('qNext').onclick=nextQuestion;
+
+render(); showTab();
 </script>
 
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{});let rl=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!rl){rl=true;location.reload()}});}</script>
