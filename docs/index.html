@@ -36,9 +36,9 @@ html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-webkit-text-size-adjust:100%}
 .wrap{max-width:560px;margin:0 auto;padding-block:8px 12px;padding-inline:12px;display:flex;flex-direction:column;gap:8px;min-height:100%}
 header{display:flex;align-items:center;justify-content:space-between;gap:8px}
-h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.02em}
+h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.02em}
 .tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
-.tabs button{font:600 13px/1 var(--display);padding:7px 12px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button{font:600 13px/1 var(--display);padding:7px 9px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
 .tabs button[aria-pressed="true"]{background:var(--accent);color:#1b1f24}
 .pos{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
 .pos button{font:600 15px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
@@ -71,13 +71,44 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .mp{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 .mp h2{margin:0 0 4px;font-size:15px;display:flex;justify-content:space-between;align-items:baseline}
 .mp h2 small{font-weight:500;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
-.mp .row{display:grid;grid-template-columns:52px 1fr;gap:6px;align-items:baseline;font-size:13px;line-height:1.5}
+.mp .row{display:grid;grid-template-columns:58px 1fr;gap:6px;align-items:baseline;font-size:13px;line-height:1.5}
 .mp .row b{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
 .mp .row span{font-family:var(--mono);font-size:12px;word-spacing:.35em}
 .mp .row .new{color:var(--accent);font-weight:700}
 .mp .row .bet{color:var(--bet)}
 .rule{background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--muted);line-height:1.45}
 .rule b{color:var(--fg)}
+/* Méthode */
+.meth{display:flex;flex-direction:column;gap:10px}
+.meth h2{font-size:15px;margin:0;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.meth p{margin:0;font-size:13px;line-height:1.45}
+.meth .box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.pts{display:grid;grid-template-columns:repeat(13,1fr);gap:3px}
+.pts div{background:var(--cell);border-radius:5px;text-align:center;padding:5px 0 4px;font:700 13px/1.2 var(--mono)}
+.pts div small{display:block;font:500 10px/1 var(--display);color:var(--muted);margin-bottom:3px}
+.steps{display:flex;flex-direction:column;gap:5px;font-size:13px}
+.steps div{display:grid;grid-template-columns:22px 1fr;gap:6px;align-items:baseline}
+.steps b{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#1b1f24;text-align:center;font:700 12px/22px var(--display)}
+.thr{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.thr div{background:var(--cell);border-radius:6px;text-align:center;padding:6px 0;font:700 16px/1 var(--mono)}
+.thr div small{display:block;font:600 10px/1 var(--display);color:var(--muted);margin-bottom:4px;letter-spacing:.06em}
+.calc{display:grid;grid-template-columns:1fr 1fr auto 1fr;gap:6px;align-items:center}
+.calc select,.calc button{font:600 15px/1 var(--display);padding:9px 6px;border-radius:8px;border:1px solid var(--line);background:var(--cell);color:var(--fg)}
+.calc button[aria-pressed="true"]{background:var(--accent);color:#1b1f24;border-color:var(--accent)}
+.calcout{font-family:var(--mono);font-size:12px;line-height:1.6;white-space:pre-wrap}
+.calcout b{font-family:var(--display);font-size:15px}
+.exc{width:100%;border-collapse:collapse;font-size:12px}
+.exc th{text-align:left;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:10px;padding:4px 4px;border-bottom:1px solid var(--line)}
+.exc td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:top;font-family:var(--mono);font-size:12px}
+.exc td:first-child{font-family:var(--display);font-weight:700}
+.exc .fp{color:var(--bet)} .exc .fn{color:var(--accent)}
+.tb3{display:flex;flex-direction:column;gap:4px}
+.tb3 .ln{display:grid;grid-template-columns:48px 1fr;gap:6px;font-size:12px;line-height:1.5;align-items:baseline}
+.tb3 .ln b{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.tb3 .ln span{font-family:var(--mono)}
+.tb3 .val{color:#c9a3ff} .tb3 .cal{color:var(--call)} .tb3 .blf{color:var(--bet)}
+.fam{display:grid;grid-template-columns:34px 1fr 1fr;gap:4px 8px;font-size:12px;font-family:var(--mono);align-items:baseline}
+.fam .h{font-family:var(--display);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
 /* Quiz */
 .quiz{display:flex;flex-direction:column;gap:10px;align-items:stretch}
 .q-sit{font-size:14px;color:var(--muted);text-align:center;line-height:1.4}
@@ -102,6 +133,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     <nav class="tabs" id="tabs" aria-label="Onglets">
       <button data-t="grid" aria-pressed="true">Grille</button>
       <button data-t="memo" aria-pressed="false">Mémo</button>
+      <button data-t="meth" aria-pressed="false">Méthode</button>
       <button data-t="quiz" aria-pressed="false">Quiz</button>
     </nav>
   </header>
@@ -122,6 +154,44 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     </div>
     <div id="memoList"></div>
     <div class="rule"><b>Comment lire :</b> « K6+ » = K6s et toutes les mains K7s… KQs. En <span style="color:var(--accent);font-weight:700">doré</span>, ce qui s'ajoute par rapport à la position précédente : les ranges sont emboîtées, il suffit d'apprendre les ajouts.<br><b>3bet :</b> value = mains qui 3bet pour la valeur, bluff = mains qui 3bet en bluff (as ou roi assortis à petit kicker, broadways dépareillés), face à l'ouvreur par défaut.</div>
+  </section>
+
+  <section id="tab-meth" class="meth" hidden>
+    <h2>1 · La formule</h2>
+    <div class="box">
+      <p>Chaque carte vaut un nombre de points, le même qu'elle soit la haute ou la basse.</p>
+      <div class="pts" id="pts"></div>
+      <div class="steps">
+        <div><b>1</b><span>Additionne les points des deux cartes.</span></div>
+        <div><b>2</b><span><strong>+7</strong> si les deux cartes sont de la même couleur (suited).</span></div>
+        <div><b>3</b><span><strong>−2</strong> par carte d'écart entre les deux (maximum 3 écarts, donc −6 au plus). Cartes qui se suivent : pas de malus.</span></div>
+        <div><b>4</b><span>Paire : <strong>2 × les points + 10</strong>, rien d'autre.</span></div>
+        <div><b>5</b><span>Compare au seuil de ta position. Égal ou au-dessus : open.</span></div>
+      </div>
+      <div class="thr" id="thr"></div>
+    </div>
+    <h2>2 · Essaie</h2>
+    <div class="box">
+      <div class="calc">
+        <select id="c1" aria-label="Première carte"></select>
+        <select id="c2" aria-label="Deuxième carte"></select>
+        <button id="cs" aria-pressed="true">suited</button>
+        <select id="cp" aria-label="Position"></select>
+      </div>
+      <div class="calcout" id="calcout"></div>
+    </div>
+    <h2>3 · Les exceptions</h2>
+    <div class="box">
+      <p>La formule colle à tes ranges sur 99 % des mains. Voici les seules où elle se trompe, à retenir telles quelles. En <span style="color:var(--bet);font-weight:700">rouge</span> la formule dit open mais ta range dit fold, en <span style="color:var(--accent);font-weight:700">doré</span> l'inverse.</p>
+      <table class="exc" id="exc"></table>
+      <p>Deux de ces exceptions suivent une règle simple : les paires descendent d'un cran par position (77 en UTG, 66 en LJ, 55, 44, 33), et les petits rois suited (K3s à K7s) n'arrivent qu'au BTN.</p>
+    </div>
+    <h2>4 · Le 3bet : la règle de l'escalier</h2>
+    <div class="box">
+      <p>Face à une relance, chaque famille de mains (as suited, rois suited, as offsuit…) se lit de haut en bas comme un escalier : <span class="val" style="color:#c9a3ff;font-weight:700">value</span> tout en haut, puis <span style="color:var(--call);font-weight:700">call</span>, puis <span style="color:var(--bet);font-weight:700">3bet bluff</span> sur la ou les marches juste sous le call, puis fold.</p>
+      <p>Le bluff n'est donc jamais une main au hasard : c'est toujours la main immédiatement en dessous de ce que tu paierais. Il suffit de retenir où s'arrête le call dans chaque famille et combien de marches de bluff il y a dessous.</p>
+      <div id="tb3list" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
   </section>
 
   <section id="tab-quiz" class="quiz" hidden>
@@ -156,8 +226,8 @@ const tabsEl=document.getElementById('tabs');
 tabsEl.onclick=e=>{ const b=e.target.closest('button'); if(!b) return; tab=b.dataset.t; save(); showTab() };
 function showTab(){
   tabsEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===tab));
-  ['grid','memo','quiz'].forEach(t=>document.getElementById('tab-'+t).hidden=(t!==tab));
-  if(tab==='memo') renderMemo(); if(tab==='quiz' && !quizState.hand) nextQuestion();
+  ['grid','memo','meth','quiz'].forEach(t=>document.getElementById('tab-'+t).hidden=(t!==tab));
+  if(tab==='memo') renderMemo(); if(tab==='meth') renderMeth(); if(tab==='quiz' && !quizState.hand) nextQuestion();
 }
 
 /* ---------- Grille ---------- */
@@ -216,15 +286,68 @@ function renderMemo(){
     const div=document.createElement('div'); div.className='mp';
     const title=p==='UTG'?'UTG et UTG+1':p;
     div.innerHTML='<h2>'+title+' <small>'+pct(set)+' · '+set.size+' mains</small></h2>';
-    const groups=[['Paires',t.filter(x=>x.key==='PP')],['Assorties',t.filter(x=>x.key.length===2&&x.key[1]==='s')],['Dépareillées',t.filter(x=>x.key.length===2&&x.key[1]==='o')]];
+    const groups=[['Paires',t.filter(x=>x.key==='PP')],['Suited',t.filter(x=>x.key.length===2&&x.key[1]==='s')],['Offsuit',t.filter(x=>x.key.length===2&&x.key[1]==='o')]];
     groups.forEach(([lab,items])=>{ if(!items.length) return; const r=document.createElement('div'); r.className='row';
       r.innerHTML='<b>'+lab+'</b><span>'+items.map(x=>'<em class="'+(prevMap[x.key]===x.label?'':'new')+'" style="font-style:normal">'+x.label+'</em>').join(' ')+'</span>'; div.appendChild(r); });
     const {vs,tb}=betSet(p);
-    if(tb){ const r=document.createElement('div'); r.className='row'; r.innerHTML='<b>3bet vs '+vs+'</b><span class="bet">'+[...tb.value].sort(sortH).join(' ')+' <em style="font-style:normal;color:var(--muted)">+ bluff</em> '+[...tb.bluff].sort(sortH).join(' ')+'</span>'; div.appendChild(r); }
+    if(tb){ const r=document.createElement('div'); r.className='row'; const vsShort=vs.split(' ')[0]+(vs.includes('approx')?' (≈ HJ vs LJ)':''); r.innerHTML='<b>3bet</b><span class="bet"><em style="font-style:normal;color:var(--muted)">vs '+vsShort+' :</em> '+[...tb.value].sort(sortH).join(' ')+' <em style="font-style:normal;color:var(--muted)">+ bluff</em> '+[...tb.bluff].sort(sortH).join(' ')+'</span>'; div.appendChild(r); }
     list.appendChild(div); prev=t;
   });
 }
 document.getElementById('memoToggle').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; memoMode=b.dataset.m; renderMemo() };
+
+/* ---------- Formule C ---------- */
+const PTS={14:16,13:13,12:10,11:8,10:9,9:7,8:7,7:5,6:4,5:4,4:3,3:2,2:1};
+const THR={'UTG':22,'UTG+1':22,'LJ':19,'HJ':18,'CO':16,'BTN':13};
+function fscore(h){ const hi=RV[h[0]],lo=RV[h[1]]; if(h.length===2) return 2*PTS[hi]+10; const gap=Math.min(hi-lo-1,3); return PTS[hi]+PTS[lo]+(h[2]==='s'?7:0)-2*gap; }
+function fsteps(h){ const hi=RV[h[0]],lo=RV[h[1]];
+  if(h.length===2) return '2 × '+PTS[hi]+' + 10 = '+fscore(h);
+  const gap=Math.min(hi-lo-1,3); let t=h[0]+' '+PTS[hi]+' + '+h[1]+' '+PTS[lo]+' = '+(PTS[hi]+PTS[lo]);
+  if(h[2]==='s') t+='\nsuited +7 → '+(PTS[hi]+PTS[lo]+7);
+  if(gap>0) t+='\n'+gap+' écart'+(gap>1?'s':'')+' × −2 → '+fscore(h); return t; }
+function renderMeth(){
+  const pts=document.getElementById('pts'); if(!pts.childElementCount){ RANKS.split('').forEach(r=>{ const d=document.createElement('div'); d.innerHTML='<small>'+r+'</small>'+PTS[RV[r]]; pts.appendChild(d) }); }
+  const thr=document.getElementById('thr'); if(!thr.childElementCount){ MEMO_POS.forEach(p=>{ const d=document.createElement('div'); d.innerHTML='<small>'+(p==='UTG'?'UTG·UTG+1':p)+'</small>≥ '+THR[p]; thr.appendChild(d) }); }
+  const c1=document.getElementById('c1'),c2=document.getElementById('c2'),cp=document.getElementById('cp'),cs=document.getElementById('cs');
+  if(!c1.childElementCount){ RANKS.split('').forEach(r=>{ c1.add(new Option(r,r)); c2.add(new Option(r,r)) }); c1.value='K'; c2.value='7'; MEMO_POS.forEach(p=>cp.add(new Option(p==='UTG'?'UTG / UTG+1':p,p))); cp.value='HJ';
+    [c1,c2,cp].forEach(e=>e.onchange=calc); cs.onclick=()=>{cs.setAttribute('aria-pressed',cs.getAttribute('aria-pressed')!=='true'); calc()}; }
+  calc(); renderExc(); render3bet();
+}
+function calc(){
+  const a=document.getElementById('c1').value,b=document.getElementById('c2').value,p=document.getElementById('cp').value,suited=document.getElementById('cs').getAttribute('aria-pressed')==='true';
+  const hi=RV[a]>=RV[b]?a:b, lo=RV[a]>=RV[b]?b:a; const h=a===b?a+b:hi+lo+(suited?'s':'o');
+  const sc=fscore(h), t=THR[p], real=DATA.positions[p].open.core.includes(h), pred=sc>=t;
+  let out='<b>'+h+' en '+p+'</b>\n'+fsteps(h)+'\nscore '+sc+(pred?' ≥ ':' < ')+'seuil '+t+' → <b>'+(pred?'OPEN':'FOLD')+'</b>';
+  out+='\n'+(pred===real?'✓ ta range dit la même chose':'✗ exception : ta range dit '+(real?'OPEN':'FOLD'));
+  document.getElementById('calcout').innerHTML=out;
+}
+function renderExc(){
+  const tb=document.getElementById('exc'); tb.innerHTML='<tr><th>Position</th><th>Formule dit open, range dit fold</th><th>Formule dit fold, range dit open</th></tr>';
+  MEMO_POS.forEach(p=>{ const core=new Set(DATA.positions[p].open.core); const t=THR[p];
+    const fp=ALL.filter(h=>fscore(h)>=t&&!core.has(h)).sort(sortH), fn=ALL.filter(h=>fscore(h)<t&&core.has(h)).sort(sortH);
+    tb.innerHTML+='<tr><td>'+(p==='UTG'?'UTG·UTG+1':p)+'</td><td class="fp">'+(fp.join(' ')||'–')+'</td><td class="fn">'+(fn.join(' ')||'–')+'</td></tr>'; });
+}
+function famKey(h){ return h.length===2?'PP':h[0]+h[2] }
+function render3bet(){
+  const list=document.getElementById('tb3list'); list.innerHTML='';
+  const FAM=['PP','As','Ks','Qs','Js','Ts','9s','8s','7s','6s','5s','Ao','Ko','Qo','Jo'];
+  const famLabel=k=>k==='PP'?'Paires':k[0]+'x '+(k[1]==='s'?'s':'o');
+  ['HJ','CO','BTN'].forEach(p=>{ const {vs,tb}=betSet(p); if(!tb) return;
+    const div=document.createElement('div'); div.className='tb3';
+    const title=p==='HJ'?'HJ, LJ et UTG+1 (face à LJ)':p+' face à '+vs.split(' ')[0];
+    div.innerHTML='<div style="font:700 14px var(--display)">'+title+'</div>';
+    const fam={}; const put=(h,k)=>{ const f=famKey(h); (fam[f]=fam[f]||{value:[],call:[],bluff:[]})[k].push(h) };
+    tb.value.forEach(h=>put(h,'value')); tb.call.forEach(h=>put(h,'call')); tb.bluff.forEach(h=>put(h,'bluff'));
+    const lo=L=>L.length?L.slice().sort(sortH)[L.length-1]:null;
+    const g=document.createElement('div'); g.className='fam'; g.innerHTML='<span class="h"></span><span class="h">Call jusqu\'à</span><span class="h">3bet bluff</span>';
+    FAM.forEach(k=>{ const f=fam[k]; if(!f||(!f.call.length&&!f.bluff.length)) return;
+      const callTxt=f.call.length?(k==='PP'?lo(f.call)+'+':lo(f.call)+(f.call.length>1?'+':'')):'–';
+      const bl=f.bluff.slice().sort(sortH);
+      g.innerHTML+='<span class="h">'+famLabel(k)+'</span><span class="cal" style="color:var(--call)">'+callTxt+'</span><span class="blf" style="color:var(--bet)">'+(bl.join(' ')||'–')+'</span>'; });
+    const val=document.createElement('div'); val.className='ln'; val.innerHTML='<b>Value</b><span class="val">'+tb.value.slice().sort(sortH).join(' ')+'</span>';
+    div.appendChild(val); div.appendChild(g); list.appendChild(div); });
+  const note=document.createElement('p'); note.innerHTML='En résumé : <b>value</b> = JJ+ et AK partout, plus TT dès le CO, plus AQs au BTN. <b>Bluff</b> = 2 ou 3 as suited sous le call, 1 ou 2 rois suited sous le call, la dame, le valet ou le dix suited juste sous le call, 2 as offsuit sous le call, 1 roi offsuit sous le call.'; list.appendChild(note);
+}
 
 /* ---------- Quiz ---------- */
 const quizState={hand:null,answered:false};
@@ -260,7 +383,8 @@ function nextQuestion(){
 function correctAnswer(){
   const {hand:h,pos:p,scenario}=quizState; const P=DATA.positions[p];
   if(scenario==='open'){ const core=P.open.core.includes(h), opt=P.open.opt.includes(h);
-    return {ans:core?'Open':'Fold', why:core?explain(h,p,'core'):(opt?'Fold de base, mais open entre 30 et 50bb. '+explain(h,p,'core'):explain(h,p,'core'))}; }
+    const fl=' Formule : '+fscore(h)+(fscore(h)>=THR[p]?' ≥ ':' < ')+THR[p]+'.';
+    return {ans:core?'Open':'Fold', why:(core?explain(h,p,'core'):(opt?'Fold de base, mais open entre 30 et 50bb. '+explain(h,p,'core'):explain(h,p,'core')))+fl}; }
   const {vs,tb}=betSet(p);
   if(tb.value.includes(h)) return {ans:'3bet',why:'3bet value face à '+vs+'.'};
   if(tb.bluff.includes(h)) return {ans:'3bet',why:'3bet bluff face à '+vs+'.'};
