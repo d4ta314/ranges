@@ -556,7 +556,7 @@ function rangeOf(seat){ // range d'un siège encore dans le coup, d'après ses a
   return openCore(seat); }
 
 /* ===== État préflop ===== */
-function startHand(){ S.pre={}; SEATS.forEach(s=>S.pre[s]={contrib:s==='SB'?0.5:s==='BB'?1:0,last:null,role:null,acted:false}); S.pot=S.ante?1:0; S.curBet=1; S.opener=null; S.raises=0; S.lastRaiser=null; S.order=SEATS.slice(); S.ptr=0; S.stage='preflop'; S.log=[]; S.reco=null; S.done=false; advance(); }
+function startHand(){ S.pre={}; SEATS.forEach(s=>S.pre[s]={contrib:s==='SB'?0.5:s==='BB'?1:0,last:null,role:null,acted:false}); S.pot=(S.ante?1:0)+1.5; S.curBet=1; S.opener=null; S.raises=0; S.lastRaiser=null; S.order=SEATS.slice(); S.ptr=0; S.stage='preflop'; S.log=[]; S.reco=null; S.done=false; advance(); }
 function alive(){ return SEATS.filter(s=>S.pre[s].last!=='fold'); }
 function needsAction(s){ const a=S.pre[s]; return a.last!=='fold'&&(!a.acted||a.contrib<S.curBet); }
 function advance(){ // place ptr sur le prochain siège qui doit parler ; termine le préflop si personne
@@ -664,13 +664,13 @@ function renderPreflop(){ root.appendChild(headBox());
     const acts=el('div','cp-acts'); acts.appendChild(el('span','lbl','Ce que je fais :'));
     const add=(t,fn,primary)=>{ const b=el('button',primary?'primary':'',t); b.onclick=()=>{ fn(); render(); }; acts.appendChild(b); };
     add('Fold',()=>seatAct(seat,'fold'),r.action==='fold');
-    if(toCall>0||seat==='SB') add(toCall>0?'Paie '+fmt(toCall):'Limp',()=>seatAct(seat,'call'),r.action==='call');
+    if(S.raises>0) add('Paie '+fmt(toCall),()=>seatAct(seat,'call'),r.action==='call'); else if(seat==='SB') add('Limp',()=>seatAct(seat,'call'),r.action==='call');
     if(seat==='BB'&&toCall===0) add('Check',()=>seatAct(seat,'call'),r.action==='check');
     const rs=raiseSize(seat); add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs),r.action==='raise'); add('All-in '+fmt(S.eff),()=>seatAct(seat,'raise',S.eff),r.action==='all-in');
     root.appendChild(acts); }
   else { const acts=el('div','cp-acts'); acts.appendChild(el('span','lbl',seat+' fait :'));
     const add=(t,fn)=>{ const b=el('button','',t); b.onclick=()=>{ fn(); render(); }; acts.appendChild(b); };
-    add('Fold',()=>seatAct(seat,'fold')); if(toCall>0) add('Paie '+fmt(toCall),()=>seatAct(seat,'call')); if(seat==='BB'&&toCall===0) add('Check',()=>seatAct(seat,'call'));
+    add('Fold',()=>seatAct(seat,'fold')); if(S.raises>0) add('Paie '+fmt(toCall),()=>seatAct(seat,'call')); else if(seat==='SB') add('Limp',()=>seatAct(seat,'call')); if(seat==='BB'&&toCall===0) add('Check',()=>seatAct(seat,'call'));
     const rs=raiseSize(seat); add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs)); add('All-in',()=>seatAct(seat,'raise',S.eff)); root.appendChild(acts); }
   root.appendChild(restartBtn()); }
 function renderPickVill(){ root.appendChild(headBox()); const f=el('div','cp-form'); f.appendChild(el('p','cp-note','Plusieurs adversaires vont au flop. Le moteur n’en suit qu’un : choisis lequel (de préférence le relanceur). Les recommandations seront moins fiables en multiway : moins de bluffs, plus de valeur.'));
