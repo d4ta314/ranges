@@ -129,6 +129,25 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cp-acts button{font:600 13px/1 var(--display);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
 .cp-acts button.primary{border-color:var(--accent);background:var(--accent);color:#1b1f24}
 .cp-end{margin-top:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.45}
+/* Coup : sélecteur de cartes et sièges */
+.pk{display:flex;flex-direction:column;gap:8px}
+.pk-chips{display:flex;gap:6px;min-height:34px}
+.chip.empty{background:var(--cell);color:var(--muted);border:1px dashed var(--line)}
+.pk-grid{display:grid;grid-template-columns:repeat(13,1fr);gap:3px}
+.pk-grid button{font:700 13px/1 var(--display);padding:7px 0 5px;border-radius:5px;border:1px solid var(--line);background:var(--cell);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.pk-grid button small{font-size:10px;line-height:1}
+.pk-grid button.red{color:#e04848}
+.pk-grid button:disabled{opacity:.18}
+.cp-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.cp-seats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.cp-seats>span{grid-column:1/-1;font-size:13px;color:var(--muted)}
+.cp-seats button{font:600 14px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.cp-seats button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#1b1f24}
+.cp-seatrow{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-top:8px}
+.cp-seatrow .seat{font:600 10px/1 var(--display);text-align:center;padding:6px 0;border-radius:5px;background:var(--cell);color:var(--muted);border:1px solid transparent}
+.cp-seatrow .seat.off{opacity:.3;text-decoration:line-through}
+.cp-seatrow .seat.me{color:var(--fg);border-color:var(--accent)}
+.cp-seatrow .seat.now{background:var(--accent);color:#1b1f24}
 /* Quiz */
 .quiz{display:flex;flex-direction:column;gap:10px;align-items:stretch}
 .q-sit{font-size:14px;color:var(--muted);text-align:center;line-height:1.4}
