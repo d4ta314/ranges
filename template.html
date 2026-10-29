@@ -21,9 +21,9 @@ html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-webkit-text-size-adjust:100%}
 .wrap{max-width:560px;margin:0 auto;padding-block:8px 12px;padding-inline:12px;display:flex;flex-direction:column;gap:8px;min-height:100%}
 header{display:flex;align-items:center;justify-content:space-between;gap:8px}
-h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.02em}
+h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.02em}
 .tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
-.tabs button{font:600 13px/1 var(--display);padding:7px 9px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button{font:600 12px/1 var(--display);padding:7px 7px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
 .tabs button[aria-pressed="true"]{background:var(--accent);color:#1b1f24}
 .pos{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
 .pos button{font:600 15px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
@@ -94,6 +94,41 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tb3 .val{color:#c9a3ff} .tb3 .cal{color:var(--call)} .tb3 .blf{color:var(--bet)}
 .fam{display:grid;grid-template-columns:34px 1fr 1fr;gap:4px 8px;font-size:12px;font-family:var(--mono);align-items:baseline}
 .fam .h{font-family:var(--display);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+/* Coup */
+.cp-intro{font-size:12px;color:var(--muted);line-height:1.4;margin:0 0 8px}
+.cp-form{display:flex;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fld{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;align-items:center;font-size:13px}
+.fld span{color:var(--muted)}
+.fld select,.fld input{font:600 15px/1 var(--display);padding:9px 8px;border-radius:8px;border:1px solid var(--line);background:var(--cell);color:var(--fg);width:100%;min-width:0}
+.fld.chk{grid-template-columns:auto 1fr;justify-content:start}
+.fld.chk input{width:20px;height:20px}
+.cp-prof{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.cp-prof>span{color:var(--muted);width:100%}
+.cp-prof button{font:600 12px/1 var(--display);padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.cp-prof button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#1b1f24}
+.cp-go{font:700 15px/1 var(--display);padding:12px 0;border-radius:10px;border:0;background:var(--accent);color:#1b1f24;cursor:pointer}
+.cp-back{font:600 13px/1 var(--display);padding:9px 0;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;width:100%;margin-top:8px}
+.cp-err{color:var(--bet);font-size:13px;margin-top:6px}
+.cp-note{font-size:12px;color:var(--muted);line-height:1.4;margin:0}
+.cp-head{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.cp-cards{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.cp-cards .lbl,.cp-acts .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.cp-cards .lbl:not(:first-child){margin-left:8px}
+.chip{display:inline-block;background:#fff;color:#1b1f24;border-radius:5px;padding:4px 6px;font:700 15px/1 var(--display);min-width:30px;text-align:center}
+.chip.red{color:#d02626}
+.cp-pot{font-size:12px;color:var(--muted)} .cp-pot b{color:var(--fg);font-variant-numeric:tabular-nums}
+.cp-log{font-size:12px;color:var(--muted);line-height:1.5;margin-top:6px}
+.cp-log .hero{color:var(--fg);font-weight:600}
+.cp-reco{margin-top:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.cp-act{font:700 22px/1 var(--display);letter-spacing:.02em}
+.cp-act.bet,.cp-act.raise,.cp-act.all-in{color:var(--open)} .cp-act.call{color:var(--call)} .cp-act.check{color:var(--accent)} .cp-act.fold{color:var(--bet)}
+.cp-why{font-size:14px;line-height:1.45}
+.cp-meta{font-size:11px;color:var(--muted);line-height:1.4}
+.cp-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.cp-acts .lbl{width:100%}
+.cp-acts button{font:600 13px/1 var(--display);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.cp-acts button.primary{border-color:var(--accent);background:var(--accent);color:#1b1f24}
+.cp-end{margin-top:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.45}
 /* Quiz */
 .quiz{display:flex;flex-direction:column;gap:10px;align-items:stretch}
 .q-sit{font-size:14px;color:var(--muted);text-align:center;line-height:1.4}
@@ -120,6 +155,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
       <button data-t="memo" aria-pressed="false">Mémo</button>
       <button data-t="meth" aria-pressed="false">Méthode</button>
       <button data-t="quiz" aria-pressed="false">Quiz</button>
+      <button data-t="coup" aria-pressed="false">Coup</button>
     </nav>
   </header>
 
@@ -179,6 +215,11 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     </div>
   </section>
 
+  <section id="tab-coup" hidden>
+    <p class="cp-intro">Un adversaire. Décris la situation, puis ce qu’il fait à chaque street : à chaque fois que c’est à toi, l’app recommande une action et explique pourquoi. Les règles citées (R1…R38) sont dans le fichier regles_postflop.md du projet. Outil d’étude et de revue, un seul adversaire.</p>
+    <div id="coupRoot"></div>
+  </section>
+
   <section id="tab-quiz" class="quiz" hidden>
     <div class="q-sit" id="qSit"></div>
     <div class="q-hand" id="qHand"></div>
@@ -194,7 +235,7 @@ const RANKS='AKQJT98765432';
 const RV={}; RANKS.split('').forEach((r,i)=>RV[r]=14-i);
 const ORDER=['UTG','UTG+1','LJ','HJ','CO','BTN'];
 const MEMO_POS=['UTG','LJ','HJ','CO','BTN'];
-let pos='HJ', filter='all', vsPick={}, tab='grid', memoMode='core';
+let pos='HJ', filter='all', vsPick={}, tab='grid', memoMode='core', coupStarted=false;
 let store={};
 try{ store=JSON.parse(localStorage.getItem('r8')||'{}'); if(ORDER.includes(store.pos)) pos=store.pos; if(store.vs) vsPick=store.vs; if(store.tab) tab=store.tab; }catch(e){}
 function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick,tab,quiz:store.quiz||{}})) }catch(e){} }
@@ -211,8 +252,8 @@ const tabsEl=document.getElementById('tabs');
 tabsEl.onclick=e=>{ const b=e.target.closest('button'); if(!b) return; tab=b.dataset.t; save(); showTab() };
 function showTab(){
   tabsEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===tab));
-  ['grid','memo','meth','quiz'].forEach(t=>document.getElementById('tab-'+t).hidden=(t!==tab));
-  if(tab==='memo') renderMemo(); if(tab==='meth') renderMeth(); if(tab==='quiz' && !quizState.hand) nextQuestion();
+  ['grid','memo','meth','quiz','coup'].forEach(t=>document.getElementById('tab-'+t).hidden=(t!==tab));
+  if(tab==='memo') renderMemo(); if(tab==='meth') renderMeth(); if(tab==='coup'&&!coupStarted){ coupStarted=true; Coup.init(document.getElementById('coupRoot')); } if(tab==='quiz' && !quizState.hand) nextQuestion();
 }
 
 /* ---------- Grille ---------- */
@@ -393,4 +434,10 @@ function renderScore(){ const q=store.quiz||{n:0,ok:0,streak:0,miss:[]};
 document.getElementById('qNext').onclick=nextQuestion;
 
 render(); showTab();
+</script>
+<script>
+__ENGINE__
+</script>
+<script>
+__COUP__
 </script>

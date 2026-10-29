@@ -21,9 +21,9 @@ html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-webkit-text-size-adjust:100%}
 .wrap{max-width:560px;margin:0 auto;padding-block:8px 12px;padding-inline:12px;display:flex;flex-direction:column;gap:8px;min-height:100%}
 header{display:flex;align-items:center;justify-content:space-between;gap:8px}
-h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.02em}
+h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.02em}
 .tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
-.tabs button{font:600 13px/1 var(--display);padding:7px 9px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button{font:600 12px/1 var(--display);padding:7px 7px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
 .tabs button[aria-pressed="true"]{background:var(--accent);color:#1b1f24}
 .pos{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
 .pos button{font:600 15px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;letter-spacing:.02em}
@@ -94,6 +94,41 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tb3 .val{color:#c9a3ff} .tb3 .cal{color:var(--call)} .tb3 .blf{color:var(--bet)}
 .fam{display:grid;grid-template-columns:34px 1fr 1fr;gap:4px 8px;font-size:12px;font-family:var(--mono);align-items:baseline}
 .fam .h{font-family:var(--display);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+/* Coup */
+.cp-intro{font-size:12px;color:var(--muted);line-height:1.4;margin:0 0 8px}
+.cp-form{display:flex;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fld{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;align-items:center;font-size:13px}
+.fld span{color:var(--muted)}
+.fld select,.fld input{font:600 15px/1 var(--display);padding:9px 8px;border-radius:8px;border:1px solid var(--line);background:var(--cell);color:var(--fg);width:100%;min-width:0}
+.fld.chk{grid-template-columns:auto 1fr;justify-content:start}
+.fld.chk input{width:20px;height:20px}
+.cp-prof{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.cp-prof>span{color:var(--muted);width:100%}
+.cp-prof button{font:600 12px/1 var(--display);padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.cp-prof button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#1b1f24}
+.cp-go{font:700 15px/1 var(--display);padding:12px 0;border-radius:10px;border:0;background:var(--accent);color:#1b1f24;cursor:pointer}
+.cp-back{font:600 13px/1 var(--display);padding:9px 0;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;width:100%;margin-top:8px}
+.cp-err{color:var(--bet);font-size:13px;margin-top:6px}
+.cp-note{font-size:12px;color:var(--muted);line-height:1.4;margin:0}
+.cp-head{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.cp-cards{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.cp-cards .lbl,.cp-acts .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.cp-cards .lbl:not(:first-child){margin-left:8px}
+.chip{display:inline-block;background:#fff;color:#1b1f24;border-radius:5px;padding:4px 6px;font:700 15px/1 var(--display);min-width:30px;text-align:center}
+.chip.red{color:#d02626}
+.cp-pot{font-size:12px;color:var(--muted)} .cp-pot b{color:var(--fg);font-variant-numeric:tabular-nums}
+.cp-log{font-size:12px;color:var(--muted);line-height:1.5;margin-top:6px}
+.cp-log .hero{color:var(--fg);font-weight:600}
+.cp-reco{margin-top:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.cp-act{font:700 22px/1 var(--display);letter-spacing:.02em}
+.cp-act.bet,.cp-act.raise,.cp-act.all-in{color:var(--open)} .cp-act.call{color:var(--call)} .cp-act.check{color:var(--accent)} .cp-act.fold{color:var(--bet)}
+.cp-why{font-size:14px;line-height:1.45}
+.cp-meta{font-size:11px;color:var(--muted);line-height:1.4}
+.cp-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.cp-acts .lbl{width:100%}
+.cp-acts button{font:600 13px/1 var(--display);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.cp-acts button.primary{border-color:var(--accent);background:var(--accent);color:#1b1f24}
+.cp-end{margin-top:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.45}
 /* Quiz */
 .quiz{display:flex;flex-direction:column;gap:10px;align-items:stretch}
 .q-sit{font-size:14px;color:var(--muted);text-align:center;line-height:1.4}
@@ -120,6 +155,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
       <button data-t="memo" aria-pressed="false">Mémo</button>
       <button data-t="meth" aria-pressed="false">Méthode</button>
       <button data-t="quiz" aria-pressed="false">Quiz</button>
+      <button data-t="coup" aria-pressed="false">Coup</button>
     </nav>
   </header>
 
@@ -179,6 +215,11 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     </div>
   </section>
 
+  <section id="tab-coup" hidden>
+    <p class="cp-intro">Un adversaire. Décris la situation, puis ce qu’il fait à chaque street : à chaque fois que c’est à toi, l’app recommande une action et explique pourquoi. Les règles citées (R1…R38) sont dans le fichier regles_postflop.md du projet. Outil d’étude et de revue, un seul adversaire.</p>
+    <div id="coupRoot"></div>
+  </section>
+
   <section id="tab-quiz" class="quiz" hidden>
     <div class="q-sit" id="qSit"></div>
     <div class="q-hand" id="qHand"></div>
@@ -189,12 +230,12 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   </section>
 </div>
 <script>
-const DATA={"source":"Ranges_avec_legende.pdf","table":"8 joueurs","positions":{"UTG":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{}},"UTG+1":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{"UTG (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"LJ":{"open":{"core":["66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J9s","JJ","JTs","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTs","Q9s","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","55","65s","76s","86s","97s","A8o","A9o","J8s","JTo","K5s","K6s","K7s","KTo","Q8s","QJo","QTo","T7s"]},"openSrc":"LJ (p.3)","threebet":{"UTG / UTG+1 (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"HJ":{"open":{"core":["55","66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTs","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q8s","Q9s","QJo","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","54s","65s","75s","76s","86s","96s","97s","A7o","A8o","A9o","J7s","JTo","K3s","K4s","K5s","K9o","Q6s","Q7s","QTo","T7s","T9o"]},"openSrc":"HJ (p.6)","threebet":{"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"CO":{"open":{"core":["44","55","65s","66","76s","77","86s","87s","88","97s","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTo","JTs","K5s","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q7s","Q8s","Q9s","QJo","QJs","QQ","QTo","QTs","T7s","T8s","T9s","TT"],"opt":["22","33","53s","54s","64s","75s","85s","87o","95s","96s","98o","A3o","A4o","A5o","A6o","A7o","J4s","J5s","J6s","J7s","J9o","K2s","K3s","K4s","K8o","K9o","Q3s","Q4s","Q5s","Q6s","Q9o","T5s","T6s","T8o","T9o"]},"openSrc":"CO (p.9)","threebet":{"HJ":{"value":["AA","AKo","AKs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","AJo","ATo","K8s","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","AJo","ATo","J9s","K9s","KJo","Q9s"],"call":["22","33","44","55","66","77","88","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]}}},"BTN":{"open":{"core":["33","44","54s","55","65s","66","75s","76s","77","86s","87s","88","96s","97s","98o","98s","99","A2s","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J5s","J6s","J7s","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q3s","Q4s","Q5s","Q6s","Q7s","Q8s","Q9o","Q9s","QJo","QJs","QQ","QTo","QTs","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"],"opt":["22","43s","53s","63s","64s","74s","76o","84s","85s","86o","87o","94s","95s","97o","A2o","A3o","J2s","J3s","J4s","J7o","J8o","K4o","K5o","K6o","K7o","Q2s","Q6o","Q7o","Q8o","T2s","T3s","T4s","T7o"]},"openSrc":"BTN (p.12)","threebet":{"CO":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["87s","A2s","A3s","A8o","A9o","J8s","K6s","K7s","KTo","Q8s","QTo","T8s"],"call":["22","33","44","54s","55","65s","66","76s","77","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATo","ATs","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T9s"]},"HJ":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A9o","ATo","K8s","KJo","KTo","Q9s","QJo","T8s"],"call":["22","33","44","55","66","76s","77","87s","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATs","J9s","JTs","K9s","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["87s","A2s","A3s","A4s","A9o","ATo","J9s","K8s","KJo"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","JTs","K9s","KJs","KQo","KQs","KTs","Q9s","QJs","QTs","T8s","T9s","TT"]}}}}};
+const DATA={"source":"Ranges_avec_legende.pdf","table":"8 joueurs","positions":{"UTG":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{}},"UTG+1":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{"UTG (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"LJ":{"open":{"core":["66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J9s","JJ","JTs","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTs","Q9s","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","55","65s","76s","86s","97s","A8o","A9o","J8s","JTo","K5s","K6s","K7s","KTo","Q8s","QJo","QTo","T7s"]},"openSrc":"LJ (p.3)","threebet":{"UTG / UTG+1 (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"HJ":{"open":{"core":["55","66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTs","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q8s","Q9s","QJo","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","54s","65s","75s","76s","86s","96s","97s","A7o","A8o","A9o","J7s","JTo","K3s","K4s","K5s","K9o","Q6s","Q7s","QTo","T7s","T9o"]},"openSrc":"HJ (p.6)","threebet":{"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"CO":{"open":{"core":["44","55","65s","66","76s","77","86s","87s","88","97s","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTo","JTs","K5s","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q7s","Q8s","Q9s","QJo","QJs","QQ","QTo","QTs","T7s","T8s","T9s","TT"],"opt":["22","33","53s","54s","64s","75s","85s","87o","95s","96s","98o","A3o","A4o","A5o","A6o","A7o","J4s","J5s","J6s","J7s","J9o","K2s","K3s","K4s","K8o","K9o","Q3s","Q4s","Q5s","Q6s","Q9o","T5s","T6s","T8o","T9o"]},"openSrc":"CO (p.9)","threebet":{"HJ":{"value":["AA","AKo","AKs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","AJo","ATo","K8s","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","AJo","ATo","J9s","K9s","KJo","Q9s"],"call":["22","33","44","55","66","77","88","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]}}},"BTN":{"open":{"core":["33","44","54s","55","65s","66","75s","76s","77","86s","87s","88","96s","97s","98o","98s","99","A2s","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J5s","J6s","J7s","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q3s","Q4s","Q5s","Q6s","Q7s","Q8s","Q9o","Q9s","QJo","QJs","QQ","QTo","QTs","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"],"opt":["22","43s","53s","63s","64s","74s","76o","84s","85s","86o","87o","94s","95s","97o","A2o","A3o","J2s","J3s","J4s","J7o","J8o","K4o","K5o","K6o","K7o","Q2s","Q6o","Q7o","Q8o","T2s","T3s","T4s","T7o"]},"openSrc":"BTN (p.12)","threebet":{"CO":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["87s","A2s","A3s","A8o","A9o","J8s","K6s","K7s","KTo","Q8s","QTo","T8s"],"call":["22","33","44","54s","55","65s","66","76s","77","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATo","ATs","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T9s"]},"HJ":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A9o","ATo","K8s","KJo","KTo","Q9s","QJo","T8s"],"call":["22","33","44","55","66","76s","77","87s","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATs","J9s","JTs","K9s","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["87s","A2s","A3s","A4s","A9o","ATo","J9s","K8s","KJo"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","JTs","K9s","KJs","KQo","KQs","KTs","Q9s","QJs","QTs","T8s","T9s","TT"]}}},"SB":{"open":{"core":["22","33","44","55","66","77","88","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","JJ","K2o","K2s","K3o","K3s","K4o","K4s","K5o","K5s","K6o","K6s","K7o","KJs","KK","KQo","KQs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","QQ","TT"],"opt":[]},"openSrc":"SB BVB Late Tight (p.16)","threebet":{"Early (UTG→HJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","A5s","ATo","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]},"Late (CO/BTN)":{"value":["99","AA","AKo","AKs","AQo","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","A5s","A8o","A9o","JTo","K7s","KTo","Q8s","QTo"],"call":["22","33","44","55","66","77","87s","88","98s","A6s","A7s","A8s","A9s","AJo","AJs","ATo","ATs","J8s","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T8s","T9s"]}},"limp":["54s","64s","65s","75s","76s","85s","86s","87o","87s","96s","97s","98o","98s","J6s","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K7s","K8o","K8s","K9o","K9s","KJo","KTo","KTs","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T6s","T7s","T8o","T8s","T9o","T9s"],"engineOnly":true},"BB":{"open":{"core":[],"opt":[]},"openSrc":"","threebet":{"Early (UTG→HJ)":{"value":["AA","AKo","AKs","AQo","JJ","KK","QQ"],"bluff":["76s","87s","98s","A5o","KTo","T9s"],"call":["22","32s","33","42s","43s","44","52s","53s","54s","55","62s","63s","64s","65s","66","72s","73s","74s","75s","76s","77","82s","83s","84s","85s","86s","87s","88","92s","93s","94s","95s","96s","97s","98o","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AJo","AJs","AQo","AQs","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7s","J8o","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KQs","KTs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"]},"Late (CO/BTN)":{"value":["99","AA","AJo","AJs","AKo","AKs","AQo","AQs","JJ","KK","KQo","KQs","QQ","TT"],"bluff":["A2o","A3o","A4o","A6o","J7o","K4o","K5o","K6o","Q5o","T7o"],"call":["22","32s","33","42s","43s","44","52s","53s","54o","54s","55","62s","63s","64s","65o","65s","66","72s","73s","74s","75o","75s","76o","76s","77","82s","83s","84s","85s","86o","86s","87o","87s","88","92s","93s","94s","95s","96s","97o","97s","98o","98s","A2s","A3s","A4s","A5o","A5s","A6s","A7o","A7s","A8o","A8s","A9o","A9s","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7o","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K2o","K2s","K3o","K3s","K4o","K4s","K5o","K5s","K6o","K6s","K7o","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KTo","KTs","Q2s","Q3s","Q4s","Q5o","Q5s","Q6o","Q6s","Q7o","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7o","T7s","T8o","T8s","T9o","T9s"]},"SB":{"value":["AA","AJs","AKo","AKs","AQo","AQs","JJ","KJs","KK","KQs","QQ","TT"],"bluff":["96s","A2o","A3o","J7o","K5o","Q6o","T5s","T7o"],"call":["22","32s","33","42s","43s","44","52s","53s","54o","54s","55","62s","63s","64s","65o","65s","66","72s","73s","74s","75s","76o","76s","77","82s","83s","84s","85s","86s","87o","87s","88","92s","93s","94s","95s","96s","97o","97s","98o","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AJo","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7o","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K2s","K3s","K4s","K5o","K5s","K6o","K6s","K7o","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KQs","KTo","KTs","Q2s","Q3s","Q4s","Q5s","Q6o","Q6s","Q7o","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7o","T7s","T8o","T8s","T9o","T9s"]}},"defenseOOP":{"tight":["22","33","43s","44","53s","54s","55","64s","65s","66","75s","76s","77","85s","86s","87s","88","96s","97s","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J5s","J6s","J7s","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8s","K9o","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","Q8s","Q9o","Q9s","QJo","QJs","QQ","QTo","QTs","T6s","T7s","T8s","T9o","T9s","TT"],"standard":["32s","42s","52s","62s","63s","73s","74s","84s","87o","93s","94s","95s","98o","J2s","J3s","J4s","J8o","K7o","K8o","Q8o","T2s","T3s","T4s","T5s","T8o"],"loose":["43o","53o","54o","64o","65o","72s","75o","76o","82s","83s","85o","86o","92s","96o","97o","J6o","J7o","K2o","K3o","K4o","K5o","K6o","Q4o","Q5o","Q6o","Q7o","T6o","T7o"]},"vsLimpSB":["22","33","44","54s","55","65s","66","76s","77","87s","88","97s","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J2o","J3o","J4o","J5o","J8s","J9s","JJ","JTs","K2o","K3o","K4o","K5o","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTs","Q2o","Q3o","Q4o","Q5o","Q8s","Q9s","QJs","QQ","QTs","T2o","T3o","T4o","T5o","T8s","T9s","TT"],"engineOnly":true}}};
 const RANKS='AKQJT98765432';
 const RV={}; RANKS.split('').forEach((r,i)=>RV[r]=14-i);
 const ORDER=['UTG','UTG+1','LJ','HJ','CO','BTN'];
 const MEMO_POS=['UTG','LJ','HJ','CO','BTN'];
-let pos='HJ', filter='all', vsPick={}, tab='grid', memoMode='core';
+let pos='HJ', filter='all', vsPick={}, tab='grid', memoMode='core', coupStarted=false;
 let store={};
 try{ store=JSON.parse(localStorage.getItem('r8')||'{}'); if(ORDER.includes(store.pos)) pos=store.pos; if(store.vs) vsPick=store.vs; if(store.tab) tab=store.tab; }catch(e){}
 function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick,tab,quiz:store.quiz||{}})) }catch(e){} }
@@ -211,8 +252,8 @@ const tabsEl=document.getElementById('tabs');
 tabsEl.onclick=e=>{ const b=e.target.closest('button'); if(!b) return; tab=b.dataset.t; save(); showTab() };
 function showTab(){
   tabsEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===tab));
-  ['grid','memo','meth','quiz'].forEach(t=>document.getElementById('tab-'+t).hidden=(t!==tab));
-  if(tab==='memo') renderMemo(); if(tab==='meth') renderMeth(); if(tab==='quiz' && !quizState.hand) nextQuestion();
+  ['grid','memo','meth','quiz','coup'].forEach(t=>document.getElementById('tab-'+t).hidden=(t!==tab));
+  if(tab==='memo') renderMemo(); if(tab==='meth') renderMeth(); if(tab==='coup'&&!coupStarted){ coupStarted=true; Coup.init(document.getElementById('coupRoot')); } if(tab==='quiz' && !quizState.hand) nextQuestion();
 }
 
 /* ---------- Grille ---------- */
@@ -393,4 +434,397 @@ function renderScore(){ const q=store.quiz||{n:0,ok:0,streak:0,miss:[]};
 document.getElementById('qNext').onclick=nextQuestion;
 
 render(); showTab();
+</script>
+<script>
+/* Moteur postflop « Coup » — calcul d'équité, lecture du board, règles de décision.
+   Pas de DOM ici. Les règles citées (R1…R38) sont dans regles_postflop.md. */
+const Engine=(()=>{
+const RSTR='23456789TJQKA', SSTR='shdc';
+const rankOf=c=>RSTR.indexOf(c[0].toUpperCase())+2, suitOf=c=>SSTR.indexOf(c[1].toLowerCase());
+function parseCards(txt){ // "As Kh" -> [{r,s,id,txt}] ; throws on error
+  const toks=(txt||'').trim().replace(/10/g,'T').split(/[\s,]+/).filter(Boolean); const out=[];
+  for(const t of toks){ if(t.length!==2||rankOf(t)<2||suitOf(t)<0) throw new Error('Carte illisible : « '+t+' ». Exemple : As Kh (s pique, h cœur, d carreau, c trèfle).');
+    const c={r:rankOf(t),s:suitOf(t)}; c.id=c.r*4+c.s; c.txt=RSTR[c.r-2]+SSTR[c.s]; if(out.some(o=>o.id===c.id)) throw new Error('Carte en double : '+c.txt); out.push(c); }
+  return out;
+}
+const SUIT_SYM={s:'♠',h:'♥',d:'♦',c:'♣'};
+const pretty=c=>RSTR[c.r-2]+SUIT_SYM[SSTR[c.s]];
+const handLabel=(a,b)=>{ const hi=a.r>=b.r?a:b, lo=a.r>=b.r?b:a; return hi.r===lo.r?RSTR[hi.r-2]+RSTR[lo.r-2]:RSTR[hi.r-2]+RSTR[lo.r-2]+(hi.s===lo.s?'s':'o') };
+
+/* ---------- Évaluateur 5 à 7 cartes ---------- */
+function evaluate(cards){ // retourne un entier, plus grand = meilleur
+  const cnt=new Array(15).fill(0), suits=[0,0,0,0], bySuit=[[],[],[],[]];
+  for(const c of cards){ cnt[c.r]++; suits[c.s]++; bySuit[c.s].push(c.r); }
+  let fs=-1; for(let s=0;s<4;s++) if(suits[s]>=5) fs=s;
+  const straightTop=ranks=>{ // ranks: set of ranks present ; returns top rank of best straight or 0
+    let run=0; for(let r=14;r>=1;r--){ const has=r===1?ranks[14]:ranks[r]; if(has){run++; if(run>=5) return r+4;} else run=0; } return 0; };
+  if(fs>=0){ const pres=new Array(15).fill(0); bySuit[fs].forEach(r=>pres[r]=1); const st=straightTop(pres); if(st) return 8e9+st*1e6;
+    const top=bySuit[fs].sort((a,b)=>b-a).slice(0,5); return 5e9+top.reduce((a,r,i)=>a+r*Math.pow(15,4-i),0); }
+  const quads=[],trips=[],pairs=[],singles=[];
+  for(let r=14;r>=2;r--){ if(cnt[r]===4) quads.push(r); else if(cnt[r]===3) trips.push(r); else if(cnt[r]===2) pairs.push(r); else if(cnt[r]===1) singles.push(r); }
+  const kick=(arr,n)=>arr.slice(0,n).reduce((a,r,i)=>a+r*Math.pow(15,n-1-i),0);
+  if(quads.length){ const k=[...trips,...pairs,...singles].sort((a,b)=>b-a)[0]; return 7e9+quads[0]*1e6+k; }
+  if(trips.length&&(pairs.length||trips.length>1)){ const p=trips.length>1?trips[1]:pairs[0]; return 6e9+trips[0]*1e6+p; }
+  const pres=cnt.map(x=>x>0?1:0); const st=straightTop(pres); if(st) return 4e9+st*1e6;
+  if(trips.length){ return 3e9+trips[0]*1e6+kick(singles,2); }
+  if(pairs.length>=2){ const k=[...pairs.slice(2),...singles].sort((a,b)=>b-a)[0]||0; return 2e9+pairs[0]*1e5+pairs[1]*1e3+k; }
+  if(pairs.length===1){ return 1e9+pairs[0]*1e6+kick(singles,3); }
+  return kick(singles,5);
+}
+
+/* ---------- Ranges en combinaisons ---------- */
+const ALL_IDS=[]; for(let r=2;r<=14;r++) for(let s=0;s<4;s++) ALL_IDS.push(r*4+s);
+function combosOf(label){ const hi=rankOf(label[0]+'x'), lo=rankOf(label[1]+'x'); const out=[];
+  if(label.length===2){ for(let a=0;a<4;a++) for(let b=a+1;b<4;b++) out.push([hi*4+a,lo*4+b]); }
+  else if(label[2]==='s'){ for(let s=0;s<4;s++) out.push([hi*4+s,lo*4+s]); }
+  else { for(let a=0;a<4;a++) for(let b=0;b<4;b++) if(a!==b) out.push([hi*4+a,lo*4+b]); }
+  return out; }
+const cardFromId=id=>({r:Math.floor(id/4),s:id%4,id});
+function buildRange(labels,weights){ // labels: array ; weights: optional {label:w} ; -> array of {a,b,w,label}
+  const out=[]; (labels||[]).forEach(l=>{ const w=weights&&weights[l]!=null?weights[l]:1; combosOf(l).forEach(([a,b])=>out.push({a,b,w,label:l})); }); return out; }
+function removeConflicts(range,ids){ const dead=new Set(ids); return range.filter(c=>!dead.has(c.a)&&!dead.has(c.b)); }
+function totalWeight(range){ return range.reduce((s,c)=>s+c.w,0); }
+
+/* ---------- Monte-Carlo ---------- */
+let seed=12345; function rnd(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+function pickWeighted(range,tot){ let x=rnd()*tot; for(const c of range){ x-=c.w; if(x<=0) return c; } return range[range.length-1]; }
+function equityHandVsRange(hero,board,range,n){ // hero: [id,id], board: ids ; range after removeConflicts
+  n=n||4000; const need=5-board.length; const live=range; const tot=totalWeight(live); if(!live.length||tot<=0) return null;
+  const dead=new Set([...hero,...board]); const deck=ALL_IDS.filter(id=>!dead.has(id));
+  let win=0,tie=0;
+  for(let i=0;i<n;i++){ const v=pickWeighted(live,tot); if(dead.has(v.a)||dead.has(v.b)) continue;
+    const run=[]; const used=new Set([v.a,v.b]); while(run.length<need){ const id=deck[Math.floor(rnd()*deck.length)]; if(!used.has(id)){used.add(id); run.push(id);} }
+    const b=[...board,...run].map(cardFromId);
+    const eh=evaluate([...hero.map(cardFromId),...b]), ev=evaluate([cardFromId(v.a),cardFromId(v.b),...b]);
+    if(eh>ev) win++; else if(eh===ev) tie++; }
+  return (win+tie/2)/n;
+}
+function equityRangeVsRange(rA,board,rB,n){ n=n||6000; const tA=totalWeight(rA), tB=totalWeight(rB); if(!rA.length||!rB.length) return null;
+  const need=5-board.length; const deadB=new Set(board); const deck=ALL_IDS.filter(id=>!deadB.has(id)); let win=0,tie=0,cnt=0;
+  for(let i=0;i<n;i++){ const a=pickWeighted(rA,tA), b=pickWeighted(rB,tB); if(a.a===b.a||a.a===b.b||a.b===b.a||a.b===b.b) continue;
+    const used=new Set([a.a,a.b,b.a,b.b,...board]); const run=[]; while(run.length<need){ const id=deck[Math.floor(rnd()*deck.length)]; if(!used.has(id)){used.add(id); run.push(id);} }
+    const bb=[...board,...run].map(cardFromId); const ea=evaluate([cardFromId(a.a),cardFromId(a.b),...bb]), eb=evaluate([cardFromId(b.a),cardFromId(b.b),...bb]);
+    cnt++; if(ea>eb) win++; else if(ea===eb) tie++; }
+  return cnt?(win+tie/2)/cnt:null;
+}
+function showdownShare(hero,board,range){ // river : part de la range adverse battue (égalité = moitié)
+  const b=board.map(cardFromId); const eh=evaluate([...hero.map(cardFromId),...b]); let w=0,tot=0;
+  for(const c of range){ if(c.a===hero[0]||c.a===hero[1]||c.b===hero[0]||c.b===hero[1]) continue; const ev=evaluate([cardFromId(c.a),cardFromId(c.b),...b]); tot+=c.w; if(eh>ev) w+=c.w; else if(eh===ev) w+=c.w/2; }
+  return tot?w/tot:null;
+}
+
+/* ---------- Classement d'une main sur un board (R17) ---------- */
+// niveaux : 0 air, 1 overcartes/as haut, 2 paire faible, 3 paire moyenne, 4 top paire kicker faible, 5 top paire bon kicker / overpaire, 6 deux paires, 7 brelan, 8 quinte, 9 couleur, 10 full ou mieux
+function classify(hand,board){ // hand,board : arrays of {r,s}
+  const all=[...hand,...board]; const ev=evaluate(all); const cat=Math.floor(ev/1e9);
+  const bRanks=board.map(c=>c.r), top=Math.max(...bRanks), bSorted=[...new Set(bRanks)].sort((a,b)=>b-a);
+  const h1=hand[0].r,h2=hand[1].r, pocket=h1===h2;
+  let level=0, name='rien';
+  if(cat>=6){ level=10; name=cat===8?'quinte flush':cat===7?'carré':'full'; }
+  else if(cat===5){ level=9; name='couleur'; }
+  else if(cat===4){ level=8; name='quinte'; }
+  else if(cat===3){ level=7; name=pocket?'brelan (set)':'brelan'; }
+  else if(cat===2){ level=6; name='deux paires'; if(bRanks.filter((r,i)=>bRanks.indexOf(r)!==i).length&&!bRanks.includes(h1)&&!bRanks.includes(h2)){ level=3; name='paire + board pairé'; } }
+  else if(cat===1){
+    if(pocket){ if(h1>top){ level=5; name='overpaire'; } else if(h1>bSorted[bSorted.length-1]){ level=3; name='paire moyenne (pocket)'; } else { level=2; name='petite paire (pocket)'; } }
+    else { const pr=bRanks.includes(h1)?h1:bRanks.includes(h2)?h2:null;
+      if(pr===null){ level=2; name='paire sur le board'; }
+      else { const kicker=pr===h1?h2:h1;
+        if(pr===top){ if(kicker>=11){ level=5; name='top paire bon kicker'; } else { level=4; name='top paire kicker faible'; } }
+        else if(pr===bSorted[1]){ level=3; name='deuxième paire'; }
+        else { level=2; name='paire basse'; } } }
+  }
+  else { const over=[h1,h2].filter(r=>r>top).length; if(over===2){ level=1; name='deux overcartes'; } else if(h1===14||h2===14){ level=1; name='as haut'; } else { level=0; name='rien'; } }
+  // tirages (flop/turn seulement)
+  let fd=false,bdfd=false,oesd=false,gut=false,outs=0;
+  if(board.length<5){
+    const suits=[0,0,0,0]; all.forEach(c=>suits[c.s]++); const hs=hand.map(c=>c.s);
+    for(let s=0;s<4;s++){ if(suits[s]>=4&&hs.includes(s)&&cat<5){ fd=true; } if(board.length===3&&suits[s]===3&&hs.includes(s)&&hand[0].s===hand[1].s) bdfd=true; }
+    // quinte : compter les cartes qui complètent une quinte (outs), en excluant celles qui font déjà quinte
+    if(cat<4){ const have=new Set(all.map(c=>c.r)); let straightOuts=0;
+      for(let r=2;r<=14;r++){ if(have.has(r)) continue; const test=[...all,{r,s:9}]; const pres=new Array(15).fill(0); test.forEach(c=>pres[c.r]=1);
+        let run=0,ok=false; for(let k=14;k>=1;k--){ const has=k===1?pres[14]:pres[k]; if(has){run++; if(run>=5){ok=true;break;}} else run=0; }
+        if(ok) straightOuts++; }
+      if(straightOuts>=2){ oesd=true; } else if(straightOuts===1){ gut=true; }
+      outs+=straightOuts*4; }
+    if(fd) outs+=9; if(fd&&(oesd||gut)) outs-=1;
+  }
+  const drawStrength=outs>=12?'combo':outs>=8?'fort':outs>=4?'faible':'aucun';
+  return {level,name,cat,fd,bdfd,oesd,gut,outs,drawStrength,ev};
+}
+
+/* ---------- Texture du board (R10) ---------- */
+function texture(board){ const rs=board.map(c=>c.r).sort((a,b)=>b-a); const suits=[0,0,0,0]; board.forEach(c=>suits[c.s]++); const maxS=Math.max(...suits);
+  const paired=new Set(rs).size<rs.length; const high=rs[0]>=12; const low=rs[0]<=9;
+  const span=rs[0]-rs[rs.length-1]; const gaps=[]; for(let i=0;i<rs.length-1;i++) gaps.push(rs[i]-rs[i+1]);
+  const connected=gaps.filter(g=>g<=2).length>=Math.min(2,rs.length-1) && span<=4;
+  const twoTone=board.length===3?maxS===2:maxS>=2; const mono=maxS>=3 && board.length===3; const flushPossible=maxS>=3;
+  let wet=0; if(twoTone) wet+=1; if(mono||flushPossible) wet+=2; if(connected) wet+=2; else if(gaps.some(g=>g<=2)) wet+=1; if(low) wet+=1; if(paired) wet-=1;
+  const kind=mono?'monotone':wet>=3?'dynamique':wet>=2?'moyen':'sec';
+  return {paired,high,low,connected,twoTone,mono,flushPossible,wet,kind,top:rs[0]};
+}
+function turnKind(board){ // R11 : nature de la dernière carte
+  const prev=board.slice(0,-1), c=board[board.length-1]; const t=texture(prev), t2=texture(board);
+  const over=c.r>t.top; const pairs=prev.some(p=>p.r===c.r); const completesFlush=!t.flushPossible&&t2.flushPossible; const connects=!t.connected&&t2.connected;
+  if(over&&c.r>=12) return {kind:'overcarte',txt:'une overcarte ('+pretty(c)+') qui renforce la range de l’ouvreur'};
+  if(completesFlush) return {kind:'couleur',txt:'une carte qui complète la couleur, favorable au défenseur'};
+  if(connects) return {kind:'quinte',txt:'une carte qui connecte le board, favorable au défenseur'};
+  if(pairs) return {kind:'pair',txt:'une carte qui pair le board, neutre'};
+  return {kind:'neutre',txt:'une carte basse sans rapport, neutre'};
+}
+
+/* ---------- Lecture des actions adverses (R23–R27) ---------- */
+function narrow(range,board,action,ctx){ // action: 'bet'|'check'|'call'|'raise' ; ctx:{street,aggressor(bool: villain is PFR), size, profile, tex}
+  const b=board.map(cardFromId); const prof=ctx.profile||{}; const out=[];
+  for(const c of range){ const cl=classify([cardFromId(c.a),cardFromId(c.b)],b); let m=1; const strong=cl.outs>=8, weak=cl.outs>=4&&cl.outs<8, river=board.length===5;
+    if(action==='bet'){
+      if(ctx.street==='flop'&&ctx.aggressor){ const air=ctx.tex.kind==='sec'?0.45:ctx.tex.kind==='moyen'?0.3:0.12;
+        m=cl.level>=4?1:cl.level===3?0.7:cl.level===2?0.4:strong?0.95:weak?0.6:cl.bdfd||cl.level===1?air:air*0.7; }
+      else { m=cl.level>=5?1:cl.level===4?0.85:cl.level===3?0.4:cl.level===2?0.12:(!river&&strong)?0.85:(!river&&weak)?0.3:0.08;
+        if(prof.aggro) m=Math.max(m,cl.level<=1?0.25:m); }
+    } else if(action==='check'){ m=cl.level>=6?0.3:cl.level===5?0.55:1; if(prof.passive) m=cl.level>=5?0.8:1; }
+    else if(action==='call'){ const s=ctx.size||0.5; m=cl.level>=4?1:cl.level===3?(s<0.5?0.9:0.6):cl.level===2?(s<0.5?0.5:0.2):(!river&&strong)?1:(!river&&weak)?(s<0.5?0.6:0.25):cl.level===1?0.08:0.04;
+      if(prof.station) m=Math.max(m,cl.level>=2?0.7:0.2); }
+    else if(action==='raise'){ m=cl.level>=6?1:cl.level===5?0.6:cl.level===4?0.2:(!river&&cl.outs>=12)?0.7:(!river&&strong)?0.3:0.03; if(prof.aggro) m=Math.max(m,cl.level>=4?0.6:(!river&&cl.outs>=4)?0.5:0.12); }
+    if(m>0) out.push({...c,w:c.w*m}); }
+  return out;
+}
+
+/* ---------- Décision (R12–R35) ---------- */
+const pct=x=>Math.round(x*100)+' %';
+function potOdds(bet,pot){ return bet/(pot+2*bet); }
+function decide(st){
+  /* st: {street, hero:[ids], board:[ids], heroRange, villRange, pot, eff (tapis effectif restant), heroIP, heroPFR, threebet, toCall (mise à payer, 0 si rien), lastBet, profile, tex}
+     retourne {action,size,amount,reason,rules,conf,data} */
+  const b=st.board.map(cardFromId), hero=st.hero.map(cardFromId); const cl=classify(hero,b); const tex=st.tex||texture(b);
+  const vr=removeConflicts(st.villRange,[...st.hero,...st.board]); const hr=removeConflicts(st.heroRange,st.board);
+  const river=st.street==='river';
+  const eqH=river?showdownShare(st.hero,st.board,vr):equityHandVsRange(st.hero,st.board,vr,4000);
+  const eqR=equityRangeVsRange(hr,st.board,vr,5000);
+  const nutShare=r=>{ let s=0,t=0; for(const c of r){ t+=c.w; const l=classify([cardFromId(c.a),cardFromId(c.b)],b).level; if(l>=6) s+=c.w; } return t?s/t:0; };
+  const nutH=nutShare(hr), nutV=nutShare(vr);
+  const spr=st.pot>0?st.eff/st.pot:99; const prof=st.profile||{};
+  const posAdj=st.heroIP?-0.05:0.05; // R6 : en position, seuils abaissés de 5 points
+  const rangeAdv=eqR!=null&&eqR>=0.55, nutAdv=nutH>=nutV+0.05;
+  const data={eqH,eqR,nutH,nutV,spr,cl,tex};
+  const rules=[]; let reason='';
+  const R=(...ids)=>ids.forEach(i=>{ if(!rules.includes(i)) rules.push(i); });
+  const sizeTxt=s=>s>=1?'le pot':s>=0.75?'trois quarts du pot':s>=0.6?'deux tiers du pot':s>=0.5?'la moitié du pot':'un tiers du pot';
+  const mkBet=(size,why,conf)=>{ const amount=Math.min(st.eff,Math.round(size*st.pot*10)/10); const allin=amount>=st.eff; return {action:allin?'all-in':'bet',size,amount,reason:why,rules,conf,data}; };
+  const mk=(action,why,conf,extra)=>({action,size:0,amount:0,reason:why,rules,conf,data,...extra});
+  const strongDraw=cl.outs>=8, comboDraw=cl.outs>=12;
+  const eqTxt='Ta main a '+pct(eqH)+' d’équité contre sa range'+(river?' (part de sa range que tu bats)':'')+'.';
+  const rangeTxt=(rangeAdv?'Ta range domine ce board ('+pct(eqR)+').':eqR<0.45?'Ce board favorise sa range ('+pct(eqR)+' pour toi).':'Les deux ranges sont proches sur ce board ('+pct(eqR)+' pour toi).');
+
+  /* ----- Face à une mise ----- */
+  if(st.toCall>0){
+    const need=potOdds(st.toCall,st.pot);
+    R('R1','R2','R20');
+    const allinCall=st.toCall>=st.eff;
+    if(!river){ const needAdj=need+posAdj+(cl.outs>=8&&(cl.fd||cl.oesd)?0:0.05); // marge R20, cotes implicites R22
+      if(cl.level>=6 || (cl.level===5&&(st.lastBet<=0.5||spr<=3)) || (comboDraw&&spr>2&&!allinCall)){ R('R21'); if(spr<=3) R('R7');
+        const raiseTo=Math.round(Math.min(st.eff,(st.pot+st.toCall*3))*10)/10; const allin=raiseTo>=st.eff*0.8;
+        return mk(allin?'all-in':'raise',eqTxt+' '+(cl.level>=6?'Avec '+cl.name+' tu bats presque toute sa range de mise : relance pour la valeur, il paiera avec des mains moins bonnes.':cl.level===5?'Top paire ou overpaire face à une mise '+(st.lastBet<=0.5?'petite':'avec un SPR faible')+' : relance pour la valeur et pour protéger ta main.':'Tirage combiné à '+cl.outs+' outs : relance en semi-bluff, tu gagnes soit tout de suite, soit souvent à l’abattage.')+(spr<=3?' SPR '+spr.toFixed(1)+', tu es engagé (R7).':''),cl.level>=6?'haute':'moyenne',{amount:Math.min(st.eff,raiseTo)}); }
+      if(eqH>=needAdj || (strongDraw&&eqH>=need-0.03&&spr>4)){ if(strongDraw) R('R22');
+        return mk('call',eqTxt+' Il te faut '+pct(need)+' pour payer cette mise (cote du pot)'+(st.heroIP?', un peu moins en position':', un peu plus hors position')+'. '+(cl.level>=3?'Ta '+cl.name+' est devant assez souvent : paie et vois la suite.':strongDraw?'Ton tirage à '+cl.outs+' outs paie avec les cotes du pot'+(spr>4?' et les cotes implicites':'')+'.':'Tu as assez d’équité pour continuer.'),eqH>=needAdj+0.1?'haute':'moyenne'); }
+      return mk('fold',eqTxt+' Il te faut '+pct(need)+' pour payer (cote du pot) et tu ne les as pas'+(cl.outs>=4?', même en comptant tes '+cl.outs+' outs':'')+'. Couche-toi, le pot ne justifie pas de continuer avec '+cl.name+'.',eqH<need-0.1?'haute':'moyenne');
+    }
+    // river : R34
+    R('R31','R34'); const s=st.lastBet||0.5; let bluffShare=s/(1+2*s); if(prof.aggro) bluffShare+=0.12; if(prof.passive) bluffShare-=0.12; if(prof.foldy) bluffShare-=0.05; bluffShare=Math.max(0.05,Math.min(0.6,bluffShare));
+    // range de mise supposée : ses meilleures mains (valeur) + bluffs = ses pires mains
+    const scored=vr.map(c=>({c,ev:evaluate([cardFromId(c.a),cardFromId(c.b),...b])})).sort((x,y)=>y.ev-x.ev); const tot=totalWeight(vr);
+    const valueW=tot*0.35, bluffW=valueW*bluffShare/(1-bluffShare); const eh=evaluate([...hero,...b]);
+    let acc=0,beatV=0,valW=0; for(const x of scored){ if(acc>=valueW) break; const w=Math.min(x.c.w,valueW-acc); acc+=w; valW+=w; if(eh>x.ev) beatV+=w; else if(eh===x.ev) beatV+=w/2; }
+    const eqBet=(beatV+bluffW)/(valW+bluffW);
+    const txt='Face à cette mise, je suppose '+pct(bluffShare)+' de bluffs dans sa range de mise (R5'+(prof.aggro?', profil agressif':prof.passive?', profil passif':'')+'). Tu bats '+pct(eqBet)+' de cette range, il te faut '+pct(need)+'.';
+    if(cl.level>=6&&!tex.flushPossible&&beatV/valW>0.7){ R('R21'); return mk('raise',txt+' Avec '+cl.name+' tu bats aussi la plupart de ses mains de valeur : relance.','moyenne',{amount:Math.min(st.eff,Math.round((st.pot+st.toCall*3)*10)/10)}); }
+    if(eqBet>=need+0.02) return mk('call',txt+' Le call est rentable'+(eqBet<need+0.1?', de peu : spot serré':'')+'.',eqBet>=need+0.1?'haute':'basse');
+    return mk('fold',txt+' Pas assez pour payer : couche-toi'+(eqBet>need-0.05?', spot serré, un profil qui bluffe plus changerait la décision':'')+'.',eqBet<need-0.08?'haute':'basse');
+  }
+
+  /* ----- Personne n'a misé (ou il a checké) ----- */
+  if(river){ R('R31');
+    const beats=eqH; let valThr=0.6, bluffThr=0.15; if(prof.station){ valThr=0.5; } if(prof.foldy){ valThr=0.65; }
+    if(beats>=valThr){ R('R32'); const big=beats>=0.8; const size=big?0.75:0.5; if(prof.station&&big) return mkBet(1,eqTxt+' Il paie trop : mise le pot avec '+cl.name+', il te paiera avec bien pire.','haute');
+      return mkBet(size,eqTxt+' Tu bats '+(big?'la grande majorité':'plus de la moitié')+' de ce qu’il peut encore avoir : mise '+sizeTxt(size)+' pour la valeur'+(big?', gros, il a assez de mains qui paient':', taille moyenne pour garder ses mains moyennes dans le coup')+'.',big?'haute':'moyenne'); }
+    if(beats<bluffThr){ R('R33','R4'); // part de sa range faible
+      let weakV=0,totV=0; for(const c of vr){ totV+=c.w; if(classify([cardFromId(c.a),cardFromId(c.b)],b).level<=2) weakV+=c.w; } const weak=totV?weakV/totV:0;
+      const size=0.66; let thr=size/(1+size); if(prof.foldy) thr-=0.1; if(prof.station) thr+=0.3;
+      if(weak>=thr&&!prof.station) return mkBet(size,eqTxt+' Aucune valeur de showdown, mais '+pct(weak)+' de sa range ne peut pas payer une mise de '+sizeTxt(size)+' (il faut '+pct(size/(1+size))+' de folds). Bluffe'+(cl.level===1?', ton as bloque en plus ses meilleures mains':'')+'.','basse');
+      return mk('check',eqTxt+' Pas de valeur de showdown, mais seulement '+pct(weak)+' de sa range se couche face à une mise, trop peu pour bluffer'+(prof.station?' contre un joueur qui paie trop':'')+'. Abandonne le coup.','moyenne'); }
+    R('R35'); return mk('check',eqTxt+' Trop faible pour une mise de valeur, trop forte pour bluffer : checke et va à l’abattage'+(st.heroIP?'.':', et évalue sa mise s’il mise.'),'moyenne');
+  }
+  // flop / turn
+  const asAgg=st.heroPFR; const street=st.street;
+  if(street==='turn'){ const tk=turnKind(b); data.turn=tk;
+    if(cl.level>=5||(cl.level>=4&&spr<=3)){ R('R28'); if(spr<=3) R('R7'); const size=nutAdv||tex.kind!=='sec'?0.66:0.5; return mkBet(spr<=2.5?1:size,eqTxt+' La turn est '+tk.txt+'. Avec '+cl.name+' tu continues pour la valeur'+(spr<=2.5?' et tu t’engages, le SPR est faible':' : mise '+sizeTxt(size))+'.',eqH>=0.65?'haute':'moyenne'); }
+    if(strongDraw){ R('R30'); if(spr>=2&&(rangeAdv||st.heroIP)) return mkBet(0.6,eqTxt+' Tirage à '+cl.outs+' outs sur une turn '+tk.kind+' : mise '+sizeTxt(0.6)+' en semi-bluff, tu gardes la fold equity et tu touches une fois sur trois.','moyenne');
+      return mk('check',eqTxt+' Tirage à '+cl.outs+' outs mais peu de fold equity ici : checke, et paie selon la cote du pot s’il mise.','moyenne'); }
+    if(cl.level>=3){ R('R28','R12'); if(tk.kind==='overcarte'&&asAgg&&rangeAdv) return mkBet(0.5,eqTxt+' La turn est '+tk.txt+' : ta '+cl.name+' peut encore miser '+sizeTxt(0.5)+' pour la valeur et la protection.','basse');
+      return mk('check',eqTxt+' '+cl.name+' sur une turn '+tk.kind+' : valeur de showdown, mais seules de meilleures mains paieraient une mise. Checke pour contrôler le pot.','moyenne'); }
+    if(asAgg&&(tk.kind==='overcarte')&&rangeAdv&&!prof.station){ R('R29','R4'); return mkBet(0.66,eqTxt+' '+rangeTxt+' La turn est '+tk.txt+' : deuxième barrel en bluff, il doit se coucher plus de '+pct(0.66/1.66)+' du temps et sa range est pleine de mains moyennes.','basse'); }
+    R('R29'); return mk('check',eqTxt+' La turn est '+tk.txt+' et ta main n’a rien amélioré : abandonne, un deuxième barrel sans raison brûle des jetons.','moyenne');
+  }
+  // flop
+  if(cl.level>=5){ R('R12','R18'); if(spr<=3) R('R7'); let size=0.33; if(nutAdv||tex.kind==='dynamique'||tex.kind==='moyen'){ size=0.66; R('R14'); } else R('R13'); if(tex.mono){ size=0.5; R('R15'); }
+    return mkBet(spr<=2?1:size,eqTxt+' '+rangeTxt+' Avec '+cl.name+' mise '+sizeTxt(size)+' pour la valeur'+(size>=0.6?' : board dynamique ou avantage de nuts, fais payer les tirages':' : board sec, une petite mise suffit et garde ses mains faibles')+'.',eqH>=0.65?'haute':'moyenne'); }
+  if(strongDraw){ R('R18','R12'); const size=tex.kind==='sec'?0.5:0.66; return mkBet(size,eqTxt+' Tirage à '+cl.outs+' outs ('+(cl.fd?'couleur':'')+(cl.fd&&cl.oesd?' + ':'')+(cl.oesd?'quinte ouverte':'')+') : mise '+sizeTxt(size)+' en semi-bluff. Deux façons de gagner : il se couche, ou tu touches.','moyenne'); }
+  if(cl.level>=3){ R('R18','R12'); if(asAgg&&rangeAdv&&tex.kind==='sec'){ R('R13'); return mkBet(0.33,eqTxt+' '+rangeTxt+' Board sec : c-bet d’un tiers du pot avec '+cl.name+', pour la valeur fine et la protection, comme avec la majorité de ta range.','moyenne'); }
+    if(!asAgg&&!st.heroIP===false&&cl.level>=4){ R('R19'); return mkBet(0.5,eqTxt+' Il a checké, sa range est plafonnée. Mise '+sizeTxt(0.5)+' avec '+cl.name+' pour la valeur.','moyenne'); }
+    return mk('check',eqTxt+' '+cl.name+' : de la valeur de showdown, mais '+(tex.kind!=='sec'?'le board est dynamique':'tu n’as pas l’avantage de range')+'. Checke pour contrôler le pot, et paie une mise raisonnable.','moyenne'); }
+  if(cl.level===2){ R('R12'); return mk('check',eqTxt+' Petite paire : main de showdown qui ne sera payée que par mieux. Checke'+(st.heroIP?' derrière':'')+'.','moyenne'); }
+  // showdown faible, air
+  if(asAgg&&rangeAdv&&tex.kind==='sec'&&!prof.station){ R('R13','R18','R4'); return mkBet(0.33,eqTxt+' '+rangeTxt+' Board sec qui touche peu sa range : c-bet d’un tiers du pot'+(cl.level===1?' avec tes overcartes':' en bluff')+', il doit se coucher seulement 25 % du temps pour que ce soit rentable.','moyenne'); }
+  if(asAgg&&st.threebet&&!prof.station){ R('R16'); return mkBet(0.33,eqTxt+' Pot 3bet : ton avantage de range est net, c-bet d’un tiers du pot avec presque toute ta range.','moyenne'); }
+  if(!asAgg&&eqR>=0.55&&tex.kind!=='sec'&&(cl.bdfd||cl.outs>=4)&&st.heroIP){ R('R19'); return mkBet(0.5,eqTxt+' Il a checké sur un board qui favorise ta range. Mise '+sizeTxt(0.5)+' avec ton tirage'+(cl.bdfd?' backdoor':'')+' pour prendre le pot.','basse'); }
+  R('R12','R18'); return mk('check',eqTxt+' '+rangeTxt+' Ni valeur ni vrai tirage'+(tex.kind!=='sec'?', et le board touche sa range':'')+' : checke et abandonne face à une mise.','moyenne');
+}
+
+return {parseCards,pretty,handLabel,evaluate,buildRange,removeConflicts,totalWeight,equityHandVsRange,equityRangeVsRange,showdownShare,classify,texture,turnKind,narrow,decide,potOdds,cardFromId,RSTR,SSTR};
+})();
+
+</script>
+<script>
+/* Onglet « Coup » : suivi d'une main contre un adversaire, recommandation à chaque décision. */
+const Coup=(()=>{
+const E=Engine; const POS8=['SB','BB','UTG','UTG+1','LJ','HJ','CO','BTN']; // ordre de parole postflop
+const S={}; let root;
+const el=(tag,cls,html)=>{ const d=document.createElement(tag); if(cls) d.className=cls; if(html!=null) d.innerHTML=html; return d; };
+const fmt=x=>(Math.round(x*10)/10).toString().replace('.',',');
+
+/* ----- Ranges préflop selon le scénario ----- */
+function vsKey(pos,opener){ // clé du tableau "threebet" de pos face à opener
+  const P=DATA.positions[pos]; const keys=Object.keys(P.threebet||{}); if(!keys.length) return null;
+  const early=['UTG','UTG+1','LJ','HJ'].includes(opener);
+  if(pos==='SB'||pos==='BB'){ if(opener==='SB') return keys.find(k=>k==='SB')||keys[0]; return keys.find(k=>k.startsWith(early?'Early':'Late'))||keys[0]; }
+  if(keys.includes(opener)) return opener;
+  if(opener==='HJ'&&keys.includes('HJ')) return 'HJ'; if(opener==='CO'&&keys.includes('CO')) return 'CO';
+  return keys.find(k=>k.startsWith('LJ')||k.startsWith('UTG'))||keys[0];
+}
+function openRange(pos){ const P=DATA.positions[pos]; return P.open.core.length?P.open.core:null; }
+function callRange(pos,opener){ const k=vsKey(pos,opener); if(!k) return null; return DATA.positions[pos].threebet[k].call; }
+function threebetRange(pos,opener){ const k=vsKey(pos,opener); if(!k) return null; const t=DATA.positions[pos].threebet[k]; return [...t.value,...t.bluff]; }
+function callVs3betRange(openerPos){ // approximation : l'ouvreur paie un 3bet avec le haut de sa range, sans AA/KK/AKs (4bet)
+  const o=openRange(openerPos)||[]; const RV={}; 'AKQJT98765432'.split('').forEach((r,i)=>RV[r]=14-i);
+  return o.filter(h=>{ if(['AA','KK','AKs'].includes(h)) return false; if(h.length===2) return RV[h[0]]>=5;
+    const hi=RV[h[0]],lo=RV[h[1]],s=h[2]==='s'; if(s){ return hi===14||(hi>=10&&lo>=9)||(hi-lo<=1&&lo>=6)||(hi>=13&&lo>=9); } return (hi===14&&lo>=12)||(hi===13&&lo>=12); });
+}
+function scenarioRanges(){ const {heroPos,villPos,pfr,tb}=S;
+  const opener=pfr==='hero'?heroPos:villPos, caller=pfr==='hero'?villPos:heroPos;
+  let openerR, callerR, note='';
+  if(tb==='none'){ openerR=openRange(opener); callerR=callRange(caller,opener); note='Ranges : '+opener+' ouvre ('+(openerR||[]).length+' mains), '+caller+' paie ('+(callerR||[]).length+' mains).'; }
+  else { // le "caller" a 3bet, l'ouvreur a payé
+    openerR=callVs3betRange(opener); callerR=threebetRange(caller,opener); note='Pot 3bet : '+caller+' 3bet ('+(callerR||[]).length+' mains), '+opener+' paie (approximation : haut de sa range d’open sans AA, KK, AKs).'; }
+  const heroR=pfr==='hero'?openerR:callerR, villR=pfr==='hero'?callerR:openerR;
+  return {heroR,villR,note};
+}
+function preflopPot(){ const {heroPos,villPos,pfr,tb,open,three,ante}=S; const blinds=p=>p==='SB'?0.5:p==='BB'?1:0;
+  const inHand=[heroPos,villPos]; let dead=0; if(!inHand.includes('SB')) dead+=0.5; if(!inHand.includes('BB')) dead+=1; if(ante) dead+=1;
+  const per=tb==='none'?open:three; return {pot:2*per+dead, invested:per}; }
+
+/* ----- Rendu ----- */
+function render(){ root.innerHTML=''; if(S.stage==='setup') renderSetup(); else if(S.stage==='cards') renderCards(); else renderPlay(); }
+function sel(id,opts,val,label){ const w=el('label','fld'); w.innerHTML='<span>'+label+'</span>'; const s=el('select'); s.id=id; opts.forEach(o=>{ const [v,t]=Array.isArray(o)?o:[o,o]; const op=new Option(t,v); s.add(op); }); s.value=val; w.appendChild(s); return w; }
+function num(id,val,label,step){ const w=el('label','fld'); w.innerHTML='<span>'+label+'</span>'; const i=el('input'); i.type='number'; i.id=id; i.value=val; i.step=step||1; i.inputMode='decimal'; w.appendChild(i); return w; }
+function renderSetup(){
+  S.heroPos=S.heroPos||'CO'; S.villPos=S.villPos||'BB'; S.pfr=S.pfr||'hero'; S.tb=S.tb||'none'; S.eff=S.eff||40; S.open=S.open||2.2; S.three=S.three||7; if(S.ante==null) S.ante=true; S.profile=S.profile||{};
+  const f=el('div','cp-form');
+  f.appendChild(sel('cpHero',POS8,S.heroPos,'Ma position')); f.appendChild(sel('cpVill',POS8,S.villPos,'Sa position'));
+  f.appendChild(sel('cpPfr',[['hero','Moi'],['vill','Lui']],S.pfr,'Qui a ouvert'));
+  f.appendChild(sel('cpTb',[['none','Pas de 3bet, il a payé / j’ai payé'],['yes','L’autre a 3bet, l’ouvreur a payé']],S.tb,'3bet préflop'));
+  f.appendChild(num('cpEff',S.eff,'Tapis effectif (bb)')); f.appendChild(num('cpOpen',S.open,'Taille de l’open (bb)',0.1)); f.appendChild(num('cpThree',S.three,'Taille du 3bet (bb)',0.5));
+  const a=el('label','fld chk'); a.innerHTML='<input type="checkbox" id="cpAnte" '+(S.ante?'checked':'')+'><span>Ante BB (tournoi)</span>'; f.appendChild(a);
+  const pr=el('div','cp-prof'); pr.innerHTML='<span>Profil adverse</span>';
+  [['foldy','Se couche trop'],['station','Paie trop'],['aggro','Mise et relance trop']].forEach(([k,t])=>{ const b=el('button',null,t); b.type='button'; b.setAttribute('aria-pressed',!!S.profile[k]); b.onclick=()=>{ S.profile[k]=!S.profile[k]; b.setAttribute('aria-pressed',!!S.profile[k]); }; pr.appendChild(b); });
+  f.appendChild(pr);
+  const go=el('button','cp-go','Continuer vers le flop'); go.onclick=()=>{ S.heroPos=document.getElementById('cpHero').value; S.villPos=document.getElementById('cpVill').value; S.pfr=document.getElementById('cpPfr').value; S.tb=document.getElementById('cpTb').value; S.eff=+document.getElementById('cpEff').value; S.open=+document.getElementById('cpOpen').value; S.three=+document.getElementById('cpThree').value; S.ante=document.getElementById('cpAnte').checked;
+    if(S.heroPos===S.villPos){ alertBox('Choisis deux positions différentes.'); return; }
+    const opener=S.pfr==='hero'?S.heroPos:S.villPos; if(opener==='BB'){ alertBox('La BB ne peut pas ouvrir : si tout le monde a passé, le coup est fini. Choisis un autre ouvreur.'); return; }
+    const {heroR,villR,note}=scenarioRanges(); if(!heroR||!villR){ alertBox('Pas de range dans le PDF pour ce scénario ('+note+').'); return; }
+    S.stage='cards'; S.err=''; render(); };
+  f.appendChild(go); root.appendChild(f);
+}
+function alertBox(msg){ S.err=msg; const e=root.querySelector('.cp-err')||root.appendChild(el('div','cp-err')); e.textContent=msg; }
+function renderCards(){
+  const {note}=scenarioRanges(); const f=el('div','cp-form');
+  f.appendChild(el('p','cp-note',note+' Cartes : A K Q J T 9…2 suivi de s (pique), h (cœur), d (carreau), c (trèfle).'));
+  const h=el('label','fld'); h.innerHTML='<span>Mes cartes</span><input id="cpHand" placeholder="As Kh" value="'+(S.handTxt||'')+'" autocapitalize="characters" autocomplete="off">'; f.appendChild(h);
+  const b=el('label','fld'); b.innerHTML='<span>Flop</span><input id="cpFlop" placeholder="Qd 7c 2s" value="'+(S.flopTxt||'')+'" autocapitalize="characters" autocomplete="off">'; f.appendChild(b);
+  const go=el('button','cp-go','Analyser le flop'); go.onclick=()=>{ try{ S.handTxt=document.getElementById('cpHand').value; S.flopTxt=document.getElementById('cpFlop').value; const hand=E.parseCards(S.handTxt), flop=E.parseCards(S.flopTxt); if(hand.length!==2) throw new Error('Il faut exactement deux cartes en main.'); if(flop.length!==3) throw new Error('Le flop a trois cartes.'); const all=[...hand,...flop]; if(new Set(all.map(c=>c.id)).size!==5) throw new Error('Une carte apparaît deux fois.'); startPlay(hand,flop); }catch(e){ alertBox(e.message); } };
+  f.appendChild(go); const back=el('button','cp-back','← Modifier la situation'); back.onclick=()=>{S.stage='setup'; render()}; f.appendChild(back); root.appendChild(f);
+}
+function startPlay(hand,flop){
+  const {heroR,villR}=scenarioRanges(); const {pot,invested}=preflopPot();
+  S.hero=hand.map(c=>c.id); S.board=flop.map(c=>c.id); S.street='flop'; S.pot=pot; S.eff=S.eff-invested; S.heroIP=POS8.indexOf(S.heroPos)>POS8.indexOf(S.villPos);
+  S.heroRange=E.buildRange(heroR); S.villRange=E.buildRange(villR); S.log=[]; S.stage='play'; S.done=false; S.reco=null;
+  newStreet(); render();
+}
+function newStreet(){ S.streetBets={hero:0,vill:0}; S.lastBetFrac=0; S.turnOf=S.heroIP?'vill':'hero'; S.heroActed=false; S.villActed=false; S.reco=null; if(S.turnOf==='hero') computeReco(); }
+function profileCtx(){ return {street:S.street,aggressor:S.pfr==='vill',profile:S.profile,tex:E.texture(S.board.map(E.cardFromId))}; }
+function potBeforeBet(){ return S.pot-S.streetBets.hero-S.streetBets.vill; }
+function computeReco(){
+  const toCall=Math.max(0,S.streetBets.vill-S.streetBets.hero); const potNow=S.pot;
+  const st={street:S.street,hero:S.hero,board:S.board,heroRange:S.heroRange,villRange:S.villRange,pot:toCall>0?potNow-toCall:potNow,eff:S.eff-S.streetBets.hero,heroIP:S.heroIP,heroPFR:S.pfr==='hero',threebet:S.tb!=='none',toCall,lastBet:S.lastBetFrac,profile:S.profile};
+  S.reco=E.decide(st); S.reco.toCall=toCall;
+}
+function villAct(action,frac,amount){ // action: check|bet|call|raise|fold ; frac: fraction du pot ; amount: bb
+  const ctx=profileCtx(); ctx.size=frac||S.lastBetFrac;
+  if(action==='fold'){ S.log.push({who:'vill',txt:'Il se couche'}); S.done=true; S.endTxt='Il se couche, le pot est à toi ('+fmt(S.pot)+' bb).'; return; }
+  S.villActed=true;
+  if(action==='check'){ S.log.push({who:'vill',txt:'Il checke'}); S.villRange=E.narrow(S.villRange,S.board,'check',ctx); if(!S.heroActed){ S.turnOf='hero'; computeReco(); } else endStreet(); return; }
+  if(action==='call'){ const add=S.streetBets.hero-S.streetBets.vill; S.streetBets.vill+=add; S.pot+=add; S.log.push({who:'vill',txt:'Il paie '+fmt(add)+' bb'}); S.villRange=E.narrow(S.villRange,S.board,'call',ctx); endStreet(); return; }
+  if(action==='bet'||action==='raise'){ let amt=amount!=null?amount:Math.round(frac*S.pot*10)/10; const total=Math.min(S.eff,action==='raise'?S.streetBets.hero+amt:amt); amt=total-(action==='raise'?S.streetBets.hero:0); const add=total-S.streetBets.vill; S.streetBets.vill=total; S.pot+=add; S.lastBetFrac=amt/Math.max(1,S.pot-add);
+    S.log.push({who:'vill',txt:(action==='raise'?'Il relance à ':'Il mise ')+fmt(total)+' bb'}); S.villRange=E.narrow(S.villRange,S.board,action==='raise'?'raise':'bet',ctx); S.turnOf='hero'; computeReco(); return; }
+}
+function heroAct(action,amount){
+  const ctx=profileCtx(); ctx.aggressor=S.pfr==='hero'; S.heroActed=true;
+  if(action==='fold'){ S.log.push({who:'hero',txt:'Je me couche'}); S.done=true; S.endTxt='Tu te couches. Il remporte '+fmt(S.pot)+' bb.'; return; }
+  if(action==='check'){ S.log.push({who:'hero',txt:'Je checke'}); S.heroRange=E.narrow(S.heroRange,S.board,'check',ctx); if(!S.villActed){ S.turnOf='vill'; S.reco=null; } else endStreet(); return; }
+  if(action==='call'){ const add=S.streetBets.vill-S.streetBets.hero; S.streetBets.hero+=add; S.pot+=add; S.log.push({who:'hero',txt:'Je paie '+fmt(add)+' bb'}); S.heroRange=E.narrow(S.heroRange,S.board,'call',ctx); endStreet(); return; }
+  // bet / raise / all-in
+  const isR=S.streetBets.vill>0; const total=Math.min(S.eff,isR?S.streetBets.hero+amount:amount); const amt=total-(isR?S.streetBets.hero:0); const add=total-S.streetBets.hero; const isRaise=isR;
+  S.streetBets.hero=total; S.pot+=add; S.lastBetFrac=amt/Math.max(1,S.pot-add); S.log.push({who:'hero',txt:(isRaise?'Je relance à ':'Je mise ')+fmt(total)+' bb'}); S.heroRange=E.narrow(S.heroRange,S.board,isRaise?'raise':'bet',ctx); S.turnOf='vill'; S.reco=null;
+}
+function endStreet(){
+  const spent=Math.max(S.streetBets.hero,S.streetBets.vill); S.eff-=spent;
+  if(S.eff<=0.01){ S.done=true; S.endTxt='Tapis engagés : on retourne les cartes. '; showdownNote(); return; }
+  if(S.street==='river'){ S.done=true; S.endTxt='Abattage. '; showdownNote(); return; }
+  S.awaitCard=true; S.reco=null;
+}
+function showdownNote(){ const share=E.showdownShare(S.hero,S.board,E.removeConflicts(S.villRange,[...S.hero,...S.board])); if(S.board.length===5&&share!=null) S.endTxt+='Ta main bat '+Math.round(share*100)+' % de ce qu’il peut encore avoir.'; }
+function addCard(txt){ const c=E.parseCards(txt); if(c.length!==1) throw new Error('Une seule carte.'); if([...S.hero,...S.board].includes(c[0].id)) throw new Error('Cette carte est déjà sortie.'); S.board.push(c[0].id); S.street=S.board.length===4?'turn':'river'; S.awaitCard=false; newStreet(); }
+
+function renderPlay(){
+  const b=S.board.map(E.cardFromId), h=S.hero.map(E.cardFromId);
+  const head=el('div','cp-head'); head.innerHTML='<div class="cp-cards"><span class="lbl">Main</span>'+h.map(cardChip).join('')+'<span class="lbl">Board</span>'+b.map(cardChip).join('')+'</div>'+
+    '<div class="cp-pot">Pot <b>'+fmt(S.pot)+'</b> bb · tapis <b>'+fmt(S.eff-Math.max(S.streetBets.hero,S.streetBets.vill))+'</b> bb · SPR <b>'+fmt(potBeforeBet()>0?(S.eff)/potBeforeBet():0)+'</b> · '+S.heroPos+(S.heroIP?' (IP)':' (OOP)')+' vs '+S.villPos+' · '+S.street+'</div>';
+  root.appendChild(head);
+  if(S.log.length){ const lg=el('div','cp-log'); lg.innerHTML=S.log.map(l=>'<span class="'+l.who+'">'+l.txt+'</span>').join(' · '); root.appendChild(lg); }
+  if(S.done){ root.appendChild(el('div','cp-end',S.endTxt)); root.appendChild(restartBtn()); return; }
+  if(S.awaitCard){ const f=el('div','cp-form'); const lab=S.board.length===3?'Turn':'River'; f.innerHTML='<label class="fld"><span>Carte de '+lab.toLowerCase()+'</span><input id="cpCard" placeholder="9h" autocapitalize="characters" autocomplete="off"></label>';
+    const go=el('button','cp-go','Analyser la '+lab.toLowerCase()); go.onclick=()=>{ try{ addCard(document.getElementById('cpCard').value); render(); }catch(e){ alertBox(e.message); } }; f.appendChild(go); root.appendChild(f); root.appendChild(restartBtn()); return; }
+  if(S.turnOf==='vill'){ root.appendChild(villButtons()); root.appendChild(restartBtn()); return; }
+  // hero's turn : recommendation
+  const r=S.reco; const d=r.data; const card=el('div','cp-reco');
+  const actTxt=r.action==='bet'?'MISE '+fmt(r.amount)+' bb':r.action==='raise'?'RELANCE à '+fmt(r.amount)+' bb':r.action==='all-in'?'ALL-IN ('+fmt(r.amount)+' bb)':r.action==='call'?'PAIE '+fmt(r.toCall)+' bb':r.action==='check'?'CHECK':'FOLD';
+  card.innerHTML='<div class="cp-act '+r.action+'">'+actTxt+'</div><div class="cp-why">'+r.reason+'</div><div class="cp-meta">'+d.cl.name+(d.cl.outs?' · '+d.cl.outs+' outs':'')+' · board '+d.tex.kind+' · équité main '+Math.round(d.eqH*100)+' % · range '+Math.round(d.eqR*100)+' % · confiance '+r.conf+' · '+r.rules.join(' ')+'</div>';
+  root.appendChild(card);
+  const acts=el('div','cp-acts'); acts.appendChild(el('span','lbl','Ce que je fais :'));
+  const toCall=r.toCall; const addBtn=(t,fn,primary)=>{ const btn=el('button',primary?'primary':'',t); btn.onclick=()=>{ fn(); render(); }; acts.appendChild(btn); };
+  if(toCall>0){ addBtn('Fold',()=>heroAct('fold'),r.action==='fold'); addBtn('Paie '+fmt(toCall),()=>heroAct('call'),r.action==='call');
+    const rs=r.action==='raise'||r.action==='all-in'?r.amount:Math.min(S.eff-S.streetBets.hero,Math.round((S.pot+toCall*2)*10)/10); addBtn('Relance à '+fmt(S.streetBets.hero+rs),()=>heroAct('raise',rs),r.action==='raise'||r.action==='all-in'); }
+  else { addBtn('Check',()=>heroAct('check'),r.action==='check'); [0.33,0.5,0.66,1].forEach(f=>{ const a=Math.min(S.eff,Math.round(f*S.pot*10)/10); addBtn('Mise '+fmt(a)+' ('+Math.round(f*100)+'%)',()=>heroAct('bet',a),(r.action==='bet'&&Math.abs(a-r.amount)<0.05)); }); addBtn('All-in '+fmt(S.eff),()=>heroAct('bet',S.eff),r.action==='all-in'); }
+  root.appendChild(acts); root.appendChild(restartBtn());
+}
+function villButtons(){ const w=el('div','cp-acts'); w.appendChild(el('span','lbl','Il fait :'));
+  const add=(t,fn)=>{ const b=el('button','',t); b.onclick=()=>{ fn(); render(); }; w.appendChild(b); };
+  if(S.streetBets.hero>S.streetBets.vill){ add('Fold',()=>villAct('fold')); add('Paie',()=>villAct('call')); [2.5,3.5].forEach(m=>{ const amt=Math.min(S.eff,Math.round(S.streetBets.hero*m*10)/10); add('Relance à '+fmt(amt),()=>villAct('raise',null,amt-S.streetBets.hero)); }); add('All-in',()=>villAct('raise',null,S.eff-S.streetBets.hero)); }
+  else { add('Check',()=>villAct('check')); [0.33,0.5,0.66,1].forEach(f=>add('Mise '+Math.round(f*100)+'% ('+fmt(Math.min(S.eff,Math.round(f*S.pot*10)/10))+')',()=>villAct('bet',f))); add('All-in',()=>villAct('bet',null,S.eff)); }
+  return w; }
+function restartBtn(){ const b=el('button','cp-back','↺ Nouveau coup'); b.onclick=()=>{ S.stage='setup'; render(); }; return b; }
+function cardChip(c){ const s=E.SSTR[c.s]; return '<span class="chip '+(s==='h'||s==='d'?'red':'')+'">'+E.pretty(c)+'</span>'; }
+function init(container){ root=container; S.stage='setup'; render(); }
+return {init,render,S};
+})();
+
 </script>

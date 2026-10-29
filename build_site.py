@@ -2,7 +2,8 @@ import json, re
 from PIL import Image, ImageDraw
 tpl=open('template.html').read()
 data=json.dumps(json.load(open('ranges_8max.json')),ensure_ascii=False,separators=(',',':'))
-body=tpl.replace('__DATA__',data)
+body=tpl.replace('__DATA__',data).replace('__ENGINE__',open('engine.js').read()).replace('__COUP__',open('coup.js').read())
+open('index.html','w').write(body)
 title=re.search(r'<title>(.*?)</title>',body).group(1)
 body=body.replace('<title>'+title+'</title>','')
 head=f'''<!doctype html>
