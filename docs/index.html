@@ -520,7 +520,9 @@ return {parseCards,pretty,handLabel,evaluate,buildRange,removeConflicts,totalWei
 /* Onglet « Coup » : déroulé à la GTO Wizard. Hero choisit sa position, puis le coup se joue siège par siège
    (préflop UTG → BB, puis flop, turn, river). Recommandation + raison à chaque décision de hero. */
 const Coup=(()=>{
-const E=Engine; const SEATS=['UTG','UTG+1','LJ','HJ','CO','BTN','SB','BB']; const POSTFLOP=['SB','BB','UTG','UTG+1','LJ','HJ','CO','BTN'];
+const E=Engine; let SEATS=[],POSTFLOP=[];
+function syncSeats(){ const six=typeof table!=='undefined'&&table===6; SEATS=six?['LJ','HJ','CO','BTN','SB','BB']:['UTG','UTG+1','LJ','HJ','CO','BTN','SB','BB']; POSTFLOP=six?['SB','BB','LJ','HJ','CO','BTN']:['SB','BB','UTG','UTG+1','LJ','HJ','CO','BTN']; }
+const L=k=>(typeof lbl==='function'?lbl(k):k);
 const S={}; let root;
 const el=(tag,cls,html)=>{ const d=document.createElement(tag); if(cls) d.className=cls; if(html!=null) d.innerHTML=html; return d; };
 const fmt=x=>(Math.round(x*10)/10).toString().replace('.',',');
@@ -559,28 +561,28 @@ function rangeOf(seat){ // range d'un siège encore dans le coup, d'après ses a
   return openCore(seat); }
 
 /* ===== État préflop ===== */
-function startHand(){ S.pre={}; SEATS.forEach(s=>S.pre[s]={contrib:s==='SB'?0.5:s==='BB'?1:0,last:null,role:null,acted:false}); S.pot=(S.ante?1:0)+1.5; S.curBet=1; S.opener=null; S.raises=0; S.lastRaiser=null; S.order=SEATS.slice(); S.ptr=0; S.stage='preflop'; S.log=[]; S.reco=null; S.done=false; advance(); }
+function startHand(){ syncSeats(); S.pre={}; SEATS.forEach(s=>S.pre[s]={contrib:s==='SB'?0.5:s==='BB'?1:0,last:null,role:null,acted:false}); S.pot=(S.ante?1:0)+1.5; S.curBet=1; S.opener=null; S.raises=0; S.lastRaiser=null; S.order=SEATS.slice(); S.ptr=0; S.stage='preflop'; S.log=[]; S.reco=null; S.done=false; advance(); }
 function alive(){ return SEATS.filter(s=>S.pre[s].last!=='fold'); }
 function needsAction(s){ const a=S.pre[s]; return a.last!=='fold'&&(!a.acted||a.contrib<S.curBet); }
 function advance(){ // place ptr sur le prochain siège qui doit parler ; termine le préflop si personne
-  for(let i=0;i<8;i++){ const s=S.order[S.ptr]; if(needsAction(s)){ if(s===S.heroPos) computePreReco(); return; } S.ptr=(S.ptr+1)%8; }
+  for(let i=0;i<SEATS.length;i++){ const s=S.order[S.ptr]; if(needsAction(s)){ if(s===S.heroPos) computePreReco(); return; } S.ptr=(S.ptr+1)%SEATS.length; }
   endPreflop(); }
 function seatAct(seat,action,amount){ const a=S.pre[seat]; a.acted=true; a.last=action;
   if(action==='fold'){ S.log.push({who:seat,txt:'fold'}); }
   else if(action==='call'){ const add=S.curBet-a.contrib; a.contrib=S.curBet; S.pot+=add; if(a.role==='3bet'&&S.raises>=3) a.role='call4'; else if(!a.role) a.role='caller'; S.log.push({who:seat,txt:'paie '+fmt(S.curBet)}); }
   else if(action==='raise'){ const to=amount; const add=to-a.contrib; a.contrib=to; S.pot+=add; S.raises++; S.curBet=to; S.lastRaiser=seat; SEATS.forEach(x=>{ if(x!==seat) S.pre[x].acted=S.pre[x].last==='fold'; });
     if(S.raises===1){ S.opener=seat; a.role='opener'; S.log.push({who:seat,txt:'ouvre à '+fmt(to)}); } else if(S.raises===2){ a.role='3bet'; S.log.push({who:seat,txt:'3bet à '+fmt(to)}); } else { a.role='4bet'; S.log.push({who:seat,txt:'4bet à '+fmt(to)}); } }
-  S.ptr=(SEATS.indexOf(seat)+1)%8; S.reco=null; advance(); }
-function raiseSize(seat){ if(S.raises===0) return S.open; const ip=SEATS.indexOf(seat)<6&&SEATS.indexOf(seat)>SEATS.indexOf(S.lastRaiser); const mult=S.raises===1?(ip?3:3.5):2.3; return Math.min(S.eff,Math.round(S.curBet*mult*2)/2); }
+  S.ptr=(SEATS.indexOf(seat)+1)%SEATS.length; S.reco=null; advance(); }
+function raiseSize(seat){ if(S.raises===0) return S.open; const ip=SEATS.indexOf(seat)<SEATS.length-2&&SEATS.indexOf(seat)>SEATS.indexOf(S.lastRaiser); const mult=S.raises===1?(ip?3:3.5):2.3; return Math.min(S.eff,Math.round(S.curBet*mult*2)/2); }
 function endPreflop(){ const al=alive(); if(!S.raises){ S.done=true; S.endTxt=SEATS.some(x=>S.pre[x].last==='call')?'Pot limpé : le moteur ne gère pas encore les pots sans relance.':'Personne n’a relancé : la BB remporte les blindes.'; return; }
   if(!al.includes(S.heroPos)){ S.done=true; S.endTxt='Tu as passé. Le coup continue sans toi.'; return; }
   const opps=al.filter(s=>s!==S.heroPos);
   if(opps.length===0){ S.done=true; S.endTxt='Tout le monde a passé : tu remportes '+fmt(S.pot)+' bb.'; return; }
   if(opps.length>1){ S.stage='pickVill'; S.opps=opps; return; }
   setupPostflop(opps[0]); }
-function setupPostflop(vill){ S.villPos=vill; const hr=rangeOf(S.heroPos), vr=rangeOf(vill); if(!hr||!vr){ S.done=true; S.endTxt='Pas de range dans le PDF pour ce scénario ('+S.heroPos+' '+S.pre[S.heroPos].role+' vs '+vill+' '+S.pre[vill].role+').'; return; }
+function setupPostflop(vill){ S.villPos=vill; const hr=rangeOf(S.heroPos), vr=rangeOf(vill); if(!hr||!vr){ S.done=true; S.endTxt='Pas de range dans le PDF pour ce scénario ('+L(S.heroPos)+' '+S.pre[S.heroPos].role+' vs '+L(vill)+' '+S.pre[vill].role+').'; return; }
   S.heroRange=E.buildRange(hr); S.villRange=E.buildRange(vr); S.pfr=S.lastRaiser===S.heroPos?'hero':'vill'; S.tb=S.raises>=2?'yes':'none';
-  S.eff=S.eff-S.pre[S.heroPos].contrib; S.heroIP=POSTFLOP.indexOf(S.heroPos)>POSTFLOP.indexOf(vill); S.board=[]; S.street='flop'; S.stage='pickFlop'; S.rangeNote=S.heroPos+' ('+(hr.length)+' mains) contre '+vill+' ('+vr.length+' mains)'+(S.pre[S.heroPos].role==='opener'&&S.pre[S.heroPos].last==='call'||S.pre[vill].role==='opener'&&S.pre[vill].last==='call'?' · range « paie un 3bet » approximée':''); }
+  S.eff=S.eff-S.pre[S.heroPos].contrib; S.heroIP=POSTFLOP.indexOf(S.heroPos)>POSTFLOP.indexOf(vill); S.board=[]; S.street='flop'; S.stage='pickFlop'; S.rangeNote=L(S.heroPos)+' ('+(hr.length)+' mains) contre '+L(vill)+' ('+vr.length+' mains)'+(S.pre[S.heroPos].role==='opener'&&S.pre[S.heroPos].last==='call'||S.pre[vill].role==='opener'&&S.pre[vill].last==='call'?' · range « paie un 3bet » approximée':''); }
 
 /* ===== Recommandation préflop ===== */
 function computePreReco(){ const h=E.handLabel(E.cardFromId(S.hero[0]),E.cardFromId(S.hero[1])); const p=S.heroPos; let action,reason,rules=[],amount=0;
@@ -589,17 +591,17 @@ function computePreReco(){ const h=E.handLabel(E.cardFromId(S.hero[0]),E.cardFro
     if(p==='BB'){ action='check'; reason='Tout le monde a passé : tu prends les blindes.'; }
     else if(p==='SB'){ const P=DATA.positions.SB; if(P.open.core.includes(h)){ action='raise'; amount=raiseSize(p); reason='Blinde contre blinde : '+h+' est dans ta range de relance SB (tableau BVB Late Tight).'; } else if((P.limp||[]).includes(h)){ action='call'; amount=1; reason='Blinde contre blinde : '+h+' est dans ta range de limp SB (bleu du tableau BVB Late Tight).'; } else { action='fold'; reason=h+' n’est ni dans la range de relance ni dans la range de limp SB.'; } }
     else { const core=openCore(p).includes(h), opt=openOpt(p).includes(h); const ex=typeof explain==='function'?explain(h,p,'core'):'';
-      if(core){ action='raise'; amount=raiseSize(p); reason=h+' est dans ta range d’open en '+p+'. '+ex+(sc!=null?' Formule : '+sc+' ≥ '+thr+'.':''); }
-      else if(opt){ action='fold'; reason=h+' ne s’ouvre en '+p+' qu’entre 30 et 50bb de tapis'+(S.eff>=30&&S.eff<=50?' : avec '+fmt(S.eff)+' bb tu peux ouvrir.':' : avec '+fmt(S.eff)+' bb, fold.'); if(S.eff>=30&&S.eff<=50){ action='raise'; amount=raiseSize(p); } }
-      else { action='fold'; reason=h+' n’est pas dans ta range d’open en '+p+'. '+ex+(sc!=null?' Formule : '+sc+' < '+thr+'.':''); } } }
+      if(core){ action='raise'; amount=raiseSize(p); reason=h+' est dans ta range d’open en '+L(p)+'. '+ex+(sc!=null?' Formule : '+sc+' ≥ '+thr+'.':''); }
+      else if(opt){ action='fold'; reason=h+' ne s’ouvre en '+L(p)+' qu’entre 30 et 50bb de tapis'+(S.eff>=30&&S.eff<=50?' : avec '+fmt(S.eff)+' bb tu peux ouvrir.':' : avec '+fmt(S.eff)+' bb, fold.'); if(S.eff>=30&&S.eff<=50){ action='raise'; amount=raiseSize(p); } }
+      else { action='fold'; reason=h+' n’est pas dans ta range d’open en '+L(p)+'. '+ex+(sc!=null?' Formule : '+sc+' < '+thr+'.':''); } } }
   else if(S.raises===1&&S.opener!==p){ // face à une ouverture
     const t=vsOpen(p,S.opener); const callers=SEATS.filter(s=>S.pre[s].role==='caller'&&S.pre[s].last==='call');
-    if(!t){ action='fold'; reason='Pas de tableau dans le PDF pour '+p+' face à une ouverture de '+S.opener+'.'; }
-    else { const approx=t.key.includes('approx')?' (approximation : tableau HJ vs LJ)':''; const sq=callers.length?' Il y a déjà un joueur qui a payé : le PDF ne couvre pas le squeeze, on applique la range face à l’ouvreur.':'';
-      if(t.value.includes(h)){ action='raise'; amount=raiseSize(p); reason=h+' est dans ta range de 3bet value face à '+S.opener+approx+'.'+sq; }
-      else if(t.bluff.includes(h)){ action='raise'; amount=raiseSize(p); reason=h+' est dans ta range de 3bet bluff face à '+S.opener+approx+' : la marche juste sous ton call (règle de l’escalier).'+sq; }
-      else if(t.call.includes(h)){ action='call'; amount=S.curBet; reason=h+' est dans ta range de call face à '+S.opener+approx+'.'+sq; }
-      else { action='fold'; reason=h+' n’est ni dans ta range de 3bet ni dans ta range de call face à '+S.opener+approx+'.'; } } }
+    if(!t){ action='fold'; reason='Pas de tableau dans le PDF pour '+L(p)+' face à une ouverture de '+L(S.opener)+'.'; }
+    else { const approx=t.key.includes('approx')?' (approximation : tableau HJ vs '+L('LJ')+')':''; const O=L(S.opener); const sq=callers.length?' Il y a déjà un joueur qui a payé : le PDF ne couvre pas le squeeze, on applique la range face à l’ouvreur.':'';
+      if(t.value.includes(h)){ action='raise'; amount=raiseSize(p); reason=h+' est dans ta range de 3bet value face à '+O+approx+'.'+sq; }
+      else if(t.bluff.includes(h)){ action='raise'; amount=raiseSize(p); reason=h+' est dans ta range de 3bet bluff face à '+O+approx+' : la marche juste sous ton call (règle de l’escalier).'+sq; }
+      else if(t.call.includes(h)){ action='call'; amount=S.curBet; reason=h+' est dans ta range de call face à '+O+approx+'.'+sq; }
+      else { action='fold'; reason=h+' n’est ni dans ta range de 3bet ni dans ta range de call face à '+O+approx+'.'; } } }
   else if(S.raises>=2&&S.lastRaiser!==p){ // face à un 3bet ou 4bet
     const my=S.pre[p].role;
     if(FOURBET.includes(h)){ action='raise'; amount=raiseSize(p); reason=h+' : tu relances pour la valeur (AA, KK, AK). Approximation : le PDF n’a pas de range de 4bet.'; }
@@ -642,9 +644,9 @@ function render(){ root.innerHTML=''; const st=S.stage;
   if(st==='pickTurn') return renderPick(1,'Analyser la turn',ids=>{ S.board.push(ids[0]); S.street='turn'; S.stage='play'; newStreet(); render(); },'La turn');
   if(st==='pickRiver') return renderPick(1,'Analyser la river',ids=>{ S.board.push(ids[0]); S.street='river'; S.stage='play'; newStreet(); render(); },'La river');
   if(st==='preflop') return renderPreflop(); if(st==='pickVill') return renderPickVill(); return renderPlay(); }
-function renderSetup(){ S.heroPos=S.heroPos||'CO'; S.eff=S.eff0||40; S.open=S.open||2.2; if(S.ante==null) S.ante=true; S.profile=S.profile||{};
+function renderSetup(){ syncSeats(); if(!SEATS.includes(S.heroPos)) S.heroPos='CO'; S.eff=S.eff0||40; S.open=S.open||2.2; if(S.ante==null) S.ante=true; S.profile=S.profile||{};
   const f=el('div','cp-form');
-  const pos=el('div','cp-seats'); pos.innerHTML='<span>Ma position</span>'; SEATS.forEach(s=>{ const b=el('button',null,s); b.setAttribute('aria-pressed',s===S.heroPos); b.onclick=()=>{ S.heroPos=s; pos.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.textContent===s)); }; pos.appendChild(b); }); f.appendChild(pos);
+  const pos=el('div','cp-seats'); pos.innerHTML='<span>Ma position</span>'; SEATS.forEach(s=>{ const b=el('button',null,L(s)); b.dataset.s=s; b.setAttribute('aria-pressed',s===S.heroPos); b.onclick=()=>{ S.heroPos=s; pos.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.s===s)); }; pos.appendChild(b); }); f.appendChild(pos);
   const n=(id,val,label,step)=>{ const w=el('label','fld'); w.innerHTML='<span>'+label+'</span>'; const i=el('input'); i.type='number'; i.id=id; i.value=val; i.step=step||1; i.inputMode='decimal'; w.appendChild(i); return w; };
   f.appendChild(n('cpEff',S.eff,'Tapis effectif (bb)')); f.appendChild(n('cpOpen',S.open,'Taille de l’open (bb)',0.1));
   const a=el('label','fld chk'); a.innerHTML='<input type="checkbox" id="cpAnte" '+(S.ante?'checked':'')+'><span>Ante BB (tournoi)</span>'; f.appendChild(a);
@@ -653,14 +655,14 @@ function renderSetup(){ S.heroPos=S.heroPos||'CO'; S.eff=S.eff0||40; S.open=S.op
   const go=el('button','cp-go','Choisir mes cartes'); go.onclick=()=>{ S.eff0=+document.getElementById('cpEff').value; S.eff=S.eff0; S.open=+document.getElementById('cpOpen').value; S.ante=document.getElementById('cpAnte').checked; S.hero=[]; S.board=[]; S.stage='pickHand'; render(); }; f.appendChild(go); root.appendChild(f); }
 function renderPick(n,label,cb,title){ root.appendChild(headBox()); const f=el('div','cp-form'); f.appendChild(el('div','cp-title',title)); f.appendChild(picker(n,label,cb)); root.appendChild(f); root.appendChild(restartBtn()); }
 function headBox(){ const h=el('div','cp-head'); const hero=(S.hero||[]).map(E.cardFromId), b=(S.board||[]).map(E.cardFromId);
-  h.innerHTML='<div class="cp-cards"><span class="lbl">Moi · '+S.heroPos+'</span>'+hero.map(cardChip).join('')+(b.length?'<span class="lbl">Board</span>'+b.map(cardChip).join(''):'')+'</div>'+
-    '<div class="cp-pot">Pot <b>'+fmt(S.pot||0)+'</b> bb · tapis <b>'+fmt(S.stage==='preflop'?S.eff-S.pre[S.heroPos].contrib:(S.eff||0)-Math.max((S.streetBets||{hero:0}).hero,(S.streetBets||{vill:0}).vill))+'</b> bb'+(S.villPos?' · vs '+S.villPos+(S.heroIP?' (IP)':' (OOP)'):'')+(S.street&&S.stage==='play'?' · '+S.street:'')+'</div>'+
-    (S.log&&S.log.length?'<div class="cp-log">'+S.log.map(l=>'<span class="'+(l.who==='moi'?'hero':'')+'">'+l.who+' '+l.txt+'</span>').join(' · ')+'</div>':'');
+  h.innerHTML='<div class="cp-cards"><span class="lbl">Moi · '+L(S.heroPos)+'</span>'+hero.map(cardChip).join('')+(b.length?'<span class="lbl">Board</span>'+b.map(cardChip).join(''):'')+'</div>'+
+    '<div class="cp-pot">Pot <b>'+fmt(S.pot||0)+'</b> bb · tapis <b>'+fmt(S.stage==='preflop'?S.eff-S.pre[S.heroPos].contrib:(S.eff||0)-Math.max((S.streetBets||{hero:0}).hero,(S.streetBets||{vill:0}).vill))+'</b> bb'+(S.villPos?' · vs '+L(S.villPos)+(S.heroIP?' (IP)':' (OOP)'):'')+(S.street&&S.stage==='play'?' · '+S.street:'')+'</div>'+
+    (S.log&&S.log.length?'<div class="cp-log">'+S.log.map(l=>'<span class="'+(l.who==='moi'?'hero':'')+'">'+(l.who==='moi'?'moi':L(l.who))+' '+l.txt+'</span>').join(' · ')+'</div>':'');
   return h; }
 function renderPreflop(){ root.appendChild(headBox());
   if(S.done){ root.appendChild(el('div','cp-end',S.endTxt)); root.appendChild(restartBtn()); return; }
   const seat=S.order[S.ptr]; const a=S.pre[seat]; const toCall=S.curBet-a.contrib;
-  const seats=el('div','cp-seatrow'); SEATS.forEach(s=>{ const d=el('span','seat'+(S.pre[s].last==='fold'?' off':'')+(s===seat?' now':'')+(s===S.heroPos?' me':''),s); seats.appendChild(d); }); root.appendChild(seats);
+  const seats=el('div','cp-seatrow'); SEATS.forEach(s=>{ const d=el('span','seat'+(S.pre[s].last==='fold'?' off':'')+(s===seat?' now':'')+(s===S.heroPos?' me':''),L(s)); seats.appendChild(d); }); root.appendChild(seats);
   if(seat===S.heroPos){ const r=S.reco; const card=el('div','cp-reco');
     const actTxt=r.action==='raise'?(S.raises===0?'OPEN à ':S.raises===1?'3BET à ':'4BET à ')+fmt(r.amount)+' bb':r.action==='all-in'?'ALL-IN ('+fmt(r.amount)+' bb)':r.action==='call'?(S.raises===0?'LIMP':'PAIE '+fmt(r.toCall)+' bb'):r.action==='check'?'CHECK':'FOLD';
     card.innerHTML='<div class="cp-act '+r.action+'">'+actTxt+'</div><div class="cp-why">'+r.reason+'</div>'; root.appendChild(card);
@@ -671,13 +673,13 @@ function renderPreflop(){ root.appendChild(headBox());
     if(seat==='BB'&&toCall===0) add('Check',()=>seatAct(seat,'call'),r.action==='check');
     const rs=raiseSize(seat); add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs),r.action==='raise'); add('All-in '+fmt(S.eff),()=>seatAct(seat,'raise',S.eff),r.action==='all-in');
     root.appendChild(acts); }
-  else { const acts=el('div','cp-acts'); acts.appendChild(el('span','lbl',seat+' fait :'));
+  else { const acts=el('div','cp-acts'); acts.appendChild(el('span','lbl',L(seat)+' fait :'));
     const add=(t,fn)=>{ const b=el('button','',t); b.onclick=()=>{ fn(); render(); }; acts.appendChild(b); };
     add('Fold',()=>seatAct(seat,'fold')); if(S.raises>0) add('Paie '+fmt(toCall),()=>seatAct(seat,'call')); else if(seat==='SB') add('Limp',()=>seatAct(seat,'call')); if(seat==='BB'&&toCall===0) add('Check',()=>seatAct(seat,'call'));
     const rs=raiseSize(seat); add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs)); add('All-in',()=>seatAct(seat,'raise',S.eff)); root.appendChild(acts); }
   root.appendChild(restartBtn()); }
 function renderPickVill(){ root.appendChild(headBox()); const f=el('div','cp-form'); f.appendChild(el('p','cp-note','Plusieurs adversaires vont au flop. Le moteur n’en suit qu’un : choisis lequel (de préférence le relanceur). Les recommandations seront moins fiables en multiway : moins de bluffs, plus de valeur.'));
-  S.opps.forEach(o=>{ const b=el('button','cp-go',o+' ('+S.pre[o].role+')'); b.onclick=()=>{ setupPostflop(o); render(); }; f.appendChild(b); }); root.appendChild(f); root.appendChild(restartBtn()); }
+  S.opps.forEach(o=>{ const b=el('button','cp-go',L(o)+' ('+S.pre[o].role+')'); b.onclick=()=>{ setupPostflop(o); render(); }; f.appendChild(b); }); root.appendChild(f); root.appendChild(restartBtn()); }
 function renderPlay(){ root.appendChild(headBox());
   if(S.done){ root.appendChild(el('div','cp-end',S.endTxt)); root.appendChild(restartBtn()); return; }
   if(S.turnOf==='vill'){ root.appendChild(villButtons()); root.appendChild(restartBtn()); return; }
@@ -691,7 +693,7 @@ function renderPlay(){ root.appendChild(headBox());
     const rs=r.action==='raise'||r.action==='all-in'?r.amount:Math.min(S.eff-S.streetBets.hero,Math.round((S.pot+toCall*2)*10)/10); addBtn('Relance à '+fmt(S.streetBets.hero+rs),()=>heroAct('raise',rs),r.action==='raise'||r.action==='all-in'); }
   else { addBtn('Check',()=>heroAct('check'),r.action==='check'); [0.33,0.5,0.66,1].forEach(f=>{ const a=Math.min(S.eff,Math.round(f*S.pot*10)/10); addBtn('Mise '+fmt(a)+' ('+Math.round(f*100)+'%)',()=>heroAct('bet',a),(r.action==='bet'&&Math.abs(a-r.amount)<0.05)); }); addBtn('All-in '+fmt(S.eff),()=>heroAct('bet',S.eff),r.action==='all-in'); }
   root.appendChild(acts); root.appendChild(restartBtn()); }
-function villButtons(){ const w=el('div','cp-acts'); w.appendChild(el('span','lbl',S.villPos+' fait :'));
+function villButtons(){ const w=el('div','cp-acts'); w.appendChild(el('span','lbl',L(S.villPos)+' fait :'));
   const add=(t,fn)=>{ const b=el('button','',t); b.onclick=()=>{ fn(); render(); }; w.appendChild(b); };
   if(S.streetBets.hero>S.streetBets.vill){ add('Fold',()=>villAct('fold')); add('Paie',()=>villAct('call')); [2.5,3.5].forEach(m=>{ const amt=Math.min(S.eff,Math.round(S.streetBets.hero*m*10)/10); add('Relance à '+fmt(amt),()=>villAct('raise',null,amt-S.streetBets.hero)); }); add('All-in',()=>villAct('raise',null,S.eff-S.streetBets.hero)); }
   else { add('Check',()=>villAct('check')); [0.33,0.5,0.66,1].forEach(f=>add('Mise '+Math.round(f*100)+'% ('+fmt(Math.min(S.eff,Math.round(f*S.pot*10)/10))+')',()=>villAct('bet',f))); add('All-in',()=>villAct('bet',null,S.eff)); }
