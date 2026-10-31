@@ -43,6 +43,47 @@ self.addEventListener('fetch',e=>{
 });
 ''')
 
+# ---- Page Mac : uniquement l'onglet Coup, en 6-max, mise en page large ----
+import os
+os.makedirs('docs/coup',exist_ok=True)
+coup_head=head.replace('<title>'+title+'</title>','<title>Coup 6-max</title>').replace('<link rel="manifest" href="manifest.webmanifest">\n','').replace('href="icon-180.png"','href="../icon-180.png"').replace('href="icon-192.png"','href="../icon-192.png"')
+coup_css='''<style>
+/* Page Mac : une seule vue, large */
+.wrap{max-width:1100px}
+#tabs,#tbl{display:none!important}
+header{justify-content:flex-start;gap:12px}
+header h1::after{content:" · Coup 6-max";color:var(--muted);font-weight:500}
+.cp-intro{max-width:70ch}
+@media (min-width:900px){
+  #coupRoot{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  #coupRoot>.cp-head,#coupRoot>.cp-seatrow,#coupRoot>.cp-end,#coupRoot>.cp-back,#coupRoot>.cp-err{grid-column:1/-1}
+  #coupRoot>.cp-form{grid-column:1/-1;max-width:760px;width:100%;justify-self:center}
+  #coupRoot>.cp-reco{grid-column:1;margin-top:0}
+  #coupRoot>.cp-acts{grid-column:2;margin-top:0;align-content:start}
+  .cp-act{font-size:30px}
+  .cp-why{font-size:17px;line-height:1.5}
+  .cp-meta{font-size:12px}
+  .cp-acts button{font-size:15px;padding:12px 14px}
+  .pk-grid button{font-size:16px;padding:10px 0 8px}
+  .pk-grid button small{font-size:12px}
+  .chip{font-size:20px;padding:6px 9px;min-width:40px}
+  .cp-seatrow .seat{font-size:13px;padding:9px 0}
+  .cp-seats button{font-size:16px;padding:12px 0}
+  .cp-log{font-size:13px}
+  .cp-pot{font-size:14px}
+}
+</style>
+'''
+coup_tail='''
+<script>
+/* Forçages de la page Mac : 6-max, onglet Coup seul, pas de mémorisation partagée avec l'app téléphone */
+save=function(){};
+table=6; syncTable(); buildPos(); tab='coup'; showTab();
+</script>
+</body>
+</html>
+'''
+open('docs/coup/index.html','w').write(coup_head+coup_css+body+coup_tail)
 # icons: dark tile, green/red diagonal cell, "8" label
 def icon(size,path):
     im=Image.new('RGB',(size,size),'#15181c'); d=ImageDraw.Draw(im)
