@@ -49,7 +49,7 @@ os.makedirs('docs/coup',exist_ok=True)
 coup_head=head.replace('<title>'+title+'</title>','<title>Coup 6-max</title>').replace('<link rel="manifest" href="manifest.webmanifest">\n','').replace('href="icon-180.png"','href="../icon-180.png"').replace('href="icon-192.png"','href="../icon-192.png"')
 coup_css='''<style>
 /* Page Mac : une seule vue, large */
-.wrap{max-width:1100px}
+body .wrap{max-width:1100px}
 #tabs,#tbl{display:none!important}
 header{justify-content:flex-start;gap:12px}
 header h1::after{content:" · Coup 6-max";color:var(--muted);font-weight:500}
