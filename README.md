@@ -18,3 +18,7 @@ Pour modifier l'app : éditer `template.html` ou `ranges_8max.json`, lancer `pyt
 - `ranges_8max.json` contient aussi SB et BB (clé `engineOnly`) pour les calculs, sans les afficher dans la Grille.
 
 Pour tester le moteur hors navigateur : `node` avec un script qui charge `engine.js` puis appelle `Engine.decide(...)`.
+
+## 8-max / 6-max
+
+L'interrupteur 8 / 6 de l'en-tête change les positions affichées. En 6-max, l'UTG correspond au tableau LJ du PDF (« Lo-Jack en 8-max = UTG en 6-max »), puis HJ, CO, BTN, SB, BB. Les données ne changent pas, seuls les libellés et la liste des sièges.
