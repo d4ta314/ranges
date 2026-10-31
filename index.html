@@ -22,6 +22,8 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);-w
 .wrap{max-width:560px;margin:0 auto;padding-block:8px 12px;padding-inline:12px;display:flex;flex-direction:column;gap:8px;min-height:100%}
 header{display:flex;align-items:center;justify-content:space-between;gap:8px}
 h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.02em}
+.tabs.tbl{margin-right:auto;margin-left:6px}
+.tabs.tbl button{padding:7px 8px}
 .tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
 .tabs button{font:600 12px/1 var(--display);padding:7px 7px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
 .tabs button[aria-pressed="true"]{background:var(--accent);color:#1b1f24}
@@ -143,7 +145,8 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cp-seats>span{grid-column:1/-1;font-size:13px;color:var(--muted)}
 .cp-seats button{font:600 14px/1 var(--display);padding:10px 0;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
 .cp-seats button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#1b1f24}
-.cp-seatrow{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-top:8px}
+.cp-seatrow{display:flex;gap:3px;margin-top:8px}
+.cp-seatrow .seat{flex:1}
 .cp-seatrow .seat{font:600 10px/1 var(--display);text-align:center;padding:6px 0;border-radius:5px;background:var(--cell);color:var(--muted);border:1px solid transparent}
 .cp-seatrow .seat.off{opacity:.3;text-decoration:line-through}
 .cp-seatrow .seat.me{color:var(--fg);border-color:var(--accent)}
@@ -168,7 +171,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media (prefers-reduced-motion:no-preference){.c{transition:opacity .15s}}
 </style>
 <div class="wrap">
-  <header><h1>Ranges 8-max</h1>
+  <header><h1>Ranges</h1><nav class="tabs tbl" id="tbl" aria-label="Taille de table"><button data-n="8" aria-pressed="true">8</button><button data-n="6" aria-pressed="false">6</button></nav>
     <nav class="tabs" id="tabs" aria-label="Onglets">
       <button data-t="grid" aria-pressed="true">Grille</button>
       <button data-t="memo" aria-pressed="false">Mémo</button>
@@ -688,19 +691,24 @@ return {init,render,S};
 const DATA={"source":"Ranges_avec_legende.pdf","table":"8 joueurs","positions":{"UTG":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{}},"UTG+1":{"open":{"core":["77","88","99","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATs","JJ","JTs","KJs","KK","KQo","KQs","KTs","QJs","QQ","QTs","TT"],"opt":["55","66","98s","A2s","A3s","A4s","A5s","A6s","ATo","J9s","K8s","K9s","KJo","Q9s","T8s","T9s"]},"openSrc":"UTG/UTG1 8Max (p.2)","threebet":{"UTG (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"LJ":{"open":{"core":["66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J9s","JJ","JTs","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTs","Q9s","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","55","65s","76s","86s","97s","A8o","A9o","J8s","JTo","K5s","K6s","K7s","KTo","Q8s","QJo","QTo","T7s"]},"openSrc":"LJ (p.3)","threebet":{"UTG / UTG+1 (approx. = HJ vs LJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"HJ":{"open":{"core":["55","66","77","87s","88","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTs","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q8s","Q9s","QJo","QJs","QQ","QTs","T8s","T9s","TT"],"opt":["22","33","44","54s","65s","75s","76s","86s","96s","97s","A7o","A8o","A9o","J7s","JTo","K3s","K4s","K5s","K9o","Q6s","Q7s","QTo","T7s","T9o"]},"openSrc":"HJ (p.6)","threebet":{"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A4s","A5s","A6s","AJo","ATo","JTs","K9s","KQo"],"call":["44","55","66","77","88","99","A7s","A8s","A9s","AJs","AQo","AQs","ATs","KJs","KQs","KTs","QJs","QTs","TT"]}}},"CO":{"open":{"core":["44","55","65s","66","76s","77","86s","87s","88","97s","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J8s","J9s","JJ","JTo","JTs","K5s","K6s","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q7s","Q8s","Q9s","QJo","QJs","QQ","QTo","QTs","T7s","T8s","T9s","TT"],"opt":["22","33","53s","54s","64s","75s","85s","87o","95s","96s","98o","A3o","A4o","A5o","A6o","A7o","J4s","J5s","J6s","J7s","J9o","K2s","K3s","K4s","K8o","K9o","Q3s","Q4s","Q5s","Q6s","Q9o","T5s","T6s","T8o","T9o"]},"openSrc":"CO (p.9)","threebet":{"HJ":{"value":["AA","AKo","AKs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","AJo","ATo","K8s","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","AJo","ATo","J9s","K9s","KJo","Q9s"],"call":["22","33","44","55","66","77","88","99","A5s","A6s","A7s","A8s","A9s","AJs","AQo","AQs","ATs","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]}}},"BTN":{"open":{"core":["33","44","54s","55","65s","66","75s","76s","77","86s","87s","88","96s","97s","98o","98s","99","A2s","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J5s","J6s","J7s","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q3s","Q4s","Q5s","Q6s","Q7s","Q8s","Q9o","Q9s","QJo","QJs","QQ","QTo","QTs","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"],"opt":["22","43s","53s","63s","64s","74s","76o","84s","85s","86o","87o","94s","95s","97o","A2o","A3o","J2s","J3s","J4s","J7o","J8o","K4o","K5o","K6o","K7o","Q2s","Q6o","Q7o","Q8o","T2s","T3s","T4s","T7o"]},"openSrc":"BTN (p.12)","threebet":{"CO":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["87s","A2s","A3s","A8o","A9o","J8s","K6s","K7s","KTo","Q8s","QTo","T8s"],"call":["22","33","44","54s","55","65s","66","76s","77","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATo","ATs","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T9s"]},"HJ":{"value":["AA","AKo","AKs","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A9o","ATo","K8s","KJo","KTo","Q9s","QJo","T8s"],"call":["22","33","44","55","66","76s","77","87s","88","98s","99","A4s","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","ATs","J9s","JTs","K9s","KJs","KQo","KQs","KTs","QJs","QTs","T9s"]},"LJ":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["87s","A2s","A3s","A4s","A9o","ATo","J9s","K8s","KJo"],"call":["22","33","44","55","66","77","88","98s","99","A5s","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","JTs","K9s","KJs","KQo","KQs","KTs","Q9s","QJs","QTs","T8s","T9s","TT"]}}},"SB":{"open":{"core":["22","33","44","55","66","77","88","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","JJ","K2o","K2s","K3o","K3s","K4o","K4s","K5o","K5s","K6o","K6s","K7o","KJs","KK","KQo","KQs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","QQ","TT"],"opt":[]},"openSrc":"SB BVB Late Tight (p.16)","threebet":{"Early (UTG→HJ)":{"value":["AA","AKo","AKs","JJ","KK","QQ"],"bluff":["A2s","A3s","A4s","A5s","ATo","K9s","KJo","Q9s","T8s"],"call":["22","33","44","55","66","77","88","98s","99","A6s","A7s","A8s","A9s","AJo","AJs","AQo","AQs","ATs","J9s","JTs","KJs","KQo","KQs","KTs","QJs","QTs","T9s","TT"]},"Late (CO/BTN)":{"value":["99","AA","AKo","AKs","AQo","AQs","JJ","KK","QQ","TT"],"bluff":["A2s","A3s","A4s","A5s","A8o","A9o","JTo","K7s","KTo","Q8s","QTo"],"call":["22","33","44","55","66","77","87s","88","98s","A6s","A7s","A8s","A9s","AJo","AJs","ATo","ATs","J8s","J9s","JTs","K8s","K9s","KJo","KJs","KQo","KQs","KTs","Q9s","QJo","QJs","QTs","T8s","T9s"]}},"limp":["54s","64s","65s","75s","76s","85s","86s","87o","87s","96s","97s","98o","98s","J6s","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K7s","K8o","K8s","K9o","K9s","KJo","KTo","KTs","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T6s","T7s","T8o","T8s","T9o","T9s"],"engineOnly":true},"BB":{"open":{"core":[],"opt":[]},"openSrc":"","threebet":{"Early (UTG→HJ)":{"value":["AA","AKo","AKs","AQo","JJ","KK","QQ"],"bluff":["76s","87s","98s","A5o","KTo","T9s"],"call":["22","32s","33","42s","43s","44","52s","53s","54s","55","62s","63s","64s","65s","66","72s","73s","74s","75s","76s","77","82s","83s","84s","85s","86s","87s","88","92s","93s","94s","95s","96s","97s","98o","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AJo","AJs","AQo","AQs","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7s","J8o","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KQs","KTs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7s","T8o","T8s","T9o","T9s","TT"]},"Late (CO/BTN)":{"value":["99","AA","AJo","AJs","AKo","AKs","AQo","AQs","JJ","KK","KQo","KQs","QQ","TT"],"bluff":["A2o","A3o","A4o","A6o","J7o","K4o","K5o","K6o","Q5o","T7o"],"call":["22","32s","33","42s","43s","44","52s","53s","54o","54s","55","62s","63s","64s","65o","65s","66","72s","73s","74s","75o","75s","76o","76s","77","82s","83s","84s","85s","86o","86s","87o","87s","88","92s","93s","94s","95s","96s","97o","97s","98o","98s","A2s","A3s","A4s","A5o","A5s","A6s","A7o","A7s","A8o","A8s","A9o","A9s","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7o","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K2o","K2s","K3o","K3s","K4o","K4s","K5o","K5s","K6o","K6s","K7o","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KTo","KTs","Q2s","Q3s","Q4s","Q5o","Q5s","Q6o","Q6s","Q7o","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7o","T7s","T8o","T8s","T9o","T9s"]},"SB":{"value":["AA","AJs","AKo","AKs","AQo","AQs","JJ","KJs","KK","KQs","QQ","TT"],"bluff":["96s","A2o","A3o","J7o","K5o","Q6o","T5s","T7o"],"call":["22","32s","33","42s","43s","44","52s","53s","54o","54s","55","62s","63s","64s","65o","65s","66","72s","73s","74s","75s","76o","76s","77","82s","83s","84s","85s","86s","87o","87s","88","92s","93s","94s","95s","96s","97o","97s","98o","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AJo","ATo","ATs","J2s","J3s","J4s","J5s","J6s","J7o","J7s","J8o","J8s","J9o","J9s","JTo","JTs","K2s","K3s","K4s","K5o","K5s","K6o","K6s","K7o","K7s","K8o","K8s","K9o","K9s","KJo","KJs","KQo","KQs","KTo","KTs","Q2s","Q3s","Q4s","Q5s","Q6o","Q6s","Q7o","Q7s","Q8o","Q8s","Q9o","Q9s","QJo","QJs","QTo","QTs","T2s","T3s","T4s","T5s","T6s","T7o","T7s","T8o","T8s","T9o","T9s"]}},"defenseOOP":{"tight":["22","33","43s","44","53s","54s","55","64s","65s","66","75s","76s","77","85s","86s","87s","88","96s","97s","98s","99","A2o","A2s","A3o","A3s","A4o","A4s","A5o","A5s","A6o","A6s","A7o","A7s","A8o","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J5s","J6s","J7s","J8s","J9o","J9s","JJ","JTo","JTs","K2s","K3s","K4s","K5s","K6s","K7s","K8s","K9o","K9s","KJo","KJs","KK","KQo","KQs","KTo","KTs","Q2s","Q3s","Q4s","Q5s","Q6s","Q7s","Q8s","Q9o","Q9s","QJo","QJs","QQ","QTo","QTs","T6s","T7s","T8s","T9o","T9s","TT"],"standard":["32s","42s","52s","62s","63s","73s","74s","84s","87o","93s","94s","95s","98o","J2s","J3s","J4s","J8o","K7o","K8o","Q8o","T2s","T3s","T4s","T5s","T8o"],"loose":["43o","53o","54o","64o","65o","72s","75o","76o","82s","83s","85o","86o","92s","96o","97o","J6o","J7o","K2o","K3o","K4o","K5o","K6o","Q4o","Q5o","Q6o","Q7o","T6o","T7o"]},"vsLimpSB":["22","33","44","54s","55","65s","66","76s","77","87s","88","97s","98s","99","A2s","A3s","A4s","A5s","A6s","A7s","A8s","A9o","A9s","AA","AJo","AJs","AKo","AKs","AQo","AQs","ATo","ATs","J2o","J3o","J4o","J5o","J8s","J9s","JJ","JTs","K2o","K3o","K4o","K5o","K7s","K8s","K9s","KJo","KJs","KK","KQo","KQs","KTs","Q2o","Q3o","Q4o","Q5o","Q8s","Q9s","QJs","QQ","QTs","T2o","T3o","T4o","T5o","T8s","T9s","TT"],"engineOnly":true}}};
 const RANKS='AKQJT98765432';
 const RV={}; RANKS.split('').forEach((r,i)=>RV[r]=14-i);
-const ORDER=['UTG','UTG+1','LJ','HJ','CO','BTN'];
-const MEMO_POS=['UTG','LJ','HJ','CO','BTN'];
+let table=8; try{ const s0=JSON.parse(localStorage.getItem('r8')||'{}'); if(s0.table===6) table=6; }catch(e){}
+let ORDER=[], MEMO_POS=[];
+const LABEL6={'LJ':'UTG'};
+function lbl(k){ return table===6?(LABEL6[k]||k):k }
+function lblVs(k){ return table===6?(LABEL6[k.split(' ')[0]]||k.split(' ')[0]):k.split(' ')[0] }
+function syncTable(){ ORDER=table===6?['LJ','HJ','CO','BTN']:['UTG','UTG+1','LJ','HJ','CO','BTN']; MEMO_POS=table===6?['LJ','HJ','CO','BTN']:['UTG','LJ','HJ','CO','BTN']; }
+syncTable();
 let pos='HJ', filter='all', vsPick={}, tab='grid', memoMode='core', coupStarted=false;
 let store={};
 try{ store=JSON.parse(localStorage.getItem('r8')||'{}'); if(ORDER.includes(store.pos)) pos=store.pos; if(store.vs) vsPick=store.vs; if(store.tab) tab=store.tab; }catch(e){}
-function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick,tab,quiz:store.quiz||{}})) }catch(e){} }
+function save(){ try{ localStorage.setItem('r8',JSON.stringify({pos,vs:vsPick,tab,table,quiz:store.quiz||{}})) }catch(e){} }
 function combos(h){ return h.length===2?6:(h[2]==='s'?4:12) }
 function pct(set){ let n=0; set.forEach(h=>n+=combos(h)); return (100*n/1326).toFixed(1).replace('.',',')+' %' }
 function hands(ri,ci){ const a=RANKS[ri],b=RANKS[ci]; return ri===ci?a+b:(ci>ri?a+b+'s':b+a+'o') }
 const ALL=[]; for(let r=0;r<13;r++)for(let c=0;c<13;c++) ALL.push(hands(r,c));
 function sortH(a,b){ return RV[b[0]]-RV[a[0]] || RV[b[1]]-RV[a[1]] || (a[2]||'').localeCompare(b[2]||'') }
 function defaultVs(p){ const ks=Object.keys(DATA.positions[p].threebet); let v=vsPick[p]; return ks.includes(v)?v:ks[0] }
-function betSet(p){ const v=defaultVs(p); const tb=v?DATA.positions[p].threebet[v]:null; return {vs:v,tb,set:new Set(tb?[...tb.value,...tb.bluff]:[])} }
+function betSet(p){ if(table===6&&p==='LJ') return {vs:null,tb:null,set:new Set()}; const v=defaultVs(p); const tb=v?DATA.positions[p].threebet[v]:null; return {vs:v,tb,set:new Set(tb?[...tb.value,...tb.bluff]:[])} }
 
 /* ---------- Onglets ---------- */
 const tabsEl=document.getElementById('tabs');
@@ -715,12 +723,16 @@ function showTab(){
 const grid=document.getElementById('grid'), cells=[];
 ALL.forEach((h,i)=>{ const d=document.createElement('div'); d.className='c'+(h.length===2?' pair':''); d.textContent=h; grid.appendChild(d); cells.push(d); });
 const posNav=document.getElementById('pos');
-ORDER.forEach(p=>{ const b=document.createElement('button'); b.textContent=p; b.dataset.p=p; b.onclick=()=>{pos=p; save(); render()}; posNav.appendChild(b) });
+function buildPos(){ posNav.innerHTML=''; ORDER.forEach(p=>{ const b=document.createElement('button'); b.textContent=lbl(p); b.dataset.p=p; b.onclick=()=>{pos=p; save(); render()}; posNav.appendChild(b) }); if(!ORDER.includes(pos)) pos=ORDER[0]; }
+buildPos();
+const tblEl=document.getElementById('tbl');
+tblEl.onclick=e=>{ const b=e.target.closest('button'); if(!b) return; table=+b.dataset.n; syncTable(); buildPos(); save(); document.getElementById('pts').innerHTML=''; document.getElementById('thr').innerHTML=''; document.getElementById('cp').innerHTML=''; document.getElementById('c1').innerHTML=''; document.getElementById('c2').innerHTML=''; if(typeof Coup!=='undefined'&&coupStarted){ Coup.S.stage='setup'; Coup.S.heroPos=null; Coup.render(); } render(); showTab(); };
+function syncTblBtns(){ tblEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===table)); }
 document.getElementById('cardOpen').onclick=()=>{ filter=filter==='open'?'all':'open'; render() };
 document.getElementById('cardBet').onclick=e=>{ if(e.target.closest('.vs')) return; filter=filter==='bet'?'all':'bet'; render() };
 function render(){
   const P=DATA.positions[pos];
-  posNav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===pos));
+  syncTblBtns(); posNav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===pos));
   document.getElementById('cardOpen').setAttribute('aria-pressed',filter==='open'); document.getElementById('cardBet').setAttribute('aria-pressed',filter==='bet');
   const core=new Set(P.open.core), opt=new Set(P.open.opt);
   const {vs,tb,set:bet}=betSet(pos); const vsKeys=Object.keys(P.threebet);
@@ -732,9 +744,9 @@ function render(){
   if(core.size){ oV.textContent=pct(core); oS.textContent=core.size+' mains'+(opt.size?' + '+opt.size+' entre 30-50bb ('+pct(new Set([...core,...opt]))+')':''); }
   else { oV.textContent='–'; oS.textContent=''; }
   const bV=document.getElementById('betV'), bS=document.getElementById('betS'), vsEl=document.getElementById('vs'); vsEl.innerHTML='';
-  if(tb){ bV.textContent=pct(bet); bS.textContent=tb.value.length+' value + '+tb.bluff.length+' bluff · face à '+vs;
-    if(vsKeys.length>1) vsKeys.forEach(k=>{ const b=document.createElement('button'); b.textContent='vs '+k; b.setAttribute('aria-pressed',k===vs); b.onclick=()=>{vsPick[pos]=k; save(); render()}; vsEl.appendChild(b) }); }
-  else { bV.textContent='–'; bS.textContent=pos==='UTG'?'Premier à parler : pas de 3bet.':'Pas de range 3bet pour cette position dans le PDF.'; }
+  if(tb){ bV.textContent=pct(bet); bS.textContent=tb.value.length+' value + '+tb.bluff.length+' bluff · face à '+lblVs(vs);
+    if(vsKeys.length>1) vsKeys.forEach(k=>{ const b=document.createElement('button'); b.textContent='vs '+lblVs(k); b.setAttribute('aria-pressed',k===vs); b.onclick=()=>{vsPick[pos]=k; save(); render()}; vsEl.appendChild(b) }); }
+  else { bV.textContent='–'; bS.textContent=(pos==='UTG'||(table===6&&pos==='LJ'))?'Premier à parler : pas de 3bet.':'Pas de range 3bet pour cette position dans le PDF.'; }
 }
 
 /* ---------- Mémo : kicker minimum par carte haute ---------- */
@@ -754,8 +766,8 @@ function explain(h,p,mode){
   const set=new Set(mode==='full'?[...DATA.positions[p].open.core,...DATA.positions[p].open.opt]:DATA.positions[p].open.core);
   const t=kickerTable(set); let row;
   if(h.length===2) row=t.find(x=>x.key==='PP'); else row=t.find(x=>x.key===h[0]+h[2]);
-  if(!row) return 'Aucune main '+(h.length===2?'en paire':h[0]+'x'+(h[2]==='s'?' assortie':' dépareillée'))+' ne s’ouvre en '+p+'.';
-  return 'En '+p+(mode==='full'?' (30-50bb)':'')+' : '+(h.length===2?'paires ':'')+row.label+'.';
+  if(!row) return 'Aucune main '+(h.length===2?'en paire':h[0]+'x'+(h[2]==='s'?' assortie':' dépareillée'))+' ne s’ouvre en '+lbl(p)+'.';
+  return 'En '+lbl(p)+(mode==='full'?' (30-50bb)':'')+' : '+(h.length===2?'paires ':'')+row.label+'.';
 }
 function renderMemo(){
   const list=document.getElementById('memoList'); list.innerHTML='';
@@ -765,13 +777,13 @@ function renderMemo(){
     const P=DATA.positions[p]; const set=new Set(memoMode==='full'?[...P.open.core,...P.open.opt]:P.open.core);
     const t=kickerTable(set); const prevMap={}; if(prev) prev.forEach(x=>prevMap[x.key]=x.label);
     const div=document.createElement('div'); div.className='mp';
-    const title=p==='UTG'?'UTG et UTG+1':p;
+    const title=(p==='UTG'&&table===8)?'UTG et UTG+1':lbl(p);
     div.innerHTML='<h2>'+title+' <small>'+pct(set)+' · '+set.size+' mains</small></h2>';
     const groups=[['Paires',t.filter(x=>x.key==='PP')],['Suited',t.filter(x=>x.key.length===2&&x.key[1]==='s')],['Offsuit',t.filter(x=>x.key.length===2&&x.key[1]==='o')]];
     groups.forEach(([lab,items])=>{ if(!items.length) return; const r=document.createElement('div'); r.className='row';
       r.innerHTML='<b>'+lab+'</b><span>'+items.map(x=>'<em class="'+(prevMap[x.key]===x.label?'':'new')+'" style="font-style:normal">'+x.label+'</em>').join(' ')+'</span>'; div.appendChild(r); });
     const {vs,tb}=betSet(p);
-    if(tb){ const r=document.createElement('div'); r.className='row'; const vsShort=vs.split(' ')[0]+(vs.includes('approx')?' (≈ HJ vs LJ)':''); r.innerHTML='<b>3bet</b><span class="bet"><em style="font-style:normal;color:var(--muted)">vs '+vsShort+' :</em> '+[...tb.value].sort(sortH).join(' ')+' <em style="font-style:normal;color:var(--muted)">+ bluff</em> '+[...tb.bluff].sort(sortH).join(' ')+'</span>'; div.appendChild(r); }
+    if(tb){ const r=document.createElement('div'); r.className='row'; const vsShort=lblVs(vs)+(vs.includes('approx')?' (≈ HJ vs LJ)':''); r.innerHTML='<b>3bet</b><span class="bet"><em style="font-style:normal;color:var(--muted)">vs '+vsShort+' :</em> '+[...tb.value].sort(sortH).join(' ')+' <em style="font-style:normal;color:var(--muted)">+ bluff</em> '+[...tb.bluff].sort(sortH).join(' ')+'</span>'; div.appendChild(r); }
     list.appendChild(div); prev=t;
   });
 }
@@ -788,9 +800,9 @@ function fsteps(h){ const hi=RV[h[0]],lo=RV[h[1]];
   if(gap>0) t+='\n'+gap+' écart'+(gap>1?'s':'')+' × −2 → '+fscore(h); return t; }
 function renderMeth(){
   const pts=document.getElementById('pts'); if(!pts.childElementCount){ RANKS.split('').forEach(r=>{ const d=document.createElement('div'); d.innerHTML='<small>'+r+'</small>'+PTS[RV[r]]; pts.appendChild(d) }); }
-  const thr=document.getElementById('thr'); if(!thr.childElementCount){ MEMO_POS.forEach(p=>{ const d=document.createElement('div'); d.innerHTML='<small>'+(p==='UTG'?'UTG·UTG+1':p)+'</small>≥ '+THR[p]; thr.appendChild(d) }); }
+  const thr=document.getElementById('thr'); if(!thr.childElementCount){ MEMO_POS.forEach(p=>{ const d=document.createElement('div'); d.innerHTML='<small>'+((p==='UTG'&&table===8)?'UTG·UTG+1':lbl(p))+'</small>≥ '+THR[p]; thr.appendChild(d) }); }
   const c1=document.getElementById('c1'),c2=document.getElementById('c2'),cp=document.getElementById('cp'),cs=document.getElementById('cs');
-  if(!c1.childElementCount){ RANKS.split('').forEach(r=>{ c1.add(new Option(r,r)); c2.add(new Option(r,r)) }); c1.value='K'; c2.value='7'; MEMO_POS.forEach(p=>cp.add(new Option(p==='UTG'?'UTG / UTG+1':p,p))); cp.value='HJ';
+  if(!c1.childElementCount){ RANKS.split('').forEach(r=>{ c1.add(new Option(r,r)); c2.add(new Option(r,r)) }); c1.value='K'; c2.value='7'; MEMO_POS.forEach(p=>cp.add(new Option((p==='UTG'&&table===8)?'UTG / UTG+1':lbl(p),p))); cp.value='HJ';
     [c1,c2,cp].forEach(e=>e.onchange=calc); cs.onclick=()=>{cs.setAttribute('aria-pressed',cs.getAttribute('aria-pressed')!=='true'); calc()}; }
   calc(); renderExc(); render3bet();
 }
@@ -798,7 +810,7 @@ function calc(){
   const a=document.getElementById('c1').value,b=document.getElementById('c2').value,p=document.getElementById('cp').value,suited=document.getElementById('cs').getAttribute('aria-pressed')==='true';
   const hi=RV[a]>=RV[b]?a:b, lo=RV[a]>=RV[b]?b:a; const h=a===b?a+b:hi+lo+(suited?'s':'o');
   const sc=fscore(h), t=THR[p], real=DATA.positions[p].open.core.includes(h), pred=sc>=t;
-  let out='<b>'+h+' en '+p+'</b>\n'+fsteps(h)+'\nscore '+sc+(pred?' ≥ ':' < ')+'seuil '+t+' → <b>'+(pred?'OPEN':'FOLD')+'</b>';
+  let out='<b>'+h+' en '+lbl(p)+'</b>\n'+fsteps(h)+'\nscore '+sc+(pred?' ≥ ':' < ')+'seuil '+t+' → <b>'+(pred?'OPEN':'FOLD')+'</b>';
   out+='\n'+(pred===real?'✓ ta range dit la même chose':'✗ exception : ta range dit '+(real?'OPEN':'FOLD'));
   document.getElementById('calcout').innerHTML=out;
 }
@@ -806,7 +818,7 @@ function renderExc(){
   const tb=document.getElementById('exc'); tb.innerHTML='<tr><th>Position</th><th>Formule dit open, range dit fold</th><th>Formule dit fold, range dit open</th></tr>';
   MEMO_POS.forEach(p=>{ const core=new Set(DATA.positions[p].open.core); const t=THR[p];
     const fp=ALL.filter(h=>fscore(h)>=t&&!core.has(h)).sort(sortH), fn=ALL.filter(h=>fscore(h)<t&&core.has(h)).sort(sortH);
-    tb.innerHTML+='<tr><td>'+(p==='UTG'?'UTG·UTG+1':p)+'</td><td class="fp">'+(fp.join(' ')||'–')+'</td><td class="fn">'+(fn.join(' ')||'–')+'</td></tr>'; });
+    tb.innerHTML+='<tr><td>'+((p==='UTG'&&table===8)?'UTG·UTG+1':lbl(p))+'</td><td class="fp">'+(fp.join(' ')||'–')+'</td><td class="fn">'+(fn.join(' ')||'–')+'</td></tr>'; });
 }
 function famKey(h){ return h.length===2?'PP':h[0]+h[2] }
 function render3bet(){
@@ -815,7 +827,7 @@ function render3bet(){
   const famLabel=k=>k==='PP'?'Paires':k[0]+'x '+(k[1]==='s'?'s':'o');
   ['HJ','CO','BTN'].forEach(p=>{ const {vs,tb}=betSet(p); if(!tb) return;
     const div=document.createElement('div'); div.className='tb3';
-    const title=p==='HJ'?'HJ, LJ et UTG+1 (face à LJ)':p+' face à '+vs.split(' ')[0];
+    const title=p==='HJ'?(table===8?'HJ, LJ et UTG+1 (face à LJ)':'HJ (face à UTG)'):p+' face à '+lblVs(vs);
     div.innerHTML='<div style="font:700 14px var(--display)">'+title+'</div>';
     const fam={}; const put=(h,k)=>{ const f=famKey(h); (fam[f]=fam[f]||{value:[],call:[],bluff:[]})[k].push(h) };
     tb.value.forEach(h=>put(h,'value')); tb.call.forEach(h=>put(h,'call')); tb.bluff.forEach(h=>put(h,'bluff'));
@@ -852,7 +864,7 @@ function nextQuestion(){
   if(h.length===2) s2=pick(SUITS.filter(s=>s!==s1));
   quizState.hand=h; quizState.pos=p; quizState.scenario=scenario; quizState.answered=false;
   const vs=scenario==='bet'?defaultVs(p):null;
-  document.getElementById('qSit').innerHTML=scenario==='open'?'Tout le monde a passé. Tu es <b>'+p+'</b>.':'<b>'+vs.split(' ')[0]+'</b> relance. Tu es <b>'+p+'</b>.';
+  document.getElementById('qSit').innerHTML=scenario==='open'?'Tout le monde a passé. Tu es <b>'+lbl(p)+'</b>.':'<b>'+lblVs(vs)+'</b> relance. Tu es <b>'+lbl(p)+'</b>.';
   document.getElementById('qHand').innerHTML=[[h[0],s1],[h[1],s2]].map(([r,s])=>'<div class="q-card'+((s==='♥'||s==='♦')?' red':'')+'"><span>'+r+'</span><small>'+s+'</small></div>').join('');
   const ans=document.getElementById('qAns'); ans.innerHTML='';
   const opts=scenario==='open'?['Fold','Open']:['Fold','Call','3bet'];
@@ -879,7 +891,7 @@ function answer(o,btn){
   const q=store.quiz||(store.quiz={n:0,ok:0,streak:0,miss:[]});
   q.n++; if(ok){q.ok++; q.streak++; const key=quizState.pos+' '+quizState.hand; q.miss=(q.miss||[]).filter(k=>k!==key);} else { q.streak=0; const key=quizState.pos+' '+quizState.hand; if(!q.miss.includes(key)) q.miss.push(key); if(q.miss.length>30) q.miss.shift(); }
   save();
-  document.getElementById('qFb').innerHTML='<b style="color:var(--'+(ok?'ok':'ko')+')">'+(ok?'Juste':'Raté')+'</b> · '+quizState.hand+' en '+quizState.pos+' : '+c.ans+'<span class="why">'+c.why+'</span>';
+  document.getElementById('qFb').innerHTML='<b style="color:var(--'+(ok?'ok':'ko')+')">'+(ok?'Juste':'Raté')+'</b> · '+quizState.hand+' en '+lbl(quizState.pos)+' : '+c.ans+'<span class="why">'+c.why+'</span>';
   renderScore();
 }
 function renderScore(){ const q=store.quiz||{n:0,ok:0,streak:0,miss:[]};
