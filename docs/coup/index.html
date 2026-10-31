@@ -24,6 +24,8 @@ header h1::after{content:" · Coup 6-max";color:var(--muted);font-weight:500}
   #coupRoot{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
   #coupRoot>.cp-head,#coupRoot>.cp-seatrow,#coupRoot>.cp-end,#coupRoot>.cp-back,#coupRoot>.cp-err{grid-column:1/-1}
   #coupRoot>.cp-form{grid-column:1/-1;max-width:760px;width:100%;justify-self:center}
+  #coupRoot>.cp-settings{grid-column:1;max-width:none;justify-self:stretch}
+  #coupRoot>.cp-settings+.cp-form{grid-column:2;max-width:none;justify-self:stretch}
   #coupRoot>.cp-reco{grid-column:1;margin-top:0}
   #coupRoot>.cp-acts{grid-column:2;margin-top:0;align-content:start}
   .cp-act{font-size:30px}
@@ -173,6 +175,11 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cp-acts button.primary{border-color:var(--accent);background:var(--accent);color:#1b1f24}
 .cp-end{margin-top:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.45}
 /* Coup : sélecteur de cartes et sièges */
+.cp-settings{gap:6px}
+.cp-chips{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.cp-chips .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);width:100%;margin-top:2px}
+.cp-chips button{font:600 13px/1 var(--display);padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--cell);color:var(--fg);cursor:pointer}
+.cp-chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#1b1f24}
 .pk{display:flex;flex-direction:column;gap:8px}
 .pk-chips{display:flex;gap:6px;min-height:34px}
 .chip.empty{background:var(--cell);color:var(--muted);border:1px dashed var(--line)}
@@ -664,20 +671,23 @@ function showdownNote(){ const share=E.showdownShare(S.hero,S.board,E.removeConf
 
 /* ===== Rendu ===== */
 function render(){ root.innerHTML=''; const st=S.stage;
-  if(st==='setup') return renderSetup(); if(st==='pickHand') return renderPick(2,'Valider ma main',ids=>{ S.hero=ids; startHand(); render(); },'Mes deux cartes');
+  if(st==='setup'){ S.stage='pickHand'; return render(); }
+  if(st==='pickHand'){ root.appendChild(settingsBar()); const f=el('div','cp-form'); f.appendChild(el('div','cp-title','Mes deux cartes')); f.appendChild(picker(2,'Valider ma main et dérouler le coup',ids=>{ S.hero=ids; S.eff=S.eff0; startHand(); render(); })); root.appendChild(f); return; }
   if(st==='pickFlop') return renderPick(3,'Analyser le flop',ids=>{ S.board=ids; S.stage='play'; newStreet(); render(); },'Le flop');
   if(st==='pickTurn') return renderPick(1,'Analyser la turn',ids=>{ S.board.push(ids[0]); S.street='turn'; S.stage='play'; newStreet(); render(); },'La turn');
   if(st==='pickRiver') return renderPick(1,'Analyser la river',ids=>{ S.board.push(ids[0]); S.street='river'; S.stage='play'; newStreet(); render(); },'La river');
   if(st==='preflop') return renderPreflop(); if(st==='pickVill') return renderPickVill(); return renderPlay(); }
-function renderSetup(){ syncSeats(); if(!SEATS.includes(S.heroPos)) S.heroPos='CO'; S.eff=S.eff0||40; S.open=S.open||2.2; if(S.ante==null) S.ante=true; S.profile=S.profile||{};
-  const f=el('div','cp-form');
-  const pos=el('div','cp-seats'); pos.innerHTML='<span>Ma position</span>'; SEATS.forEach(s=>{ const b=el('button',null,L(s)); b.dataset.s=s; b.setAttribute('aria-pressed',s===S.heroPos); b.onclick=()=>{ S.heroPos=s; pos.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.s===s)); }; pos.appendChild(b); }); f.appendChild(pos);
-  const n=(id,val,label,step)=>{ const w=el('label','fld'); w.innerHTML='<span>'+label+'</span>'; const i=el('input'); i.type='number'; i.id=id; i.value=val; i.step=step||1; i.inputMode='decimal'; w.appendChild(i); return w; };
-  f.appendChild(n('cpEff',S.eff,'Tapis effectif (bb)')); f.appendChild(n('cpOpen',S.open,'Taille de l’open (bb)',0.1));
-  const a=el('label','fld chk'); a.innerHTML='<input type="checkbox" id="cpAnte" '+(S.ante?'checked':'')+'><span>Ante BB (tournoi)</span>'; f.appendChild(a);
-  const pr=el('div','cp-prof'); pr.innerHTML='<span>Profil de l’adversaire principal</span>';
-  [['foldy','Se couche trop'],['station','Paie trop'],['aggro','Mise et relance trop']].forEach(([k,t])=>{ const b=el('button',null,t); b.type='button'; b.setAttribute('aria-pressed',!!S.profile[k]); b.onclick=()=>{ S.profile[k]=!S.profile[k]; b.setAttribute('aria-pressed',!!S.profile[k]); }; pr.appendChild(b); }); f.appendChild(pr);
-  const go=el('button','cp-go','Choisir mes cartes'); go.onclick=()=>{ S.eff0=+document.getElementById('cpEff').value; S.eff=S.eff0; S.open=+document.getElementById('cpOpen').value; S.ante=document.getElementById('cpAnte').checked; S.hero=[]; S.board=[]; S.stage='pickHand'; render(); }; f.appendChild(go); root.appendChild(f); }
+function settingsBar(){ syncSeats(); if(!SEATS.includes(S.heroPos)) S.heroPos='CO'; S.eff0=S.eff0||40; S.open=S.open||2.2; if(S.ante==null) S.ante=true; S.profile=S.profile||{}; S.hero=[]; S.board=[]; S.villPos=null; S.log=[]; S.pot=0;
+  const f=el('div','cp-form cp-settings');
+  const row=(label,opts,get,set,fmtv)=>{ const r=el('div','cp-chips'); r.appendChild(el('span','lbl',label)); opts.forEach(o=>{ const b=el('button',null,fmtv?fmtv(o):o); b.type='button'; b.setAttribute('aria-pressed',get()===o); b.onclick=()=>{ set(o); r.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b)); }; r.appendChild(b); }); return r; };
+  f.appendChild(row('Ma position',SEATS,()=>S.heroPos,v=>{S.heroPos=v},L));
+  f.appendChild(row('Tapis effectif',[20,40,60,100],()=>S.eff0,v=>{S.eff0=v},v=>v+' bb'));
+  f.appendChild(row('Taille de l’open',[2,2.2,3],()=>S.open,v=>{S.open=v},v=>fmt(v)+' bb'));
+  const r2=el('div','cp-chips'); r2.appendChild(el('span','lbl','Ante BB'));
+  const ab=el('button',null,S.ante?'oui':'non'); ab.type='button'; ab.setAttribute('aria-pressed',S.ante); ab.onclick=()=>{ S.ante=!S.ante; ab.textContent=S.ante?'oui':'non'; ab.setAttribute('aria-pressed',S.ante); }; r2.appendChild(ab);
+  r2.appendChild(el('span','lbl','Adversaire'));
+  [['foldy','se couche trop'],['station','paie trop'],['aggro','mise et relance trop']].forEach(([k,t])=>{ const b=el('button',null,t); b.type='button'; b.setAttribute('aria-pressed',!!S.profile[k]); b.onclick=()=>{ S.profile[k]=!S.profile[k]; b.setAttribute('aria-pressed',!!S.profile[k]); }; r2.appendChild(b); });
+  f.appendChild(r2); return f; }
 function renderPick(n,label,cb,title){ root.appendChild(headBox()); const f=el('div','cp-form'); f.appendChild(el('div','cp-title',title)); f.appendChild(picker(n,label,cb)); root.appendChild(f); root.appendChild(restartBtn()); }
 function headBox(){ const h=el('div','cp-head'); const hero=(S.hero||[]).map(E.cardFromId), b=(S.board||[]).map(E.cardFromId);
   h.innerHTML='<div class="cp-cards"><span class="lbl">Moi · '+L(S.heroPos)+'</span>'+hero.map(cardChip).join('')+(b.length?'<span class="lbl">Board</span>'+b.map(cardChip).join(''):'')+'</div>'+
@@ -723,9 +733,9 @@ function villButtons(){ const w=el('div','cp-acts'); w.appendChild(el('span','lb
   if(S.streetBets.hero>S.streetBets.vill){ add('Fold',()=>villAct('fold')); add('Paie',()=>villAct('call')); [2.5,3.5].forEach(m=>{ const amt=Math.min(S.eff,Math.round(S.streetBets.hero*m*10)/10); add('Relance à '+fmt(amt),()=>villAct('raise',null,amt-S.streetBets.hero)); }); add('All-in',()=>villAct('raise',null,S.eff-S.streetBets.hero)); }
   else { add('Check',()=>villAct('check')); [0.33,0.5,0.66,1].forEach(f=>add('Mise '+Math.round(f*100)+'% ('+fmt(Math.min(S.eff,Math.round(f*S.pot*10)/10))+')',()=>villAct('bet',f))); add('All-in',()=>villAct('bet',null,S.eff)); }
   return w; }
-function restartBtn(){ const b=el('button','cp-back','↺ Nouveau coup'); b.onclick=()=>{ S.stage='setup'; S.villPos=null; S.log=[]; S.pot=0; render(); }; return b; }
+function restartBtn(){ const b=el('button','cp-back','↺ Nouveau coup'); b.onclick=()=>{ S.stage='pickHand'; S.villPos=null; S.log=[]; S.pot=0; render(); }; return b; }
 function cardChip(c){ const s=E.SSTR[c.s]; return '<span class="chip '+(s==='h'||s==='d'?'red':'')+'">'+E.pretty(c)+'</span>'; }
-function init(container){ root=container; S.stage='setup'; render(); }
+function init(container){ root=container; S.stage='pickHand'; render(); }
 return {init,render,S};
 })();
 

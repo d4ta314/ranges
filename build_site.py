@@ -58,6 +58,8 @@ header h1::after{content:" · Coup 6-max";color:var(--muted);font-weight:500}
   #coupRoot{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
   #coupRoot>.cp-head,#coupRoot>.cp-seatrow,#coupRoot>.cp-end,#coupRoot>.cp-back,#coupRoot>.cp-err{grid-column:1/-1}
   #coupRoot>.cp-form{grid-column:1/-1;max-width:760px;width:100%;justify-self:center}
+  #coupRoot>.cp-settings{grid-column:1;max-width:none;justify-self:stretch}
+  #coupRoot>.cp-settings+.cp-form{grid-column:2;max-width:none;justify-self:stretch}
   #coupRoot>.cp-reco{grid-column:1;margin-top:0}
   #coupRoot>.cp-acts{grid-column:2;margin-top:0;align-content:start}
   .cp-act{font-size:30px}
