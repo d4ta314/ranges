@@ -562,6 +562,7 @@ function seatAct(seat,action,amount){ const a=S.pre[seat]; a.acted=true; a.last=
   else if(action==='raise'){ const to=amount; const add=to-a.contrib; a.contrib=to; S.pot+=add; S.raises++; S.curBet=to; S.lastRaiser=seat; SEATS.forEach(x=>{ if(x!==seat) S.pre[x].acted=S.pre[x].last==='fold'; });
     if(S.raises===1){ S.opener=seat; a.role='opener'; S.log.push({who:seat,txt:'ouvre à '+fmt(to)}); } else if(S.raises===2){ a.role='3bet'; S.log.push({who:seat,txt:'3bet à '+fmt(to)}); } else { a.role='4bet'; S.log.push({who:seat,txt:'4bet à '+fmt(to)}); } }
   S.ptr=(SEATS.indexOf(seat)+1)%SEATS.length; S.reco=null; advance(); }
+function bigRaise(p){ const toCall=S.curBet-S.pre[p].contrib; return S.curBet>=S.eff||toCall/S.eff>0.15||S.curBet>4*S.open; }
 function raiseSize(seat){ if(S.raises===0) return S.open; const ip=SEATS.indexOf(seat)<SEATS.length-2&&SEATS.indexOf(seat)>SEATS.indexOf(S.lastRaiser); const mult=S.raises===1?(ip?3:3.5):2.3; return Math.min(S.eff,Math.round(S.curBet*mult*2)/2); }
 function endPreflop(){ const al=alive(); if(!S.raises){ S.done=true; S.endTxt=SEATS.some(x=>S.pre[x].last==='call')?'Pot limpé : le moteur ne gère pas encore les pots sans relance.':'Personne n’a relancé : la BB remporte les blindes.'; return; }
   if(!al.includes(S.heroPos)){ S.done=true; S.endTxt='Tu as passé. Le coup continue sans toi.'; return; }
@@ -571,7 +572,8 @@ function endPreflop(){ const al=alive(); if(!S.raises){ S.done=true; S.endTxt=SE
   setupPostflop(opps[0]); }
 function setupPostflop(vill){ S.villPos=vill; const hr=rangeOf(S.heroPos), vr=rangeOf(vill); if(!hr||!vr){ S.done=true; S.endTxt='Pas de range dans le PDF pour ce scénario ('+L(S.heroPos)+' '+S.pre[S.heroPos].role+' vs '+L(vill)+' '+S.pre[vill].role+').'; return; }
   S.heroRange=E.buildRange(hr); S.villRange=E.buildRange(vr); S.pfr=S.lastRaiser===S.heroPos?'hero':'vill'; S.tb=S.raises>=2?'yes':'none';
-  S.eff=S.eff-S.pre[S.heroPos].contrib; S.heroIP=POSTFLOP.indexOf(S.heroPos)>POSTFLOP.indexOf(vill); S.board=[]; S.street='flop'; S.stage='pickFlop'; S.rangeNote=L(S.heroPos)+' ('+(hr.length)+' mains) contre '+L(vill)+' ('+vr.length+' mains)'+(S.pre[S.heroPos].role==='opener'&&S.pre[S.heroPos].last==='call'||S.pre[vill].role==='opener'&&S.pre[vill].last==='call'?' · range « paie un 3bet » approximée':''); }
+  S.eff=S.eff-S.pre[S.heroPos].contrib; S.heroIP=POSTFLOP.indexOf(S.heroPos)>POSTFLOP.indexOf(vill); S.board=[]; S.street='flop'; S.stage='pickFlop';
+  if(S.eff<=0.01){ const eq=E.equityHandVsRange(S.hero,[],E.removeConflicts(S.villRange,S.hero),6000); S.done=true; S.stage='play'; S.endTxt='Tapis engagés préflop : on retourne les cartes. Ta main a '+(eq!=null?Math.round(eq*100):'?')+' % d’équité contre la range de '+L(vill)+'.'; return; } S.rangeNote=L(S.heroPos)+' ('+(hr.length)+' mains) contre '+L(vill)+' ('+vr.length+' mains)'+(S.pre[S.heroPos].role==='opener'&&S.pre[S.heroPos].last==='call'||S.pre[vill].role==='opener'&&S.pre[vill].last==='call'?' · range « paie un 3bet » approximée':''); }
 
 /* ===== Recommandation préflop ===== */
 function computePreReco(){ const h=E.handLabel(E.cardFromId(S.hero[0]),E.cardFromId(S.hero[1])); const p=S.heroPos; let action,reason,rules=[],amount=0;
@@ -583,7 +585,16 @@ function computePreReco(){ const h=E.handLabel(E.cardFromId(S.hero[0]),E.cardFro
       if(core){ action='raise'; amount=raiseSize(p); reason=h+' est dans ta range d’open en '+L(p)+'. '+ex+(sc!=null?' Formule : '+sc+' ≥ '+thr+'.':''); }
       else if(opt){ action='fold'; reason=h+' ne s’ouvre en '+L(p)+' qu’entre 30 et 50bb de tapis'+(S.eff>=30&&S.eff<=50?' : avec '+fmt(S.eff)+' bb tu peux ouvrir.':' : avec '+fmt(S.eff)+' bb, fold.'); if(S.eff>=30&&S.eff<=50){ action='raise'; amount=raiseSize(p); } }
       else { action='fold'; reason=h+' n’est pas dans ta range d’open en '+L(p)+'. '+ex+(sc!=null?' Formule : '+sc+' < '+thr+'.':''); } } }
-  else if(S.raises===1&&S.opener!==p){ // face à une ouverture
+  else if(S.raises>=1&&S.lastRaiser!==p&&bigRaise(p)){ // face à une grosse relance ou un tapis : les tableaux ne s'appliquent plus
+    const toCall=S.curBet-S.pre[p].contrib; const allin=S.curBet>=S.eff; const ratio=toCall/S.eff; const need=toCall/(S.pot+toCall);
+    const prem=['AA','KK','QQ','JJ','AKs','AKo'].concat(S.eff<=25?['TT','AQs']:[]); const big=prem.concat(['TT','99','AQs','AQo','AJs','KQs']);
+    const who=L(S.lastRaiser); const sz=allin?'un tapis de '+fmt(S.curBet)+' bb':'une relance à '+fmt(S.curBet)+' bb ('+Math.round(ratio*100)+' % de ton tapis)';
+    if(ratio>0.35||allin){ if(prem.includes(h)){ action='call'; amount=S.curBet; reason=h+' face à '+sz+' de '+who+' : main premium, tu paies. Il te faut '+Math.round(need*100)+' % d’équité (cote du pot) et '+h+' les a contre une range de tapis.'; }
+      else { action='fold'; reason='Face à '+sz+' de '+who+', la range de call normale ne s’applique plus : il te faut '+Math.round(need*100)+' % d’équité contre une range très serrée. Seules JJ+ et AK'+(S.eff<=25?', TT et AQs':'')+' continuent. '+h+' se couche.'; } }
+    else { if(prem.includes(h)){ action='raise'; amount=raiseSize(p); reason=h+' face à '+sz+' de '+who+' : main premium, relance pour la valeur.'; }
+      else if(big.includes(h)){ action='call'; amount=S.curBet; reason=h+' face à '+sz+' de '+who+' : assez forte pour payer, pas assez pour relancer. Pas de 3bet bluff face à une relance aussi grosse.'; }
+      else { action='fold'; reason='Face à '+sz+' de '+who+', seules les grosses mains continuent (TT+, AQ+, AJs, KQs) : '+h+' se couche. La range de call normale vaut pour une relance de 2 à 3 bb.'; } } }
+  else if(S.raises===1&&S.opener!==p){ // face à une ouverture normale
     const t=vsOpen(p,S.opener); const callers=SEATS.filter(s=>S.pre[s].role==='caller'&&S.pre[s].last==='call');
     if(!t){ action='fold'; reason='Pas de tableau dans le PDF pour '+L(p)+' face à une ouverture de '+L(S.opener)+'.'; }
     else { const approx=t.key.includes('approx')?' (approximation : tableau HJ vs '+L('LJ')+')':''; const O=L(S.opener); const sq=callers.length?' Il y a déjà un joueur qui a payé : le PDF ne couvre pas le squeeze, on applique la range face à l’ouvreur.':'';
@@ -663,12 +674,12 @@ function renderPreflop(){ root.appendChild(headBox());
     add('Fold',()=>seatAct(seat,'fold'),r.action==='fold');
     if(S.raises>0) add('Paie '+fmt(toCall),()=>seatAct(seat,'call'),r.action==='call'); else if(seat==='SB') add('Limp',()=>seatAct(seat,'call'),r.action==='call');
     if(seat==='BB'&&toCall===0) add('Check',()=>seatAct(seat,'call'),r.action==='check');
-    const rs=raiseSize(seat); add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs),r.action==='raise'); add('All-in '+fmt(S.eff),()=>seatAct(seat,'raise',S.eff),r.action==='all-in');
+    if(S.curBet<S.eff){ const rs=raiseSize(seat); if(rs<S.eff) add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs),r.action==='raise'); add('All-in '+fmt(S.eff),()=>seatAct(seat,'raise',S.eff),r.action==='all-in'); }
     root.appendChild(acts); }
   else { const acts=el('div','cp-acts'); acts.appendChild(el('span','lbl',L(seat)+' fait :'));
     const add=(t,fn)=>{ const b=el('button','',t); b.onclick=()=>{ fn(); render(); }; acts.appendChild(b); };
     add('Fold',()=>seatAct(seat,'fold')); if(S.raises>0) add('Paie '+fmt(toCall),()=>seatAct(seat,'call')); else if(seat==='SB') add('Limp',()=>seatAct(seat,'call')); if(seat==='BB'&&toCall===0) add('Check',()=>seatAct(seat,'call'));
-    const rs=raiseSize(seat); add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs)); add('All-in',()=>seatAct(seat,'raise',S.eff)); root.appendChild(acts); }
+    if(S.curBet<S.eff){ const rs=raiseSize(seat); if(rs<S.eff) add((S.raises===0?'Open ':S.raises===1?'3bet ':'4bet ')+fmt(rs),()=>seatAct(seat,'raise',rs)); add('All-in',()=>seatAct(seat,'raise',S.eff)); } root.appendChild(acts); }
   root.appendChild(restartBtn()); }
 function renderPickVill(){ root.appendChild(headBox()); const f=el('div','cp-form'); f.appendChild(el('p','cp-note','Plusieurs adversaires vont au flop. Le moteur n’en suit qu’un : choisis lequel (de préférence le relanceur). Les recommandations seront moins fiables en multiway : moins de bluffs, plus de valeur.'));
   S.opps.forEach(o=>{ const b=el('button','cp-go',L(o)+' ('+S.pre[o].role+')'); b.onclick=()=>{ setupPostflop(o); render(); }; f.appendChild(b); }); root.appendChild(f); root.appendChild(restartBtn()); }
