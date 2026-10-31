@@ -75,3 +75,9 @@ Sources principales : Matthew Janda, *Applications of No-Limit Hold'em* ; Michae
 - Un seul adversaire. En multiway les fréquences de bluff chutent fortement et le moteur ne doit pas être utilisé.
 - Les ranges adverses sont celles du PDF, donc celles d'un bon joueur régulier. Un joueur qui joue beaucoup plus de mains préflop fausse la lecture du board.
 - Les spots serrés (valeur fine, bluff-catch) restent des estimations. Le moteur le signale avec un niveau de confiance et GTO Wizard reste la référence.
+
+## 10. Préflop face à une grosse relance (ajout du 31 octobre 2026)
+
+- **R39 [H] Les tableaux valent pour une relance normale.** Les ranges de call et de 3bet du PDF supposent une ouverture de 2 à 3 bb. Dès que la relance dépasse 4 fois l'open ou que le montant à payer dépasse 15 % du tapis effectif, elles ne s'appliquent plus.
+- **R40 [M+H] Grosse relance (15 à 35 % du tapis).** Continuer seulement avec TT+, AQ+, AJs, KQs ; relancer avec JJ+ et AK ; jamais de 3bet bluff.
+- **R41 [M+H] Tapis ou relance au-delà de 35 % du tapis.** Payer seulement avec JJ+ et AK (plus TT et AQs quand le tapis effectif est ≤ 25 bb). La cote du pot est affichée ; face à une range de tapis serrée, une main moyenne n'atteint pas l'équité requise.
