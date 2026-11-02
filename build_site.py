@@ -46,13 +46,14 @@ self.addEventListener('fetch',e=>{
 # ---- Page Mac : uniquement l'onglet Coup, en 6-max, mise en page large ----
 import os
 os.makedirs('docs/coup',exist_ok=True)
-coup_head=head.replace('<title>'+title+'</title>','<title>Coup 6-max</title>').replace('<link rel="manifest" href="manifest.webmanifest">\n','').replace('href="icon-180.png"','href="../icon-180.png"').replace('href="icon-192.png"','href="../icon-192.png"')
+coup_head=head.replace('<title>'+title+'</title>','<title>Coup</title>').replace('<link rel="manifest" href="manifest.webmanifest">\n','').replace('href="icon-180.png"','href="../icon-180.png"').replace('href="icon-192.png"','href="../icon-192.png"')
 coup_css='''<style>
 /* Page Mac : une seule vue, large */
 body .wrap{max-width:1100px}
-#tabs,#tbl{display:none!important}
+#tabs{display:none!important}
 header{justify-content:flex-start;gap:12px}
-header h1::after{content:" · Coup 6-max";color:var(--muted);font-weight:500}
+header h1::after{content:" · Coup";color:var(--muted);font-weight:500}
+.tabs.tbl{margin-right:0}
 .cp-intro{max-width:70ch}
 @media (min-width:900px){
   #coupRoot{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
@@ -78,9 +79,10 @@ header h1::after{content:" · Coup 6-max";color:var(--muted);font-weight:500}
 '''
 coup_tail='''
 <script>
-/* Forçages de la page Mac : 6-max, onglet Coup seul, pas de mémorisation partagée avec l'app téléphone */
-save=function(){};
-table=6; syncTable(); buildPos(); tab='coup'; showTab();
+/* Page Mac : onglet Coup seul, 6-max par défaut (interrupteur 8/6 conservé), mémorisation séparée de l'app téléphone */
+save=function(){ try{ localStorage.setItem('r8mac',JSON.stringify({table})) }catch(e){} };
+let tMac=6; try{ const m=JSON.parse(localStorage.getItem('r8mac')||'{}'); if(m.table===8) tMac=8; }catch(e){}
+table=tMac; syncTable(); buildPos(); tab='coup'; showTab();
 </script>
 </body>
 </html>
